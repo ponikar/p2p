@@ -12,3 +12,12 @@
     border-radius: 5px;
     transform: scaleX(-1);
 }
+
+.streaming-area:hover .streaming-control {
+    opacity: 1;
+    transition-delay: 0ms;
+}
+
+.streaming-control {
+    @apply absolute flex justify-center w-full bottom-3 opacity-0 delay-300 transition-all duration-75
+}
