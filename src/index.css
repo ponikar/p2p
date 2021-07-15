@@ -6,3 +6,15 @@
 .center {
    @apply flex items-center justify-center;
 }
+
+input:focus, textarea:focus {
+      outline: none;
+}
+
+div::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+div::-webkit-scrollbar-track {
+  display: none;
+}

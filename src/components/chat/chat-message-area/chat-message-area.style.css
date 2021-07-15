@@ -1,0 +1,4 @@
+.chat-message-list {
+  @apply flex-1 w-full overflow-y-scroll border-t overflow-x-hidden;
+  max-height: 85vh;
+}

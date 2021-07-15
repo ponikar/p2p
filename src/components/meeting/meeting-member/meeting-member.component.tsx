@@ -1,5 +1,5 @@
 import React, { FC, useRef } from "react";
-import { VideoArea } from "../video-area/video-area.component";
+import { VideoArea } from "../../video-area/video-area.component";
 import "./meeting-member.style.css"
 
 

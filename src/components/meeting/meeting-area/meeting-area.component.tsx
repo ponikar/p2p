@@ -1,5 +1,5 @@
 import React from "react"
-import ChatArea from "../chat-area/chat-area.component"
+import ChatArea from "../../chat/chat-area/chat-area.component"
 import { MeetingMembers } from "../meeting-members/meeting-members.component"
 
 
