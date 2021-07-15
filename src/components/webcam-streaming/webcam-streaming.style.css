@@ -2,17 +2,15 @@
 
 
 .streaming-area {
-   @apply fixed bottom-5 right-5 border rounded-sm;
+   @apply fixed top-5 right-5 border rounded-sm;
 }
 
 .streaming-video {
     width: 325px;
-    object-fit: cover;
     height: 200px;
-    border-radius: 5px;
-    transform: scaleX(-1);
+    
 }
-
+    
 .streaming-area:hover .streaming-control {
     opacity: 1;
     transition-delay: 0ms;

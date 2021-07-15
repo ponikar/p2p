@@ -2,8 +2,9 @@ import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { getUserMedia } from "../../utils/media.utils";
 import "./webcam-streaming.style.css";
 import { StreamingControlTypes } from "./webcam-streaming.types";
-import { Mic, MicOff, PhoneCall, PhoneOff, Video, VideoOff } from "react-feather";
+import { Mic, MicOff, PhoneCall, Video, VideoOff } from "react-feather";
 import { StreamControlButton } from "./control-button.component";
+import { VideoArea } from "../video-area/video-area.component";
 
 export const WebCamStreaming: FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -34,27 +35,30 @@ export const WebCamStreaming: FC = () => {
     video!.play();
   }, []);
 
-  console.log(audio, video)
   return (
-    <section className="streaming-area">
-      <video muted className="streaming-video" ref={videoRef} />
-      <div className="streaming-control">
-        {!audio ? (
-          <StreamControlButton onClick={_ => setControls({ audio: !audio })} IconComponent={Mic} />
-        ) : (
-          <StreamControlButton onClick={_ => setControls({ audio: !audio })} IconComponent={MicOff} />
-        )}
-        {!video ? (
-          <StreamControlButton onClick={_ => setControls({ video: !video })} IconComponent={Video} />
-        ) : (
-          <StreamControlButton onClick={_ => setControls({ video: !video })} IconComponent={VideoOff} />
-        )}
-        <StreamControlButton
-          iconClassName="text-white"
-          buttonClassName="bg-red-900"
-          IconComponent={PhoneCall}
+      <div className="streaming-area">
+        <VideoArea
+          {...{ video, videoRef }}
+          src="src"
+          muted
+          className="streaming-video"
+          participant_name="Darshan Ponikar"
         />
+        <div className="streaming-control">
+          <StreamControlButton
+            onClick={(_) => setControls({ audio: !audio })}
+            IconComponent={!audio ? MicOff : Mic}
+          />
+          <StreamControlButton
+            onClick={(_) => setControls({ video: !video })}
+            IconComponent={!video ? VideoOff : Video}
+          />
+          <StreamControlButton
+            iconClassName="text-white"
+            buttonClassName="bg-red-900"
+            IconComponent={PhoneCall}
+          />
+        </div>
       </div>
-    </section>
   );
 };
