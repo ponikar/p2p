@@ -11,10 +11,24 @@ input:focus, textarea:focus {
       outline: none;
 }
 
-div::-webkit-scrollbar-thumb {
-    display: none;
-}
-
-div::-webkit-scrollbar-track {
-  display: none;
-}
+/* width */
+::-webkit-scrollbar {
+   width: 5px;
+   border-radius: 10px;
+   margin: 1px;
+ }
+ 
+ /* Track */
+ ::-webkit-scrollbar-track {
+   background: #f1f1f1; 
+ }
+  
+ /* Handle */
+ ::-webkit-scrollbar-thumb {
+   background: #888; 
+ }
+ 
+ /* Handle on hover */
+ ::-webkit-scrollbar-thumb:hover {
+   background: #555; 
+ }
