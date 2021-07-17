@@ -6,7 +6,7 @@ import { WebCamStreaming } from './components/webcam-streaming/webcam-streaming.
 function App() {
   return <React.Fragment>
     <MeetingArea />
-    <WebCamStreaming />
+    {/* <WebCamStreaming /> */}
   </React.Fragment>
 }
 

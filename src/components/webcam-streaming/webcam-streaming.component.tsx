@@ -5,6 +5,7 @@ import { StreamingControlTypes } from "./webcam-streaming.types";
 import { Mic, MicOff, PhoneCall, Video, VideoOff } from "react-feather";
 import { StreamControlButton } from "./control-button.component";
 import { VideoArea } from "../video-area/video-area.component";
+import { ControlButtonArea } from "./control-button-area.component";
 
 export const WebCamStreaming: FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -45,19 +46,7 @@ export const WebCamStreaming: FC = () => {
           participant_name="Darshan Ponikar"
         />
         <div className="streaming-control">
-          <StreamControlButton
-            onClick={(_) => setControls({ audio: !audio })}
-            IconComponent={!audio ? MicOff : Mic}
-          />
-          <StreamControlButton
-            onClick={(_) => setControls({ video: !video })}
-            IconComponent={!video ? VideoOff : Video}
-          />
-          <StreamControlButton
-            iconClassName="text-white"
-            buttonClassName="bg-red-900"
-            IconComponent={PhoneCall}
-          />
+            <ControlButtonArea {...{video,audio,setControls}} />
         </div>
       </div>
   );

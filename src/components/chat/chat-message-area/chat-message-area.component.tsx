@@ -1,14 +1,22 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
+import { ChatContext } from "../chat-context/chat.context";
 import { ChatMessage } from "../chat-message/chat-message.component";
 import "./chat-message-area.style.css"
-const Message = Array(20).fill(20);
 
 export const ChatMessageArea: FC = () => {
+
+  const { messages } = useContext(ChatContext)
+
   return (
     <section className="chat-message-list">
-      {Message.map((_, index) => (
-        <ChatMessage byUser={index % 2 === 0} key={index} />
-      ))}
+      {messages.map((chat, i) => {
+        const current = messages[i];
+        const next = messages[i + 1];
+        const isSameMessageBy = next && (current.user?.id === next.user?.id || !current == !next)
+        return (
+          <ChatMessage {...chat} isSameMessageBy={isSameMessageBy}  byUser={!chat.user} key={chat.id} />
+        ) })
+      }
     </section>
   );
 };
