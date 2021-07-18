@@ -1,21 +1,17 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Mic, MicOff, PhoneCall, Video, VideoOff } from "react-feather";
+import { BaseContext } from "../base/base.context";
 import { StreamControlButton } from "./control-button.component";
 
 interface ControlButtonAreaProps {
-  setControls: (props: object) => void;
-  audio: boolean;
-  video: boolean;
   buttonSize?: number;
   buttonClassName?: string;
 }
 export const ControlButtonArea: FC<ControlButtonAreaProps> = ({
-  setControls,
-  audio,
-  video,
   buttonSize = 15,
-  buttonClassName = ""
+  buttonClassName = "",
 }) => {
+  const { video, audio, setControls } = useContext(BaseContext);
   const commonProps = { size: buttonSize, buttonClassName };
   return (
     <>
@@ -34,7 +30,7 @@ export const ControlButtonArea: FC<ControlButtonAreaProps> = ({
         IconComponent={PhoneCall}
         {...commonProps}
         buttonClassName={`bg-red-900 ${buttonClassName}`}
-        />
+      />
     </>
   );
 };
