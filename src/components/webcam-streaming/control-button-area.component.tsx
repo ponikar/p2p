@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, memo, useContext } from "react";
 import { Mic, MicOff, PhoneCall, Video, VideoOff } from "react-feather";
 import { BaseContext } from "../base/base.context";
 import { StreamControlButton } from "./control-button.component";
@@ -7,7 +7,7 @@ interface ControlButtonAreaProps {
   buttonSize?: number;
   buttonClassName?: string;
 }
-export const ControlButtonArea: FC<ControlButtonAreaProps> = ({
+export const ControlButtonArea: FC<ControlButtonAreaProps> = memo(({
   buttonSize = 15,
   buttonClassName = "",
 }) => {
@@ -33,4 +33,4 @@ export const ControlButtonArea: FC<ControlButtonAreaProps> = ({
       />
     </>
   );
-};
+});
