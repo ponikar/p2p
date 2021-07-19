@@ -8,7 +8,7 @@ export const ChatMessageArea: FC = () => {
   const { messages } = useContext(ChatContext)
 
   return (
-    <section className="chat-message-list">
+    <section className="chat-message-list border-secondryBack">
       {messages.map((chat, i) => {
         const current = messages[i];
         const next = messages[i + 1];

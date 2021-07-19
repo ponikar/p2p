@@ -6,31 +6,33 @@ import { StreamControlButton } from "./control-button.component";
 interface ControlButtonAreaProps {
   buttonSize?: number;
   buttonClassName?: string;
+  hideHangupButton?: boolean;
 }
-export const ControlButtonArea: FC<ControlButtonAreaProps> = memo(({
-  buttonSize = 15,
-  buttonClassName = "",
-}) => {
-  const { video, audio, setControls } = useContext(BaseContext);
-  const commonProps = { size: buttonSize, buttonClassName };
-  return (
-    <>
-      <StreamControlButton
-        onClick={(_) => setControls({ audio: !audio })}
-        IconComponent={!audio ? MicOff : Mic}
-        {...commonProps}
-      />
-      <StreamControlButton
-        onClick={(_) => setControls({ video: !video })}
-        IconComponent={!video ? VideoOff : Video}
-        {...commonProps}
-      />
-      <StreamControlButton
-        iconClassName="text-white"
-        IconComponent={PhoneCall}
-        {...commonProps}
-        buttonClassName={`bg-red-900 ${buttonClassName}`}
-      />
-    </>
-  );
-});
+export const ControlButtonArea: FC<ControlButtonAreaProps> = memo(
+  ({ buttonSize = 15, buttonClassName = "", hideHangupButton = false }) => {
+    const { video, audio, setControls } = useContext(BaseContext);
+    const commonProps = { size: buttonSize, buttonClassName };
+    return (
+      <>
+        <StreamControlButton
+          onClick={(_) => setControls({ audio: !audio })}
+          IconComponent={!audio ? MicOff : Mic}
+          {...commonProps}
+        />
+        <StreamControlButton
+          onClick={(_) => setControls({ video: !video })}
+          IconComponent={!video ? VideoOff : Video}
+          {...commonProps}
+        />
+        {!hideHangupButton && (
+          <StreamControlButton
+            iconClassName="text-white"
+            IconComponent={PhoneCall}
+            {...commonProps}
+            buttonClassName={`bg-red-900 ${buttonClassName}`}
+          />
+        )}
+      </>
+    );
+  }
+);

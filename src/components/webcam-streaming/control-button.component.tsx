@@ -21,7 +21,7 @@ export const StreamControlButton: FC<StreamingControlButtonType> = ({
       {...props}
 
     >
-      <IconComponent className={iconClassName} size={size} />
+      <IconComponent  className={`${iconClassName}`} size={size} />
     </button>
   );
 };

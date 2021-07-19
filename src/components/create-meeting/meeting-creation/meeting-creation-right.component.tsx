@@ -16,7 +16,7 @@ export const MeetingCreationRight: FC = () => {
         {...{ video, videoRef }}
       />
       <div className="mt-5">
-        <ControlButtonArea buttonSize={18} buttonClassName="p-3 bg-secondryBack" />
+        <ControlButtonArea hideHangupButton buttonSize={18} buttonClassName="p-3 bg-secondryBack" />
       </div>
     </div>
   );

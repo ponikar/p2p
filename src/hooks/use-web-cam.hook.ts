@@ -6,10 +6,12 @@ export const useWebcam = () => {
   const { video, videoRef, audio } = useContext(BaseContext);
 
   useEffect(() => {
-    getUserMedia({ video, audio }, streamingWebcam, (err) =>
-      console.log("MEDIA ERROR", err)
-    );
-  }, [video, audio]);
+    if (video || audio) {
+      getUserMedia({ video, audio }, streamingWebcam, (err) =>
+        console.log("MEDIA ERROR", err)
+      );
+    }
+  }, [video]);
 
   const streamingWebcam = useCallback((stream: MediaStream) => {
     if (videoRef?.current && stream) {

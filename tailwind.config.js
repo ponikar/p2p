@@ -18,7 +18,7 @@ module.exports = {
       white: "#fff",
       back:"#222831",
       secondryBack: "#393E46",
-      highlight: "#EEEEEE"
+      highlight: "#EEEEEE",
     }
   },
   variants: {
