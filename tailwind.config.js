@@ -11,6 +11,11 @@ module.exports = {
         xl: '1rem',
         '2xl': '1rem',
       },
+    },
+    colors: {
+      primary: "#374045",
+      black: "#000",
+      white: "#fff"
     }
   },
   variants: {

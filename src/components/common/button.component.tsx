@@ -1,0 +1,11 @@
+import React, { ButtonHTMLAttributes, FC } from "react";
+
+type StandardButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const PrimaryButton: FC<StandardButtonProps> = ({
+  children,
+  className,
+  ...props
+}) => {
+  return <button className={`${className} text-base py-2 px-4 text-white bg-primary rounded-sm`} {...props}>{children}</button>;
+};
