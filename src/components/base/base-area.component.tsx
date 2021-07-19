@@ -4,8 +4,9 @@ import { StreamingControlTypes } from "../webcam-streaming/webcam-streaming.type
 import { BaseContext } from "./base.context";
 
 export const BaseArea: FC = ({ children }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [meetingControls, setMeetingControls] = useState<StreamingControlTypes>(
-    { video: true, audio: true }
+    { video: true, audio: true, videoRef }
   );
 
   return (

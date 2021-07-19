@@ -1,10 +1,10 @@
-import { Connection } from "./connection.util"
+import { DataChannel } from "./connection.util";
 
 
 
 export const sendMessageToMeeting = (message: string) => {
-    if(Connection.channel) {
-        Connection.channel?.send(message);
+    if(DataChannel) {
+        DataChannel.send(message);
     } else {
         console.log("NO CHANNEL");
     }
