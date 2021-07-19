@@ -19,13 +19,13 @@ export const ChatInput: FC = () => {
     e.key === "Enter" && onSendMessage();
 
   return (
-    <section className="w-11/12 items-center flex rounded-3xl py-2 px-3 my-2  border">
+    <section className="w-11/12 text-highlight items-center bg-secondryBack flex rounded-3xl py-2 px-3 my-2">
       <Smile className="text-gray-400 cursor-pointer" size={28} />
       <input
         onKeyUp={onPressEnter}
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
-        className="w-full mx-1 text-sm p-1"
+        className="w-full mx-1 bg-secondryBack text-sm p-1"
         placeholder="Type a message!"
       />
       <SendButton onClick={onSendMessage} />

@@ -16,7 +16,7 @@ const ChatArea = () => {
           setMessage([...messages, message]),
       }}
     >
-      <section className="col-span-3 flex flex-col justify-around items-center border">
+      <section className="col-span-3 text-highlight flex flex-col justify-around items-center border">
         <ChatHeader />
         <ChatMessageArea />
         <ChatInput />

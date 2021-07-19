@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 
+body {
+  background-color: #222831;
+}
+
 .center {
    @apply flex items-center justify-center;
 }

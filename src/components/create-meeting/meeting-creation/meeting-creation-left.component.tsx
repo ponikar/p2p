@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Plus } from "react-feather";
 import { PrimaryButton } from "../../common/button.component";
 
 export const MeetingCreationLeft: FC = () => {
@@ -10,7 +11,9 @@ export const MeetingCreationLeft: FC = () => {
       </header>
 
       <div className="flex">
-        <PrimaryButton className="my-5">New Meeting</PrimaryButton>
+        <PrimaryButton className="my-5">
+            <Plus className="mr-1" size={20} />
+            New Meeting</PrimaryButton>
       </div>
     </div>
   );

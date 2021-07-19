@@ -3,7 +3,7 @@ import { MeetingCreation } from "../components/create-meeting/meeting-creation/m
 import { acceptOffer, createMeetingOffer } from "../utils/connection.util";
 
 export const CreateMeeting: FC = memo(() => {
-  return <main className="w-full h-screen center">
+  return <main className="w-full text-highlight h-screen center">
     <MeetingCreation />    
   </main>;
 });

@@ -13,9 +13,12 @@ module.exports = {
       },
     },
     colors: {
-      primary: "#374045",
+      primary: "#57837B",
       black: "#000",
-      white: "#fff"
+      white: "#fff",
+      back:"#222831",
+      secondryBack: "#393E46",
+      highlight: "#EEEEEE"
     }
   },
   variants: {

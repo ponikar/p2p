@@ -25,8 +25,8 @@ export const ChatMessage: FC<ChatMessageType> = ({
           />
         )}
 
-        <div className="chat-message-area">{text}</div>
-      {!isSameMessageBy && createdAt &&  <span className="text-xs absolute -bottom-6 text-gray-400 right-5"> {getMessageTime(createdAt)} </span>  }
+        <div className={`chat-message-area ${byUser && "bg-primary text-white"}`}>{text}</div>
+      {!isSameMessageBy && createdAt &&  <span className="text-xs absolute -bottom-6 text-highlight right-5"> {getMessageTime(createdAt)} </span>  }
       </div>
   );
 };
