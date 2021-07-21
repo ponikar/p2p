@@ -51,7 +51,7 @@ export const createMeetingOffer = async () => {
 
   const answerCandidates = callDoc.collection("answerCandidates");
   listenForICECandidate(answerCandidates, Connection);
-  console.log("MEETING ID", callDoc.id);
+   return callDoc.id;
 };
 
 // for Receiver

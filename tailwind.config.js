@@ -19,6 +19,7 @@ module.exports = {
       back:"#222831",
       secondryBack: "#393E46",
       highlight: "#EEEEEE",
+      filter: "#737373"
     }
   },
   variants: {

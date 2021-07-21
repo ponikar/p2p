@@ -36,3 +36,10 @@ input:focus, textarea:focus {
  ::-webkit-scrollbar-thumb:hover {
    background: #555; 
  }
+
+ .fixed-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+ }
