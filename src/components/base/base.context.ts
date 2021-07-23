@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { StreamingControlTypes } from "../webcam-streaming/webcam-streaming.types";
 
-interface BaseContextTypes extends StreamingControlTypes {
+export interface BaseContextTypes extends StreamingControlTypes {
   setControls: (props: object) => void;
 }
 

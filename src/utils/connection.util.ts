@@ -25,12 +25,13 @@ export const Connection = new RTCPeerConnection(servers);
 // creating a meeting link
 export const createMeetingOffer = async () => {
   const callDoc = db.collection("calls").doc();
-  
+
   Connection.onicecandidate = (e) => {
+    console.log("ICE CANDIDATE", e);
     e.candidate && callDoc && saveOfferCandidates(callDoc, e.candidate);
   };
 
-  // createDataChannel();
+  createDataChannel();
   const offerDescription = await Connection.createOffer();
   await Connection.setLocalDescription(offerDescription);
 
@@ -44,14 +45,14 @@ export const createMeetingOffer = async () => {
   callDoc.onSnapshot((snapshot) => {
     const data = snapshot.data();
     if (!Connection.remoteDescription && data?.answer) {
-      console.log("ANSER", data?.answer)
+      console.log("ANSER", data?.answer);
       connectRemoteToLocal(new RTCSessionDescription(data?.answer));
     }
   });
 
   const answerCandidates = callDoc.collection("answerCandidates");
   listenForICECandidate(answerCandidates, Connection);
-   return callDoc.id;
+  return callDoc.id;
 };
 
 // for Receiver
@@ -60,11 +61,12 @@ export const acceptOffer = async (docid: string) => {
   const doc = db.collection("calls").doc(docid);
 
   Connection.onicecandidate = (e) => {
+    console.log("ICE CANDIDATE", e);
     e.candidate && saveAnswerCandidates(doc, e.candidate);
   };
 
   const offerDescription = (await doc.get()).data();
-  // listenForRemoteChannel();
+  listenForRemoteChannel();
   // set Answerer Remote Description
   connectRemoteToLocal(offerDescription?.offer);
 
@@ -88,20 +90,19 @@ export const connectRemoteToLocal = async (
   console.log("CONNECTION CREATED");
 };
 
-// export const createDataChannel = () => {
-//   const DataChannel = Connection.createDataChannel("meeting-chats");
-//   addDataListener(DataChannel);
-// };
+export const createDataChannel = () => {
+  const DataChannel = Connection.createDataChannel("meeting-chats");
+  addDataListener(DataChannel);
+};
 
-// export const listenForRemoteChannel = () => {
-//   Connection.ondatachannel = (e) => {
-//     addDataListener(e.channel);
-//   };
-// };
+export const listenForRemoteChannel = () => {
+  Connection.ondatachannel = (e) => {
+    addDataListener(e.channel);
+  };
+};
 
-// export const addDataListener = (dataChannel: RTCDataChannel) => {
-//   DataChannel = dataChannel;
-//   dataChannel.onmessage = (e) => console.log("GOT MESSAGE", e.data);
-//   dataChannel.onopen = (e) => console.log("CHANNEL OPENED");
-//   dataChannel.onclose = (e) => console.log("CHANNEL CLOSED");
-// };
+export const addDataListener = (dataChannel: RTCDataChannel) => {
+  DataChannel = dataChannel;
+  dataChannel.onopen = (e) => console.log("CHANNEL OPENED");
+  dataChannel.onclose = (e) => console.log("CHANNEL CLOSED");
+};

@@ -5,7 +5,7 @@ import { ControlButtonArea } from "../../webcam-streaming/control-button-area.co
 import React, { FC, useContext } from "react";
 
 export const MeetingCreationWebcam:FC = () => {
-  const [videoRef] = useWebcam();
+   const [videoRef] = useWebcam();
   const { video } = useContext(BaseContext);
   return (
     <>

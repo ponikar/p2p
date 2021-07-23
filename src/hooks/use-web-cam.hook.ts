@@ -2,22 +2,23 @@ import { useCallback, useContext, useEffect } from "react";
 import { BaseContext } from "../components/base/base.context";
 import { getUserMedia } from "../utils/media.utils";
 
-export const useWebcam = () => {
-  const { video, videoRef, audio } = useContext(BaseContext);
-
+type useWebCamType = (stram: MediaStream) => void;
+export const useWebcam = (callback?: useWebCamType) => {
+  const { videoRef, video } = useContext(BaseContext);
   useEffect(() => {
-    if (video || audio) {
-      getUserMedia({ video, audio }, streamingWebcam, (err) =>
-        console.log("MEDIA ERROR", err)
-      );
-    }
+    getUserMedia({ video, audio: true }, streamingWebcam, (err) =>
+      console.log("MEDIA ERROR", err)
+    );
   }, [video]);
 
   const streamingWebcam = useCallback((stream: MediaStream) => {
-    if (videoRef?.current && stream) {
+    if (video) {
+      if (stream && callback) callback(stream);
       const video = videoRef?.current;
-      video!.srcObject = stream;
-      video!.play();
+      if (video && stream && !video.srcObject) {
+        video.srcObject = stream;
+        video.play();
+      }
     }
   }, []);
 

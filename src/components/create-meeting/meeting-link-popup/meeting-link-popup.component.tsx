@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useContext } from "react";
 import { Copy, X } from "react-feather";
+import { useHistory } from "react-router-dom";
 import { copyContext, domainName } from "../../../utils/navigator.util";
 import { PrimaryButton } from "../../common/button.component";
 import { ToastContext } from "../../common/toast/toast.context";
@@ -8,6 +9,7 @@ import { MeetingCreationContext } from "../meeting-creation/meeting-creation.con
 export const MeetingLinkPopup: FC = () => {
   const { meetingID, setProps } = useContext(MeetingCreationContext);
   const { setToastProps } = useContext(ToastContext);
+  const { push } = useHistory()
   const copyLink = useCallback(async () => {
      await copyContext(`Hey, join me at P2P! Here's the meeting link:${domainName}/${meetingID}
    `)
@@ -28,7 +30,7 @@ export const MeetingLinkPopup: FC = () => {
          <Copy onClick={copyLink}  className="text-primary hover:text-filter cursor-pointer" />
       </div>
       <div className="mt-2 text-sm text-filter"> OR </div>
-      <PrimaryButton className="mt-2">
+      <PrimaryButton className="mt-2" onClick={_ => push("/me")}>
           Start Meeting
           </PrimaryButton>
     </section>

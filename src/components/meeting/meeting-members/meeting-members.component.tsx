@@ -1,10 +1,28 @@
-import React, { FC, useState } from "react";
+import React, { FC, RefObject, useEffect, useState } from "react";
+import { Connection } from "../../../utils/connection.util";
 import { MeetingControl } from "../meeting-control/meeting-control.component";
 import { MeetingMember } from "../meeting-member/meeting-member.component";
 
+export interface MemberType {
+  stream: MediaStream | null;
+}
 export const MeetingMembers: FC = () => {
-  const [members, setMembers] = useState<number[]>(Array(2).fill(5));
+  const [members, setMembers] = useState<MemberType[]>([]);
 
+  useEffect(() => {
+    console.log(Connection.currentLocalDescription)
+    Connection.ontrack = (event) => {
+      console.log("GETTING TRACKS")
+      event.streams.forEach((stream) => {
+        setMembers([
+          ...members,
+          {
+            stream,
+          },
+        ]);
+      });
+    };
+  }, []);
   return (
     <section
       className={`container relative col-span-9 ${
@@ -12,7 +30,7 @@ export const MeetingMembers: FC = () => {
       } flex justify-center flex-wrap max-h-screen overflow-y-auto h-screen`}
     >
       {members.map((m, index) => (
-        <MeetingMember membersLength={members.length} key={index} />
+        <MeetingMember stream={m.stream} membersLength={members.length} key={index} />
       ))}
       <MeetingControl />
     </section>

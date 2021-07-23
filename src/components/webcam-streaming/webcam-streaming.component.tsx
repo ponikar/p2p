@@ -23,7 +23,7 @@ export const WebCamStreaming: FC<WebCamStreamingProps> = ({
   contstrainRef,
 }) => {
   const { video } = useContext(BaseContext);
-  const [videoRef] = useWebcam();
+   const [videoRef] = useWebcam();
 
   return (
     <motion.div className="streaming-area" drag dragConstraints={contstrainRef}>

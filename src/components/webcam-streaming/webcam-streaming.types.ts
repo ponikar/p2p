@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 
 
 
@@ -7,5 +7,5 @@ export interface StreamingControlTypes {
     video: boolean;
     audio: boolean;
     
-    videoRef: React.Ref<HTMLVideoElement>;
+    videoRef: RefObject<HTMLVideoElement> | null;
 }
