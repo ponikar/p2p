@@ -6,13 +6,12 @@ import {
   saveOfferCandidates,
 } from "../firebase/firestore/calls.fs";
 
-const servers = {
+const servers: RTCConfiguration = {
   iceServers: [
     {
       urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
     },
   ],
-  iceCandidatePoolSize: 10,
 };
 
 export let DataChannel: RTCDataChannel | null = null;
@@ -22,7 +21,6 @@ export const Connection = new RTCPeerConnection(servers);
 // listener
 
 // for Sender
-// creating a meeting link
 export const createMeetingOffer = async () => {
   const callDoc = db.collection("calls").doc();
 
@@ -60,15 +58,15 @@ export const createMeetingOffer = async () => {
 export const acceptOffer = async (docid: string) => {
   const doc = db.collection("calls").doc(docid);
 
-  Connection.onicecandidate = (e) => {
-    console.log("ICE CANDIDATE", e);
-    e.candidate && saveAnswerCandidates(doc, e.candidate);
-  };
-
   const offerDescription = (await doc.get()).data();
   listenForRemoteChannel();
   // set Answerer Remote Description
   connectRemoteToLocal(offerDescription?.offer);
+
+  Connection.onicecandidate = (e) => {
+    console.log("ICE CANDIDATE", e);
+    e.candidate && saveAnswerCandidates(doc, e.candidate);
+  };
 
   // creating Answer
   const responseOfOffer = await Connection.createAnswer();

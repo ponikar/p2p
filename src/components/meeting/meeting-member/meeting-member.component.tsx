@@ -12,13 +12,16 @@ export const MeetingMember: FC<MeetingMemberType> = ({
   stream,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-
+ 
   useEffect(() => {
     const src = videoRef.current;
     if (src) {
+      console.log("ADDING TRACKS", stream);
       src.srcObject = stream;
+      src.play();
     }
-  }, []);
+  }, [videoRef]);
+  
   return (
     <div
       className={`${

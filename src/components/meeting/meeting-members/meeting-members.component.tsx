@@ -10,18 +10,10 @@ export const MeetingMembers: FC = () => {
   const [members, setMembers] = useState<MemberType[]>([]);
 
   useEffect(() => {
-    console.log(Connection.currentLocalDescription)
-    Connection.ontrack = (event) => {
-      console.log("GETTING TRACKS")
-      event.streams.forEach((stream) => {
-        setMembers([
-          ...members,
-          {
-            stream,
-          },
-        ]);
-      });
-    };
+      Connection.ontrack = (event) => {
+        console.log("GETTING TRACKS");
+        setMembers([...members, { stream: event.streams[0] }])
+      };
   }, []);
   return (
     <section
@@ -30,7 +22,11 @@ export const MeetingMembers: FC = () => {
       } flex justify-center flex-wrap max-h-screen overflow-y-auto h-screen`}
     >
       {members.map((m, index) => (
-        <MeetingMember stream={m.stream} membersLength={members.length} key={index} />
+        <MeetingMember
+          stream={m.stream}
+          membersLength={members.length}
+          key={index}
+        />
       ))}
       <MeetingControl />
     </section>
