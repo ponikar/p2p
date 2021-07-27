@@ -9,7 +9,6 @@ const BASE_INITIAL_STATE: BaseContextTypes = {
   video: true,
   audio: true,
   setControls: () => {},
-  videoRef: null
 };
 
 export const BaseContext = createContext<BaseContextTypes>(BASE_INITIAL_STATE);

@@ -10,11 +10,10 @@ export const MeetingMembers: FC = () => {
   const [members, setMembers] = useState<MemberType[]>([]);
 
   useEffect(() => {
-    console.log("GETTING TRACKS");
-      Connection.ontrack = (event) => {
-        setMembers([...members, { stream: event.streams[0] }])
-      };
-  }, []);
+    Connection.ontrack = (event) => {
+      setMembers([...members, { stream: event.streams[0] }]);
+    };
+  }, [members]);
   return (
     <section
       className={`container relative col-span-9 ${

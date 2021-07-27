@@ -12,20 +12,25 @@ import { StreamingControlTypes } from "../webcam-streaming/webcam-streaming.type
 import { BaseContext } from "./base.context";
 
 export const BaseArea: FC = ({ children }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [meetingControls, setMeetingControls] = useState<StreamingControlTypes>(
-    { video: true, audio: true, videoRef }
+    { video: true, audio: true }
   );
   const [toast, setToast] = useState<ToastPropsType>(TOAST_DEFAULT_STATE);
 
   const setToastProps = (props: SetToastPropsType) =>
     setToast({ ...toast, ...props });
- 
-    // sending tracks
-    useWebcam(stream => {
+
+  // sending tracks
+  useWebcam(
+    (stream) => {
       const streamSource = new MediaStream();
-      stream.getTracks().forEach(s => Connection.addTrack(s, streamSource));
-    });
+
+      stream.getTracks().forEach((s) => {
+        Connection.addTrack(s, streamSource);
+      });
+    },
+    [meetingControls.video]
+  );
 
   return (
     <BaseContext.Provider

@@ -7,9 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { getUserMedia } from "../../utils/media.utils";
 import "./webcam-streaming.style.css";
-import { StreamingControlTypes } from "./webcam-streaming.types";
 import { VideoArea } from "../video-area/video-area.component";
 import { ControlButtonArea } from "./control-button-area.component";
 import { motion } from "framer-motion";
@@ -23,7 +21,14 @@ export const WebCamStreaming: FC<WebCamStreamingProps> = ({
   contstrainRef,
 }) => {
   const { video } = useContext(BaseContext);
-   const [videoRef] = useWebcam();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useWebcam((stream) => {
+    if (videoRef.current) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play();
+    }
+  }, [videoRef.current]);
 
   return (
     <motion.div className="streaming-area" drag dragConstraints={contstrainRef}>
