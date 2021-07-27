@@ -7,7 +7,7 @@ import { SendButton } from "./send-button.component";
 
 export const ChatInput: FC = () => {
   const [newMessage, setNewMessage] = useState<string>("");
-  const { setMessageProps, messages } = useContext(ChatContext);
+  const { setMessageProps } = useContext(ChatContext);
 
   const onSendMessage = () => {
     if (newMessage) {

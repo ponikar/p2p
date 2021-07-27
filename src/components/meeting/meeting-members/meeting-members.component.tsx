@@ -10,8 +10,8 @@ export const MeetingMembers: FC = () => {
   const [members, setMembers] = useState<MemberType[]>([]);
 
   useEffect(() => {
+    console.log("GETTING TRACKS");
       Connection.ontrack = (event) => {
-        console.log("GETTING TRACKS");
         setMembers([...members, { stream: event.streams[0] }])
       };
   }, []);

@@ -8,6 +8,5 @@ export const makeNewMessage = ({ text, user = null }: makeNewMessageProps) :Mess
   id: String(Date.now()),
   createdAt: new Date().toUTCString(),
   updatedAt: null,
-
   user
 });
