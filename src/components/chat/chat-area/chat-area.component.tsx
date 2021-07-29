@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { WebRTCChannels } from "../../../constants/channels.constants";
 import { MessageType } from "../../../types/chat.types";
 import { BaseContext } from "../../base/base.context";
 import { ChatContext } from "../chat-context/chat.context";
@@ -8,7 +9,7 @@ import { ChatMessageArea } from "../chat-message-area/chat-message-area.componen
 
 const ChatArea = () => {
   const [messages, setMessage] = useState<MessageType[]>([]);
-  const { dataChannel } = useContext(BaseContext);
+  const { dataChannels } = useContext(BaseContext);
 
   const setMessageProps = useCallback(
     (message: MessageType) => setMessage([...messages, message]),
@@ -16,10 +17,11 @@ const ChatArea = () => {
   );
 
   useEffect(() => {
-    if (dataChannel) {
-      dataChannel.onmessage = (e) => setMessageProps(JSON.parse(e.data));
-    }
-  }, [dataChannel, messages]);
+      const chatChannel = dataChannels[WebRTCChannels.CHAT_CHANNEL]
+      if (chatChannel) {
+        chatChannel.onmessage = (e) => setMessageProps(JSON.parse(e.data));
+      }
+  }, [dataChannels, messages]);
 
   return (
     <ChatContext.Provider

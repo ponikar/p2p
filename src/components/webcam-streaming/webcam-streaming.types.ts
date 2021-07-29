@@ -2,5 +2,9 @@ export interface StreamingControlTypes {
   video: boolean;
   audio: boolean;
 
-  dataChannel: RTCDataChannel | null;
+  dataChannels: DataChannelType;
+}
+
+interface DataChannelType {
+  [key: string]: RTCDataChannel;
 }

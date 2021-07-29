@@ -12,12 +12,17 @@ export const MeetingAreaPage: FC = memo(() => {
   const contstrainRef = useRef(null);
   const { meetingId } = useParams<{ meetingId: string }>();
   const [] = useMeetingInfo();
-  const { setControls } = useContext(BaseContext);
+  const { setControls, dataChannels } = useContext(BaseContext);
   useWebcam(() => {
     // For Recevier: Accepting offer and Setting up listener
     if (meetingId !== "me" && meetingId) {
       Connection.ondatachannel = (e) => {
-        setControls({ dataChannel: e.channel });
+        setControls({
+          dataChannels: {
+            ...dataChannels,
+            [e.channel.label]: e.channel,
+          },
+        });
       };
       acceptOffer(meetingId);
     }

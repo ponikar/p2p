@@ -1,5 +1,7 @@
 import React, { FC, KeyboardEvent, useContext, useState } from "react";
 import { Smile } from "react-feather";
+import { WebRTCChannels } from "../../../constants/channels.constants";
+import { MessageType } from "../../../types/chat.types";
 import { BaseContext } from "../../base/base.context";
 import { ChatContext } from "../chat-context/chat.context";
 import { makeNewMessage } from "../chat.helpers";
@@ -8,15 +10,20 @@ import { SendButton } from "./send-button.component";
 export const ChatInput: FC = () => {
   const [newMessage, setNewMessage] = useState<string>("");
   const { setMessageProps } = useContext(ChatContext);
-  const { dataChannel } = useContext(BaseContext);
+  const { dataChannels } = useContext(BaseContext);
 
   const onSendMessage = () => {
     if (newMessage) {
       const message = makeNewMessage({ text: newMessage, user: null });
       setMessageProps(message);
-      dataChannel && dataChannel.send(JSON.stringify(message));
+      broadcastMessage(message);
       setNewMessage("");
     }
+  };
+
+  const broadcastMessage = (message: MessageType) => {
+    const channel = dataChannels[WebRTCChannels.CHAT_CHANNEL];
+    if (channel) channel.send(JSON.stringify(message));
   };
 
   const onPressEnter = (e: KeyboardEvent<HTMLInputElement>) =>

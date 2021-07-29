@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useContext } from "react";
 import { Plus } from "react-feather";
+import { WebRTCChannels } from "../../../constants/channels.constants";
 import { useWebcam } from "../../../hooks/use-web-cam.hook";
 import { Connection, createMeetingOffer } from "../../../utils/connection.util";
 import { BaseContext } from "../../base/base.context";
@@ -8,11 +9,18 @@ import { MeetingCreationContext } from "./meeting-creation.context";
 
 export const MeetingCreationLeft: FC = () => {
   const { setProps } = useContext(MeetingCreationContext);
-  const { setControls } = useContext(BaseContext);
+  const { setControls, dataChannels } = useContext(BaseContext);
 
   // asking for permisson and setting up data channel
   useWebcam(() => {
-    setControls({ dataChannel: Connection.createDataChannel("msg-channel") });
+    setControls({
+      dataChannels: {
+        ...dataChannels,
+        [WebRTCChannels.CHAT_CHANNEL]: Connection.createDataChannel(
+          WebRTCChannels.CHAT_CHANNEL
+        ),
+      },
+    });
   }, []);
   const createMeeting = useCallback(async () => {
     try {
