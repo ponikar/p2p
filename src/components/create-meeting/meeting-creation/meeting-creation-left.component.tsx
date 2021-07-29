@@ -2,7 +2,11 @@ import React, { FC, useCallback, useContext } from "react";
 import { Plus } from "react-feather";
 import { WebRTCChannels } from "../../../constants/channels.constants";
 import { useWebcam } from "../../../hooks/use-web-cam.hook";
-import { Connection, createMeetingOffer } from "../../../utils/connection.util";
+import {
+  Connection,
+  createMeetingOffer,
+  createWebRTCChannel,
+} from "../../../utils/connection.util";
 import { BaseContext } from "../../base/base.context";
 import { PrimaryButton } from "../../common/button.component";
 import { MeetingCreationContext } from "./meeting-creation.context";
@@ -24,12 +28,15 @@ export const MeetingCreationLeft: FC = () => {
   }, []);
   const createMeeting = useCallback(async () => {
     try {
+      // temp
+      const channel_name = WebRTCChannels.getUserStreamingControl("A");
+      createWebRTCChannel(channel_name);
       const meetingID = await createMeetingOffer();
       setProps({ meetingID, showMeetingID: true });
     } catch (e) {
       console.log("FAILED TO CREATE MEETING");
     }
-  }, [setProps]);
+  }, [setProps, dataChannels]);
 
   return (
     <div className="flex-1">

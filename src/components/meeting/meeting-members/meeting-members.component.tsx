@@ -1,5 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { Connection } from "../../../utils/connection.util";
+import { BaseContext } from "../../base/base.context";
 import { MeetingControl } from "../meeting-control/meeting-control.component";
 import { MeetingMember } from "../meeting-member/meeting-member.component";
 
@@ -8,12 +9,13 @@ export interface MemberType {
 }
 export const MeetingMembers: FC = () => {
   const [members, setMembers] = useState<MemberType[]>([]);
-
+  const { dataChannels } = useContext(BaseContext);
   useEffect(() => {
     Connection.ontrack = (event) => {
       setMembers([...members, { stream: event.streams[0] }]);
     };
   }, []); 
+  console.log(dataChannels);
   return (
     <section
       className={`container relative col-span-9 ${

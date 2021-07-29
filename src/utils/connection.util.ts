@@ -83,3 +83,8 @@ export const connectRemoteToLocal = async (
 ) => {
   await Connection.setRemoteDescription(offerOfResponse);
 };
+
+
+export const createWebRTCChannel = (channelName :string) => {
+    return Connection.createDataChannel(channelName);  
+}
