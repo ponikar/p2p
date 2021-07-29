@@ -1,18 +1,26 @@
 import { motion } from "framer-motion";
-import React, { FC, memo, useRef } from "react";
+import React, { FC, memo, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { BaseContext } from "../components/base/base.context";
 import { MeetingArea } from "../components/meeting/meeting-area/meeting-area.component";
 import { WebCamStreaming } from "../components/webcam-streaming/webcam-streaming.component";
 import { useMeetingInfo } from "../hooks/use-meeting-info.hook";
 import { useWebcam } from "../hooks/use-web-cam.hook";
-import { acceptOffer } from "../utils/connection.util";
+import { acceptOffer, Connection } from "../utils/connection.util";
 
 export const MeetingAreaPage: FC = memo(() => {
   const contstrainRef = useRef(null);
   const { meetingId } = useParams<{ meetingId: string }>();
   const [] = useMeetingInfo();
+  const { setControls } = useContext(BaseContext);
   useWebcam(() => {
-    if (meetingId !== "me" && meetingId) acceptOffer(meetingId);
+    // For Recevier: Accepting offer and Setting up listener
+    if (meetingId !== "me" && meetingId) {
+      Connection.ondatachannel = (e) => {
+        setControls({ dataChannel: e.channel });
+      };
+      acceptOffer(meetingId);
+    }
   }, [meetingId]);
   return (
     <>

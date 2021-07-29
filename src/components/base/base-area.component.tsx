@@ -11,7 +11,7 @@ import { BaseContext } from "./base.context";
 
 export const BaseArea: FC = ({ children }) => {
   const [meetingControls, setMeetingControls] = useState<StreamingControlTypes>(
-    { video: true, audio: true }
+    { video: true, audio: true, dataChannel: null }
   );
   const [toast, setToast] = useState<ToastPropsType>(TOAST_DEFAULT_STATE);
 

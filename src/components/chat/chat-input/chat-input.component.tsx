@@ -1,6 +1,6 @@
 import React, { FC, KeyboardEvent, useContext, useState } from "react";
-import { Send, Smile } from "react-feather";
-import { DataChannel } from "../../../utils/connection.util";
+import { Smile } from "react-feather";
+import { BaseContext } from "../../base/base.context";
 import { ChatContext } from "../chat-context/chat.context";
 import { makeNewMessage } from "../chat.helpers";
 import { SendButton } from "./send-button.component";
@@ -8,12 +8,13 @@ import { SendButton } from "./send-button.component";
 export const ChatInput: FC = () => {
   const [newMessage, setNewMessage] = useState<string>("");
   const { setMessageProps } = useContext(ChatContext);
+  const { dataChannel } = useContext(BaseContext);
 
   const onSendMessage = () => {
     if (newMessage) {
       const message = makeNewMessage({ text: newMessage, user: null });
       setMessageProps(message);
-      DataChannel?.readyState === "open" && DataChannel.send(JSON.stringify(message))
+      dataChannel && dataChannel.send(JSON.stringify(message));
       setNewMessage("");
     }
   };

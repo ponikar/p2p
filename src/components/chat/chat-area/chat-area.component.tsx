@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { MessageType } from "../../../types/chat.types";
-import { DataChannel } from "../../../utils/connection.util";
+import { BaseContext } from "../../base/base.context";
 import { ChatContext } from "../chat-context/chat.context";
 import { ChatHeader } from "../chat-header/chat-header.component";
 import { ChatInput } from "../chat-input/chat-input.component";
@@ -8,23 +8,18 @@ import { ChatMessageArea } from "../chat-message-area/chat-message-area.componen
 
 const ChatArea = () => {
   const [messages, setMessage] = useState<MessageType[]>([]);
+  const { dataChannel } = useContext(BaseContext);
 
   const setMessageProps = useCallback(
     (message: MessageType) => setMessage([...messages, message]),
     [messages, setMessage]
   );
-  // Listen for Messages
-  // useEffect(() => {
-  //   if (DataChannel?.readyState === "open") {
-  //     DataChannel.onmessage = (e) => {
-  //       console.log("GOT SOMETHING", e);
-  //       setMessageProps(JSON.parse(e.data));
-  //     };
-  //   }
-  //   return () => {
-  //     if (DataChannel) DataChannel.onmessage = null;
-  //   };
-  // }, [DataChannel?.readyState, messages]);
+
+  useEffect(() => {
+    if (dataChannel) {
+      dataChannel.onmessage = (e) => setMessageProps(JSON.parse(e.data));
+    }
+  }, [dataChannel, messages]);
 
   return (
     <ChatContext.Provider

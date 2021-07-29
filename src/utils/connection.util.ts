@@ -14,7 +14,6 @@ const servers: RTCConfiguration = {
   ],
 };
 
-export let DataChannel: RTCDataChannel | null = null;
 
 export const Connection = new RTCPeerConnection(servers);
 
@@ -29,7 +28,6 @@ export const createMeetingOffer = async () => {
     e.candidate && callDoc && saveOfferCandidates(callDoc, e.candidate);
   };
 
-  createDataChannel();
   const offerDescription = await Connection.createOffer();
   await Connection.setLocalDescription(offerDescription);
 
@@ -59,7 +57,6 @@ export const acceptOffer = async (docid: string) => {
   const doc = db.collection("calls").doc(docid);
 
   const offerDescription = (await doc.get()).data();
-  listenForRemoteChannel();
   // set Answerer Remote Description
   connectRemoteToLocal(offerDescription?.offer);
 
@@ -85,25 +82,4 @@ export const connectRemoteToLocal = async (
   offerOfResponse: RTCSessionDescriptionInit
 ) => {
   await Connection.setRemoteDescription(offerOfResponse);
-};
-
-export const createDataChannel = () => {
-  const DataChannel = Connection.createDataChannel("meeting-chats");
-  addDataListener(DataChannel);
-};
-
-export const listenForRemoteChannel = () => {
-  Connection.ondatachannel = (e) => {
-    addDataListener(e.channel);
-  };
-};
-
-export const addDataListener = (dataChannel: RTCDataChannel) => {
-  DataChannel = dataChannel;
-  dataChannel.onopen = (e) => console.log("CHANNEL OPENED");
-  dataChannel.onclose = (e) => console.log("CHANNEL CLOSED");
-
-  dataChannel.onmessage = (e) => {
-    console.log("GOT MESSAGE", e.data);
-  };
 };
