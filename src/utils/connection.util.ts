@@ -85,7 +85,6 @@ export const connectRemoteToLocal = async (
   offerOfResponse: RTCSessionDescriptionInit
 ) => {
   await Connection.setRemoteDescription(offerOfResponse);
-  console.log("CONNECTION CREATED");
 };
 
 export const createDataChannel = () => {
@@ -103,4 +102,8 @@ export const addDataListener = (dataChannel: RTCDataChannel) => {
   DataChannel = dataChannel;
   dataChannel.onopen = (e) => console.log("CHANNEL OPENED");
   dataChannel.onclose = (e) => console.log("CHANNEL CLOSED");
+
+  dataChannel.onmessage = (e) => {
+    console.log("GOT MESSAGE", e.data);
+  };
 };

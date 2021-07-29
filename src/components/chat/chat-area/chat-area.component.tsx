@@ -14,16 +14,17 @@ const ChatArea = () => {
     [messages, setMessage]
   );
   // Listen for Messages
-  useEffect(() => {
-    if (DataChannel) {
-      DataChannel.onmessage = (e) => {
-        setMessageProps(JSON.parse(e.data));
-      };
-      return () => {
-        if (DataChannel) DataChannel.onmessage = null;
-      };
-    }
-  }, [DataChannel, messages]);
+  // useEffect(() => {
+  //   if (DataChannel?.readyState === "open") {
+  //     DataChannel.onmessage = (e) => {
+  //       console.log("GOT SOMETHING", e);
+  //       setMessageProps(JSON.parse(e.data));
+  //     };
+  //   }
+  //   return () => {
+  //     if (DataChannel) DataChannel.onmessage = null;
+  //   };
+  // }, [DataChannel?.readyState, messages]);
 
   return (
     <ChatContext.Provider

@@ -1,4 +1,4 @@
-import React, { FC, RefObject, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Connection } from "../../../utils/connection.util";
 import { MeetingControl } from "../meeting-control/meeting-control.component";
 import { MeetingMember } from "../meeting-member/meeting-member.component";
@@ -13,7 +13,7 @@ export const MeetingMembers: FC = () => {
     Connection.ontrack = (event) => {
       setMembers([...members, { stream: event.streams[0] }]);
     };
-  }, [members]);
+  }, []); 
   return (
     <section
       className={`container relative col-span-9 ${

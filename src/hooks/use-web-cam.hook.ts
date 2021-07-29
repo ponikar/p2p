@@ -1,5 +1,4 @@
 import { useCallback, useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { BaseContext } from "../components/base/base.context";
 import { Connection } from "../utils/connection.util";
 import { getUserMedia } from "../utils/media.utils";
@@ -15,7 +14,11 @@ export const useWebcam = (callback: useWebCamType, dependancies: any[]) => {
 
   const streamingWebcam = useCallback(
     (stream: MediaStream) => {
-      if (stream) callback(stream);
+      const streamSource = new MediaStream();
+      stream.getTracks().forEach((s) => {
+        Connection.addTrack(s, streamSource);
+      });
+      callback(stream);
     },
     [callback]
   );

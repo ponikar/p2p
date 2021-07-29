@@ -13,7 +13,7 @@ export const ChatInput: FC = () => {
     if (newMessage) {
       const message = makeNewMessage({ text: newMessage, user: null });
       setMessageProps(message);
-      DataChannel && DataChannel.send(JSON.stringify(message))
+      DataChannel?.readyState === "open" && DataChannel.send(JSON.stringify(message))
       setNewMessage("");
     }
   };

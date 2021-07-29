@@ -1,19 +1,22 @@
 import React, { FC, useCallback, useContext } from "react";
 import { Plus } from "react-feather";
-import { createMeetingOffer } from "../../../utils/connection.util";
+import { useWebcam } from "../../../hooks/use-web-cam.hook";
+import { Connection, createMeetingOffer } from "../../../utils/connection.util";
 import { PrimaryButton } from "../../common/button.component";
 import { MeetingCreationContext } from "./meeting-creation.context";
 
 export const MeetingCreationLeft: FC = () => {
   const { setProps } = useContext(MeetingCreationContext);
   
+  // asking for permisson
+  useWebcam(() => {}, []);
   const createMeeting = useCallback(async () => {
-     try {
+    try {
       const meetingID = await createMeetingOffer();
       setProps({ meetingID, showMeetingID: true });
-     } catch(e) {
-       console.log("FAILED TO CREATE MEETING");
-     }
+    } catch (e) {
+      console.log("FAILED TO CREATE MEETING");
+    }
   }, [setProps]);
 
   return (

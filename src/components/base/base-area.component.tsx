@@ -1,6 +1,4 @@
-import React, { FC, useRef, useState } from "react";
-import { useWebcam } from "../../hooks/use-web-cam.hook";
-import { Connection } from "../../utils/connection.util";
+import React, { FC, useState } from "react";
 import { Toast } from "../common/toast/toast.component";
 import {
   SetToastPropsType,
@@ -19,18 +17,6 @@ export const BaseArea: FC = ({ children }) => {
 
   const setToastProps = (props: SetToastPropsType) =>
     setToast({ ...toast, ...props });
-
-  // sending tracks
-  useWebcam(
-    (stream) => {
-      const streamSource = new MediaStream();
-
-      stream.getTracks().forEach((s) => {
-        Connection.addTrack(s, streamSource);
-      });
-    },
-    [meetingControls.video]
-  );
 
   return (
     <BaseContext.Provider
