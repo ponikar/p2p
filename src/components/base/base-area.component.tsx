@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { io, Socket } from "socket.io-client";
 import { Toast } from "../common/toast/toast.component";
 import {
@@ -23,8 +24,12 @@ export const BaseArea: FC = ({ children }) => {
   const setToastProps = (props: SetToastPropsType) =>
     setToast({ ...toast, ...props });
 
+  
+  const client = new QueryClient();
+
   return (
-    <BaseContext.Provider
+     <QueryClientProvider client={client}>
+       <BaseContext.Provider
       value={{
         ...meetingControls,
         socketConnection: socket,
@@ -37,5 +42,6 @@ export const BaseArea: FC = ({ children }) => {
         <Toast />
       </ToastContext.Provider>
     </BaseContext.Provider>
+     </QueryClientProvider>
   );
 };

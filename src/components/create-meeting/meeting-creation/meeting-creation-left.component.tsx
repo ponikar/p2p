@@ -1,6 +1,7 @@
-import React, { FC, useCallback, useContext } from "react";
+import React, { FC, useCallback, useContext, useEffect } from "react";
 import { Plus } from "react-feather";
 import { WebRTCChannels } from "../../../constants/channels.constants";
+import { useMutationApi } from "../../../hooks/apis/use-mutation.hook";
 import { useWebcam } from "../../../hooks/use-web-cam.hook";
 import {
   Connection,
@@ -14,20 +15,20 @@ import { MeetingCreationContext } from "./meeting-creation.context";
 export const MeetingCreationLeft: FC = () => {
   const { setProps } = useContext(MeetingCreationContext);
   const { setControls } = useContext(BaseContext);
+  const { mutate, isLoading, error, data } = useMutationApi({ endpoint: "http://localhost:8085/create-meeting" })
 
   // asking for permisson and setting up data channel
   useWebcam(() => {}, []);
   const createMeeting = useCallback(async () => {
-    try {
-      // temp
-      const channel_name = WebRTCChannels.getUserStreamingControl("A");
-      createWebRTCChannel(channel_name);
-      const meetingID = await createMeetingOffer();
-      setProps({ meetingID, showMeetingID: true });
-    } catch (e) {
-      console.log("FAILED TO CREATE MEETING");
-    }
-  }, [setProps]);
+      mutate({ uid: "hxhxhxhx" });
+  }, []);
+  
+  useEffect(() => {
+      if(data?.data) {
+        const { data: { meetingid, uid } } = data;
+        setProps({ meetingID: meetingid, showMeetingID: true });
+      }
+  }, [data]);
 
   return (
     <div className="flex-1">
@@ -39,7 +40,7 @@ export const MeetingCreationLeft: FC = () => {
       <div className="flex">
         <PrimaryButton onClick={createMeeting} className="my-5">
           <Plus className="mr-1" size={20} />
-          New Meeting
+          { isLoading ? "Getting Link.." : "New Meeting" }
         </PrimaryButton>
       </div>
     </div>
