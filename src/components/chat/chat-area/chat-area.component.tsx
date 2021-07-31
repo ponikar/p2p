@@ -9,19 +9,12 @@ import { ChatMessageArea } from "../chat-message-area/chat-message-area.componen
 
 const ChatArea = () => {
   const [messages, setMessage] = useState<MessageType[]>([]);
-  const { dataChannels } = useContext(BaseContext);
 
   const setMessageProps = useCallback(
     (message: MessageType) => setMessage([...messages, message]),
     [messages, setMessage]
   );
 
-  useEffect(() => {
-      const chatChannel = dataChannels[WebRTCChannels.CHAT_CHANNEL]
-      if (chatChannel) {
-        chatChannel.onmessage = (e) => setMessageProps(JSON.parse(e.data));
-      }
-  }, [dataChannels, messages]);
 
   return (
     <ChatContext.Provider

@@ -10,20 +10,13 @@ import { SendButton } from "./send-button.component";
 export const ChatInput: FC = () => {
   const [newMessage, setNewMessage] = useState<string>("");
   const { setMessageProps } = useContext(ChatContext);
-  const { dataChannels } = useContext(BaseContext);
 
   const onSendMessage = () => {
     if (newMessage) {
       const message = makeNewMessage({ text: newMessage, user: null });
       setMessageProps(message);
-      broadcastMessage(message);
       setNewMessage("");
     }
-  };
-
-  const broadcastMessage = (message: MessageType) => {
-    const channel = dataChannels[WebRTCChannels.CHAT_CHANNEL];
-    if (channel) channel.send(JSON.stringify(message));
   };
 
   const onPressEnter = (e: KeyboardEvent<HTMLInputElement>) =>

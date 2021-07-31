@@ -1,4 +1,5 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 import { Toast } from "../common/toast/toast.component";
 import {
   SetToastPropsType,
@@ -11,10 +12,14 @@ import { BaseContext } from "./base.context";
 
 export const BaseArea: FC = ({ children }) => {
   const [meetingControls, setMeetingControls] = useState<StreamingControlTypes>(
-    { video: true, audio: true, dataChannels: {} }
+    { video: true, audio: true }
   );
   const [toast, setToast] = useState<ToastPropsType>(TOAST_DEFAULT_STATE);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
+  useEffect(() => {
+    setSocket(io("ws://localhost:8085"));
+  }, []);
   const setToastProps = (props: SetToastPropsType) =>
     setToast({ ...toast, ...props });
 
@@ -22,6 +27,7 @@ export const BaseArea: FC = ({ children }) => {
     <BaseContext.Provider
       value={{
         ...meetingControls,
+        socketConnection: socket,
         setControls: (props: object) =>
           setMeetingControls({ ...meetingControls, ...props }),
       }}

@@ -13,19 +13,10 @@ import { MeetingCreationContext } from "./meeting-creation.context";
 
 export const MeetingCreationLeft: FC = () => {
   const { setProps } = useContext(MeetingCreationContext);
-  const { setControls, dataChannels } = useContext(BaseContext);
+  const { setControls } = useContext(BaseContext);
 
   // asking for permisson and setting up data channel
-  useWebcam(() => {
-    setControls({
-      dataChannels: {
-        ...dataChannels,
-        [WebRTCChannels.CHAT_CHANNEL]: Connection.createDataChannel(
-          WebRTCChannels.CHAT_CHANNEL
-        ),
-      },
-    });
-  }, []);
+  useWebcam(() => {}, []);
   const createMeeting = useCallback(async () => {
     try {
       // temp
@@ -36,7 +27,7 @@ export const MeetingCreationLeft: FC = () => {
     } catch (e) {
       console.log("FAILED TO CREATE MEETING");
     }
-  }, [setProps, dataChannels]);
+  }, [setProps]);
 
   return (
     <div className="flex-1">

@@ -9,13 +9,13 @@ export interface MemberType {
 }
 export const MeetingMembers: FC = () => {
   const [members, setMembers] = useState<MemberType[]>([]);
-  const { dataChannels } = useContext(BaseContext);
+  const { } = useContext(BaseContext);
   useEffect(() => {
     Connection.ontrack = (event) => {
       setMembers([...members, { stream: event.streams[0] }]);
     };
   }, []); 
-  console.log(dataChannels);
+ 
   return (
     <section
       className={`container relative col-span-9 ${
