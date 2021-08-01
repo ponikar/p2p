@@ -1,8 +1,8 @@
 
 
 
-export interface UserType {
-    profileImage: string;
-    profileName: string;
-    id: string;
+export type UserType = {
+    email: string | null;
+    displayName: string | null;
+    uid: string;
 }

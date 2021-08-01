@@ -1,5 +1,6 @@
 import fb from "firebase/app";
 import "firebase/firestore"
+import "firebase/auth"
 import firebaseConfig from "./firebase.config.json"
 
 if (!fb.apps.length) {
@@ -7,4 +8,6 @@ if (!fb.apps.length) {
 }
 
 const db = fb.firestore();
-export { fb, db };
+
+const auth = fb.auth();
+export { fb, db, auth };

@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { HelpCircle, Video } from "react-feather";
 import { getCurrentTime, getDateTime } from "../../../utils/time.utills";
+import { Signin } from "./signin.component";
 
 export const CreateMeetingHeader: FC = () => {
   return (
@@ -11,7 +12,7 @@ export const CreateMeetingHeader: FC = () => {
         <p> {getCurrentTime()} &bull; {getDateTime()} </p>
         <HelpCircle className="text-sm cursor-pointer mx-3 text-primary" />
         <Video className="text-sm cursor-pointer mx-3 text-primary" />
-        <img src="https://robohash.org/logo" className="w-12 h-12 ml-2 rounded-full" />
+        <Signin />
     </section>
     </header>
   );
