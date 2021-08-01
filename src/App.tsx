@@ -10,7 +10,6 @@ function App() {
       <Router>
         <Switch>
           <Route path="/:meetingId" exact component={MeetingAreaPage} />
-          <Route path="/me" exact component={MeetingAreaPage} />
           <Route path="/" exact component={CreateMeeting} />
         </Switch>
       </Router>

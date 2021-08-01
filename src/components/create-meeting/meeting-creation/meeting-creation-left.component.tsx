@@ -1,13 +1,7 @@
 import React, { FC, useCallback, useContext, useEffect } from "react";
 import { Plus } from "react-feather";
-import { WebRTCChannels } from "../../../constants/channels.constants";
 import { useMutationApi } from "../../../hooks/apis/use-mutation.hook";
 import { useWebcam } from "../../../hooks/use-web-cam.hook";
-import {
-  Connection,
-  createMeetingOffer,
-  createWebRTCChannel,
-} from "../../../utils/connection.util";
 import { BaseContext } from "../../base/base.context";
 import { PrimaryButton } from "../../common/button.component";
 import { MeetingCreationContext } from "./meeting-creation.context";

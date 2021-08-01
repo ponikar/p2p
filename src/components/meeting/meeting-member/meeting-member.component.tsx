@@ -38,7 +38,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
     >
       <VideoArea
         videoRef={videoRef}
-        video={video}
+        video={false}
         src="src"
         muted={!audio}
         className="w-full h-full"

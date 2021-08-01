@@ -9,10 +9,10 @@ import { MeetingCreationContext } from "../meeting-creation/meeting-creation.con
 export const MeetingLinkPopup: FC = () => {
   const { meetingID, setProps } = useContext(MeetingCreationContext);
   const { setToastProps } = useContext(ToastContext);
-  const { push } = useHistory()
+  const { push } = useHistory();
   const copyLink = useCallback(async () => {
-     await copyContext(`Hey, join me at P2P! Here's the meeting link:${domainName}/${meetingID}
-   `)
+    await copyContext(`Hey, join me at P2P! Here's the meeting link:${domainName}/${meetingID}
+   `);
     setToastProps({ show: true, text: "Link has been copied" });
   }, [meetingID]);
 
@@ -20,19 +20,32 @@ export const MeetingLinkPopup: FC = () => {
     <section className="xl:w-3/12 w-4/12 shadow-lg text-highlight bg-secondryBack rounded-md p-5 fixed-center">
       <div className="flex items-center justify-between">
         <h2 className="text-lg"> Here is the meeting link! </h2>
-        <X onClick={_ => setProps({ showMeetingID: false })} className="text-primary cursor-pointer" />
+        <X
+          onClick={(_) => setProps({ showMeetingID: false })}
+          className="text-primary cursor-pointer"
+        />
       </div>
-      <p className="text-sm mt-4"> Copy the meeting link and share with people you want to meet it. Be sure to save it for later. </p>
+      <p className="text-sm mt-4">
+        {" "}
+        Copy the meeting link and share with people you want to meet it. Be sure
+        to save it for later.{" "}
+      </p>
 
       <div className="p-3 text-filter flex justify-between items-center rounded-md mt-4 bg-back">
-         <p> {window.location.host}/{meetingID} </p>   
+        <p>
+          {" "}
+          {window.location.host}/{meetingID}{" "}
+        </p>
 
-         <Copy onClick={copyLink}  className="text-primary hover:text-filter cursor-pointer" />
+        <Copy
+          onClick={copyLink}
+          className="text-primary hover:text-filter cursor-pointer"
+        />
       </div>
       <div className="mt-2 text-sm text-filter"> OR </div>
-      <PrimaryButton className="mt-2" onClick={_ => push("/me")}>
-          Start Meeting
-          </PrimaryButton>
+      <PrimaryButton className="mt-2" onClick={(_) => push(`/${meetingID}`)}>
+        Start Meeting
+      </PrimaryButton>
     </section>
   );
 };

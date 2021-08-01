@@ -1,5 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import { Connection } from "../../../utils/connection.util";
+import { useParams } from "react-router-dom";
+import { SocketChannel } from "../../../constants/channels.constants";
 import { BaseContext } from "../../base/base.context";
 import { MeetingControl } from "../meeting-control/meeting-control.component";
 import { MeetingMember } from "../meeting-member/meeting-member.component";
@@ -9,13 +10,17 @@ export interface MemberType {
 }
 export const MeetingMembers: FC = () => {
   const [members, setMembers] = useState<MemberType[]>([]);
-  const { } = useContext(BaseContext);
+  const { socketConnection } = useContext(BaseContext);
+  const { meetingId } = useParams<MeetingAreaParamsType>();
+
   useEffect(() => {
-    Connection.ontrack = (event) => {
-      setMembers([...members, { stream: event.streams[0] }]);
-    };
-  }, []); 
- 
+    if (socketConnection) {
+      socketConnection.on(SocketChannel.onRoom(meetingId), (e) => {
+          
+      });
+    }
+  }, [socketConnection, members]);
+
   return (
     <section
       className={`container relative col-span-9 ${

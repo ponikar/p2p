@@ -1,0 +1,3 @@
+interface MeetingAreaParamsType {
+  meetingId: string;
+}
