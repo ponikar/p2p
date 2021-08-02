@@ -92,6 +92,7 @@ export const createWebRTCChannel = (channelName :string) => {
 
 export const createConnectionAndOffer = async () => {
   const connection = createConnection();
+  connection.createDataChannel("xyx");
   const offer = await connection.createOffer();
   return { connection, offer }
 }
