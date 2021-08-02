@@ -4,6 +4,14 @@ export const WebRTCChannels = {
 };
 
 export const SocketChannel = {
-   onUser: "user-joined",
-   onRoom: (id: string) => `room-${id}`
-}
+  onUser: "user-joined",
+  onRoom: (id: string) => `room-${id}`,
+};
+
+export const SocketEvents = {
+  NEW: "NEW",
+  OFFER: "OFFER",
+  ANSWER: "ANSWER",
+  SEND_ICE: "SEND_ICE",
+  ADD_ICE: "ADD_ICE",
+};

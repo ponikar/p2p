@@ -88,3 +88,12 @@ export const connectRemoteToLocal = async (
 export const createWebRTCChannel = (channelName :string) => {
     return Connection.createDataChannel(channelName);  
 }
+
+
+export const createConnectionAndOffer = async () => {
+  const connection = createConnection();
+  const offer = await connection.createOffer();
+  return { connection, offer }
+}
+
+export const createConnection = () => new RTCPeerConnection();

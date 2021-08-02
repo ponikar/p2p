@@ -1,26 +1,18 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { SocketChannel } from "../../../constants/channels.constants";
-import { BaseContext } from "../../base/base.context";
+import React, { FC, useState } from "react";
+import { useConnections } from "../../../hooks/use-connections.hook";
 import { MeetingControl } from "../meeting-control/meeting-control.component";
 import { MeetingMember } from "../meeting-member/meeting-member.component";
 
 export interface MemberType {
   stream: MediaStream | null;
 }
+
+
 export const MeetingMembers: FC = () => {
   const [members, setMembers] = useState<MemberType[]>([]);
-  const { socketConnection } = useContext(BaseContext);
-  const { meetingId } = useParams<MeetingAreaParamsType>();
-
-  useEffect(() => {
-    if (socketConnection) {
-      socketConnection.on(SocketChannel.onRoom(meetingId), (e) => {
-          
-      });
-    }
-  }, [socketConnection, members]);
-
+  const [connections] = useConnections();
+  
+  console.log(connections);
   return (
     <section
       className={`container relative col-span-9 ${

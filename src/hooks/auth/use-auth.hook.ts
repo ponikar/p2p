@@ -16,7 +16,7 @@ export const useAuth = () => {
             uid: user.uid,
           })
         );
-      removeUser();
+       dispatch(removeUser());
     });
     return () => {
       unsubscribe();
