@@ -1,4 +1,4 @@
-import { db, fb } from "../firebase/firebase.config";
+import { db } from "../firebase/firebase.config";
 import {
   listenForICECandidate,
   saveAnswerCandidates,
@@ -13,7 +13,6 @@ const servers: RTCConfiguration = {
     },
   ],
 };
-
 
 export const Connection = new RTCPeerConnection(servers);
 
@@ -84,17 +83,31 @@ export const connectRemoteToLocal = async (
   await Connection.setRemoteDescription(offerOfResponse);
 };
 
+export const createWebRTCChannel = (channelName: string) => {
+  return Connection.createDataChannel(channelName);
+};
 
-export const createWebRTCChannel = (channelName :string) => {
-    return Connection.createDataChannel(channelName);  
-}
+export const createConnection = async () => {
+  const con = new RTCPeerConnection();
+  const stream = await sendMediaTrack(con);
+  console.log("SENDING TRACKS", stream);
+  return con;
+};
 
-
-export const createConnectionAndOffer = async () => {
-  const connection = createConnection();
-  connection.createDataChannel("xyx");
-  const offer = await connection.createOffer();
-  return { connection, offer }
-}
-
-export const createConnection = () => new RTCPeerConnection();
+export const sendMediaTrack = (con: RTCPeerConnection) => {
+  return new Promise((res, rej) => {
+    navigator.getUserMedia(
+      { video: true, audio: false },
+      (stream) => {
+        stream.getTracks().forEach((s) => {
+          con.addTrack(s, stream);
+          console.log("SENDING THE TRACKS");
+        });
+        res(stream);
+      },
+      () => {
+        rej("SOMETHING WENT WRONG");
+      }
+    );
+  });
+};

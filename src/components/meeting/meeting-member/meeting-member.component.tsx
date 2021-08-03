@@ -20,7 +20,6 @@ export const MeetingMember: FC<MeetingMemberType> = ({
   useEffect(() => {
     const src = videoRef.current;
     if (src) {
-      console.log("ADDING TRACKS", stream);
       src.srcObject = stream;
       src.play();
     }
@@ -38,9 +37,9 @@ export const MeetingMember: FC<MeetingMemberType> = ({
     >
       <VideoArea
         videoRef={videoRef}
-        video={false}
+        video={true}
         src="src"
-        muted={!audio}
+        muted={true}
         className="w-full h-full"
         participant_name="Darshan"
       />

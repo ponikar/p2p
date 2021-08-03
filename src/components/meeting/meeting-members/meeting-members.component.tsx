@@ -1,18 +1,21 @@
-import React, { FC, useState } from "react";
-import { useConnections } from "../../../hooks/use-connections.hook";
+import React, { FC } from "react";
+import { UserType } from "../../../types/user.type";
 import { MeetingControl } from "../meeting-control/meeting-control.component";
 import { MeetingMember } from "../meeting-member/meeting-member.component";
 
+
+interface MeetingMembersProps {
+   members: MemberType[]
+}
+
 export interface MemberType {
-  stream: MediaStream | null;
+    stream: MediaStream,
+    user: UserType
 }
 
 
-export const MeetingMembers: FC = () => {
-  const [members, setMembers] = useState<MemberType[]>([]);
-  const [connections] = useConnections();
+export const MeetingMembers: FC<MeetingMembersProps> = ({ members = [] }) => {
   
-  console.log(connections);
   return (
     <section
       className={`container relative col-span-9 ${
@@ -21,9 +24,9 @@ export const MeetingMembers: FC = () => {
     >
       {members.map((m, index) => (
         <MeetingMember
-          stream={m.stream}
+          {...m}
           membersLength={members.length}
-          key={index}
+          key={m.user.uid}
         />
       ))}
       <MeetingControl />

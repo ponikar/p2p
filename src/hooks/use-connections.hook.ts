@@ -5,10 +5,7 @@ import { BaseContext } from "../components/base/base.context";
 import { SocketChannel, SocketEvents } from "../constants/channels.constants";
 import { selectUser } from "../store/user/user.selectors";
 import { UserType } from "../types/user.type";
-import {
-  createConnection,
-  createConnectionAndOffer,
-} from "../utils/connection.util";
+import { createConnection } from "../utils/connection.util";
 
 interface Peer {
   connection: RTCPeerConnection;
@@ -30,23 +27,25 @@ export const useConnections = (): [ConnectionType] => {
   }, [meetingId]);
 
   useEffect(() => {
-    if (socketConnection) {
+    if (socketConnection && channel) {
       socketConnection.on(channel, async (e) => {
         const data = JSON.parse(e);
         console.log(data.type);
-        switch (data.type) {
-          case SocketEvents.NEW:
-            return createNewOffer(data);
-          case SocketEvents.OFFER:
-            return acceptNewOffer(data);
-          case SocketEvents.ANSWER:
-            return acceptAnswer(data);
-          case SocketEvents.ADD_ICE:
-            return addICECandidate(data);
+        if (!data.to || (data.to && data.to === auth.uid)) {
+          switch (data.type) {
+            case SocketEvents.NEW:
+              return createNewOffer(data);
+            case SocketEvents.OFFER:
+              return acceptNewOffer(data);
+            case SocketEvents.ANSWER:
+              return acceptAnswer(data);
+            case SocketEvents.ADD_ICE:
+              return addICECandidate(data);
+          }
         }
       });
     }
-  }, [socketConnection, con]);
+  }, [socketConnection, channel, con]);
 
   const addConnection = useCallback(
     (id: string, connection: Peer) =>
@@ -56,12 +55,10 @@ export const useConnections = (): [ConnectionType] => {
 
   const createNewOffer = async (data: any) => {
     const { user } = data;
-    const { connection, offer } = await createConnectionAndOffer();
-
+    const connection = await createConnection();
+    const offer = await connection.createOffer();
     onICECandidate(connection, user.uid);
-
     await connection.setLocalDescription(offer);
-
     addConnection(user.uid, { user, connection });
     // send offer
     broadcastSignal({ offer, type: SocketEvents.OFFER, to: user.uid });
@@ -69,24 +66,17 @@ export const useConnections = (): [ConnectionType] => {
   };
 
   const acceptNewOffer = async (data: any) => {
-    const { from, to, offer } = data;
-    // if (to === auth.uid) {
-    const peer = createConnection();
-
+    const { from, offer } = data;
+    
+    const peer = await createConnection();
     onICECandidate(peer, from.uid);
 
-    peer.ondatachannel = (e) => {
-      console.log("I GOT SOME CHANNEL");
-    };
-
     await peer.setRemoteDescription(new RTCSessionDescription(offer));
-
     const answer = await peer.createAnswer();
     peer.setLocalDescription(answer);
     addConnection(from.uid, { connection: peer, user: from });
     broadcastSignal({ answer, to: from.uid, type: SocketEvents.ANSWER });
     console.log("SENDING THE ANSWER");
-    // }
   };
 
   const acceptAnswer = async (data: any) => {
@@ -103,13 +93,9 @@ export const useConnections = (): [ConnectionType] => {
   };
 
   const addICECandidate = (data: any) => {
-    const { from, to, candidate } = data;
+    const { from, candidate } = data;
     const peer = con[from.uid];
-    if (peer) {
-      peer.connection.addIceCandidate(new RTCIceCandidate(candidate));
-      addConnection(from.uid, peer);
-      console.log("ICE CANDIDATE ADDED");
-    }
+    if (peer) peer.connection.addIceCandidate(candidate);
   };
 
   const onICECandidate = (connection: RTCPeerConnection, to: string) => {
