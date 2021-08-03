@@ -88,7 +88,7 @@ export const createWebRTCChannel = (channelName: string) => {
 };
 
 export const createConnection = async () => {
-  const con = new RTCPeerConnection();
+  const con = new RTCPeerConnection(servers);
   const stream = await sendMediaTrack(con);
   console.log("SENDING TRACKS", stream);
   return con;

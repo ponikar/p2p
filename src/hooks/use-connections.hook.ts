@@ -57,8 +57,8 @@ export const useConnections = (): [ConnectionType] => {
     const { user } = data;
     const connection = await createConnection();
     const offer = await connection.createOffer();
-    onICECandidate(connection, user.uid);
     await connection.setLocalDescription(offer);
+    onICECandidate(connection, user.uid);
     addConnection(user.uid, { user, connection });
     // send offer
     broadcastSignal({ offer, type: SocketEvents.OFFER, to: user.uid });
@@ -69,9 +69,9 @@ export const useConnections = (): [ConnectionType] => {
     const { from, offer } = data;
     
     const peer = await createConnection();
-    onICECandidate(peer, from.uid);
-
+    
     await peer.setRemoteDescription(new RTCSessionDescription(offer));
+    onICECandidate(peer, from.uid);
     const answer = await peer.createAnswer();
     peer.setLocalDescription(answer);
     addConnection(from.uid, { connection: peer, user: from });
