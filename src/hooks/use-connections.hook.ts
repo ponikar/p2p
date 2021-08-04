@@ -2,18 +2,18 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { BaseContext } from "../components/base/base.context";
-import { SocketChannel, SocketEvents } from "../constants/channels.constants";
+import {
+  DataChannels,
+  SocketChannel,
+  SocketEvents,
+} from "../constants/channels.constants";
 import { selectUser } from "../store/user/user.selectors";
-import { UserType } from "../types/user.type";
+import { ConnectionType, Peer } from "../types/connection.types";
 import { createConnection } from "../utils/connection.util";
 
-interface Peer {
-  connection: RTCPeerConnection;
-  user: UserType;
-}
-export interface ConnectionType {
-  [key: string]: Peer;
-}
+
+
+
 
 export const useConnections = (): [ConnectionType] => {
   const [con, setCon] = useState<ConnectionType>({});
@@ -56,10 +56,15 @@ export const useConnections = (): [ConnectionType] => {
   const createNewOffer = async (data: any) => {
     const { user } = data;
     const connection = await createConnection();
+    const dataChannel = connection.createDataChannel(DataChannels.CHAT);
     const offer = await connection.createOffer();
     await connection.setLocalDescription(offer);
     onICECandidate(connection, user.uid);
-    addConnection(user.uid, { user, connection });
+    addConnection(user.uid, {
+      user,
+      connection,
+      dataChannels: { [DataChannels.CHAT]: dataChannel },
+    });
     // send offer
     broadcastSignal({ offer, type: SocketEvents.OFFER, to: user.uid });
     console.log("OFFER CREATED");
@@ -67,15 +72,29 @@ export const useConnections = (): [ConnectionType] => {
 
   const acceptNewOffer = async (data: any) => {
     const { from, offer } = data;
-    
-    const peer = await createConnection();
-    addConnection(from.uid, { connection: peer, user: from });
-    await peer.setRemoteDescription(new RTCSessionDescription(offer));
-    onICECandidate(peer, from.uid);
-    const answer = await peer.createAnswer();
-    peer.setLocalDescription(answer);
+
+    const connection = await createConnection();
+    const peer = { connection, user: from };
+    addConnection(from.uid, peer);
+    onDataChannel(peer);
+    await connection.setRemoteDescription(new RTCSessionDescription(offer));
+    onICECandidate(connection, from.uid);
+    const answer = await connection.createAnswer();
+    connection.setLocalDescription(answer);
     broadcastSignal({ answer, to: from.uid, type: SocketEvents.ANSWER });
     console.log("SENDING THE ANSWER");
+  };
+
+  const onDataChannel = (peer: Peer) => {
+    if (peer) {
+      const { connection, user } = peer;
+      connection.ondatachannel = (e) => {
+        addConnection(user.uid, {
+          ...peer,
+          dataChannels: { ...peer.dataChannels, [e.channel.label]: e.channel },
+        });
+      };
+    }
   };
 
   const acceptAnswer = async (data: any) => {

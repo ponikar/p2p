@@ -12,6 +12,9 @@ export const SocketEvents = {
   NEW: "NEW",
   OFFER: "OFFER",
   ANSWER: "ANSWER",
-  SEND_ICE: "SEND_ICE",
   ADD_ICE: "ADD_ICE",
 };
+
+export const DataChannels = {
+  CHAT: "CHAT_CHANNEL"
+}

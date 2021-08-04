@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { DataChannels } from "../../../constants/channels.constants";
 import { useConnections } from "../../../hooks/use-connections.hook";
+import { DataChannelType } from "../../../types/connection.types";
 import ChatArea from "../../chat/chat-area/chat-area.component";
 import {
   MeetingMembers,
@@ -9,7 +11,7 @@ import {
 export const MeetingArea = () => {
   const [connections] = useConnections();
   const [members, setMembers] = useState<MemberType[]>([]);
-
+  const [chatChannels, setChatChannels] = useState<DataChannelType>({});
   useEffect(() => {
     Object.keys(connections).forEach((key) => {
       const { connection, user } = connections[key];
@@ -21,10 +23,22 @@ export const MeetingArea = () => {
     });
   }, [connections, members]);
 
+  useEffect(() => {
+      getPeers().forEach(peer => {
+        const { dataChannels, user } = peer[1];
+        if(dataChannels) 
+          setChatChannels(c => ({...c, [user.uid]: dataChannels[DataChannels.CHAT] }))
+      })
+  }, [connections]);
+
+  const getPeers = useCallback(() => {
+     return Object.entries(connections);
+  }, [connections]);
+
   return (
     <main className="w-full relative grid grid-cols-12">
       <MeetingMembers members={members} />
-      <ChatArea />
+      <ChatArea chatChannels={chatChannels} />
     </main>
   );
 };

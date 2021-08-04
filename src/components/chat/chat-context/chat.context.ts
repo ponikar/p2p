@@ -2,14 +2,20 @@ import { createContext } from "react";
 import { MessageType } from "../../../types/chat.types";
 
 
+interface DataChannelType {
+    [key : string]: RTCDataChannel
+}
+
 interface ChatContextType {
     setMessageProps: (props: MessageType) => void,
-    messages: MessageType[]
+    messages: MessageType[],
+    chatChannels: DataChannelType
 }
 
 const CHAT_INITIAL_STATE:ChatContextType = {
     setMessageProps: () => {},
-    messages: []
+    messages: [],
+    chatChannels: {}
 }
 
 export const  ChatContext = createContext<ChatContextType>(CHAT_INITIAL_STATE)
