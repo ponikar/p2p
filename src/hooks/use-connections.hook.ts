@@ -69,12 +69,11 @@ export const useConnections = (): [ConnectionType] => {
     const { from, offer } = data;
     
     const peer = await createConnection();
-    
+    addConnection(from.uid, { connection: peer, user: from });
     await peer.setRemoteDescription(new RTCSessionDescription(offer));
     onICECandidate(peer, from.uid);
     const answer = await peer.createAnswer();
     peer.setLocalDescription(answer);
-    addConnection(from.uid, { connection: peer, user: from });
     broadcastSignal({ answer, to: from.uid, type: SocketEvents.ANSWER });
     console.log("SENDING THE ANSWER");
   };
