@@ -27,7 +27,7 @@ export const useConnections = (): [ConnectionType] => {
   }, [meetingId]);
 
   useEffect(() => {
-    if (socketConnection && channel) {
+    if (socketConnection && channel && auth.uid) {
       socketConnection.on(channel, async (e) => {
         const data = JSON.parse(e);
         console.log(data.type);
@@ -45,7 +45,7 @@ export const useConnections = (): [ConnectionType] => {
         }
       });
     }
-  }, [socketConnection, channel, con]);
+  }, [socketConnection, channel, con, auth.uid]);
 
   const addConnection = useCallback(
     (id: string, connection: Peer) =>

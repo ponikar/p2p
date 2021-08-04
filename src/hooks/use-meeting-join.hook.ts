@@ -10,13 +10,13 @@ export const useMeetingJoin = () => {
   const { socketConnection } = useContext(BaseContext);
   const user = useSelector(selectUser);
   useEffect(() => {
-    if (socketConnection && meetingId) {
+    if (socketConnection && meetingId && user.uid) {
       console.log("I AM IN");
       socketConnection.emit(
         SocketChannel.onUser,
         JSON.stringify({ meetingId, user, type: SocketEvents.NEW })
       );
     }
-  }, [socketConnection, meetingId]);
+  }, [socketConnection, meetingId, user.uid]);
   return [];
 };

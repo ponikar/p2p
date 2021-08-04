@@ -4,7 +4,7 @@ import { UserType } from "../../types/user.type";
 const USER_INTIAL_STATE: UserType = {
   email: "",
   displayName: "",
-  uid: "Wl8Arm0jC8fPK4w48YoVg19wdhz1",
+  uid: "",
 };
 
 const userSlices = createSlice({
