@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext } from "react";
+import React, { FC, memo, useCallback, useContext } from "react";
 import { Copy, X } from "react-feather";
 import { useHistory } from "react-router-dom";
 import { copyContext, domainName } from "../../../utils/navigator.util";
@@ -6,7 +6,7 @@ import { PrimaryButton } from "../../common/button.component";
 import { ToastContext } from "../../common/toast/toast.context";
 import { MeetingCreationContext } from "../meeting-creation/meeting-creation.context";
 
-export const MeetingLinkPopup: FC = () => {
+export const MeetingLinkPopup: FC = memo(() => {
   const { meetingID, setProps } = useContext(MeetingCreationContext);
   const { setToastProps } = useContext(ToastContext);
   const { push } = useHistory();
@@ -48,4 +48,4 @@ export const MeetingLinkPopup: FC = () => {
       </PrimaryButton>
     </section>
   );
-};
+});

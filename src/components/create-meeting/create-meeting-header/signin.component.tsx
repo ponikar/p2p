@@ -1,10 +1,10 @@
-import React, { FC, useCallback, useContext, useEffect } from "react";
+import React, { FC, memo, useCallback, useContext } from "react";
 import { signinWithPopup } from "../../../firebase/firebase.auth";
 import { PrimaryButton } from "../../common/button.component";
 import { ToastContext } from "../../common/toast/toast.context";
 import { useSelector } from "react-redux"
 import { selectUser } from "../../../store/user/user.selectors";
-export const Signin: FC = () => {
+export const Signin: FC = memo(() => {
   const { setToastProps } = useContext(ToastContext);
   const user = useSelector(selectUser);
   const singin = useCallback(async () => {
@@ -25,4 +25,4 @@ export const Signin: FC = () => {
       <PrimaryButton onClick={singin} > Signin with Google </PrimaryButton>
     </section>
   );
-};
+});

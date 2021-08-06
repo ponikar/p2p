@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { io, Socket } from "socket.io-client";
 import { useAuth } from "../../hooks/auth/use-auth.hook";
@@ -21,11 +21,11 @@ export const BaseArea: FC = ({ children }) => {
   useEffect(() => {
     setSocket(io("ws://localhost:8085"));
   }, []);
-  const setToastProps = (props: SetToastPropsType) =>
-    setToast({ ...toast, ...props });
+  const setToastProps = useCallback((props: SetToastPropsType) =>
+  setToast({ ...toast, ...props }), []);
 
   const client = new QueryClient();
-
+  
   return (
     <QueryClientProvider client={client}>
       <BaseContext.Provider
