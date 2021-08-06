@@ -1,35 +1,24 @@
-import React, { FC } from "react";
-import { UserType } from "../../../types/user.type";
+import React, { FC, memo } from "react";
+import { MemberType } from "../../../types/members.types";
 import { MeetingControl } from "../meeting-control/meeting-control.component";
 import { MeetingMember } from "../meeting-member/meeting-member.component";
 
-
 interface MeetingMembersProps {
-   members: MemberType[]
-}
-
-export interface MemberType {
-    stream: MediaStream,
-    user: UserType
+  members: MemberType;
 }
 
 
-export const MeetingMembers: FC<MeetingMembersProps> = ({ members = [] }) => {
-  
+export const MeetingMembers: FC<MeetingMembersProps> = memo(({ members }) => {
   return (
     <section
       className={`container relative col-span-9 ${
-        members.length <= 4 && "items-center"
+        Object.keys(members).length <= 4 && "items-center"
       } flex justify-center flex-wrap max-h-screen overflow-y-auto h-screen`}
     >
-      {members.map((m, index) => (
-        <MeetingMember
-          {...m}
-          membersLength={members.length}
-          key={m.user.uid}
-        />
+      {Object.entries(members).map((m) => (
+        <MeetingMember {...m[1]} membersLength={Object.keys(members).length} key={m[0]} />
       ))}
       <MeetingControl />
     </section>
   );
-};
+});

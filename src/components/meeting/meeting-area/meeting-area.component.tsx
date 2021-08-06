@@ -2,15 +2,15 @@ import React, { useCallback, useEffect, useState } from "react";
 import { DataChannels } from "../../../constants/channels.constants";
 import { useConnections } from "../../../hooks/use-connections.hook";
 import { DataChannelType } from "../../../types/connection.types";
+import { MemberType } from "../../../types/members.types";
 import ChatArea from "../../chat/chat-area/chat-area.component";
 import {
   MeetingMembers,
-  MemberType,
 } from "../meeting-members/meeting-members.component";
 
 export const MeetingArea = () => {
   const [connections] = useConnections();
-  const [members, setMembers] = useState<MemberType[]>([]);
+  const [members, setMembers] = useState<MemberType>({});
   const [chatChannels, setChatChannels] = useState<DataChannelType>({});
   useEffect(() => {
     Object.keys(connections).forEach((key) => {
@@ -18,7 +18,7 @@ export const MeetingArea = () => {
       console.log("SETTING UP TRACK LISTENERS", connection);
       connection.ontrack = (e) => {
         console.log("I AM GETTING SOME TRACKS");
-        setMembers((members) => [...members, { stream: e.streams[0], user }]);
+        setMembers((members) => ({...members, [user.uid]: { stream: e.streams[0], user  } }));
       };
     });
   }, [connections, members]);

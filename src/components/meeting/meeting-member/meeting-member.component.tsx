@@ -1,15 +1,15 @@
 import React, { FC, useContext, useEffect, useRef, useState } from "react";
+import { MemberProps } from "../../../types/members.types";
 import { VideoArea } from "../../video-area/video-area.component";
-import { MemberType } from "../meeting-members/meeting-members.component";
 import "./meeting-member.style.css";
 
-interface MeetingMemberType extends MemberType {
+interface MeetingMemberType extends MemberProps {
   membersLength: number;
 }
 
 export const MeetingMember: FC<MeetingMemberType> = ({
   membersLength,
-  stream,
+  stream, user
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [{ video, audio }, setControls] = useState({
