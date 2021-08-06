@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useContext, useEffect } from "react";
 import { Plus } from "react-feather";
 import { useMutationApi } from "../../../hooks/apis/use-mutation.hook";
-import { useWebcam } from "../../../hooks/use-web-cam.hook";
 import { BaseContext } from "../../base/base.context";
 import { PrimaryButton } from "../../common/button.component";
 import { MeetingCreationContext } from "./meeting-creation.context";
@@ -11,8 +10,7 @@ export const MeetingCreationLeft: FC = () => {
   const { setControls } = useContext(BaseContext);
   const { mutate, isLoading, error, data } = useMutationApi({ endpoint: "http://localhost:8085/create-meeting" })
 
-  // asking for permisson and setting up data channel
-  useWebcam(() => {}, []);
+
   const createMeeting = useCallback(async () => {
       mutate({ uid: "hxhxhxhx" });
   }, []);

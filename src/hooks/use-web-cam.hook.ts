@@ -4,18 +4,20 @@ import { getUserMedia } from "../utils/media.utils";
 
 type useWebCamType = (stream: MediaStream) => void;
 export const useWebcam = (callback: useWebCamType, dependancies: any[]) => {
-  const { video } = useContext(BaseContext);
+  const { video, audio } = useContext(BaseContext);
   useEffect(() => {
-    getUserMedia({ video, audio: true }, streamingWebcam, (err) =>
+    getUserMedia({ video: video, audio: true }, streamingWebcam, (err) =>
       console.log("MEDIA ERROR", err)
     );
-  }, [video, ...dependancies]);
+  }, [video, audio]);
 
   const streamingWebcam = useCallback(
     (stream: MediaStream) => {
+      if (!video) stream.getTracks().forEach(track => track.stop());
+      if (!audio) stream.getAudioTracks().forEach(track => track.stop());
       callback(stream);
     },
-    [callback]
+    [callback, video, audio]
   );
 
   return [];

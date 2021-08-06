@@ -13,7 +13,7 @@ import { StreamingControlTypes } from "../webcam-streaming/webcam-streaming.type
 import { BaseContext } from "./base.context";
 export const BaseArea: FC = ({ children }) => {
   const [meetingControls, setMeetingControls] = useState<StreamingControlTypes>(
-    { video: true, audio: true }
+    { video: false, audio: false }
   );
   const [toast, setToast] = useState<ToastPropsType>(TOAST_DEFAULT_STATE);
   const [socket, setSocket] = useState<Socket | null>(null);

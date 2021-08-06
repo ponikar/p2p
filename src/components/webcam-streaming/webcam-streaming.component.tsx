@@ -12,7 +12,7 @@ import { VideoArea } from "../video-area/video-area.component";
 import { ControlButtonArea } from "./control-button-area.component";
 import { motion } from "framer-motion";
 import { BaseContext } from "../base/base.context";
-import { useWebcam } from "../../hooks/use-web-cam.hook";
+import { getMedia } from "../../utils/media.utils";
 
 interface WebCamStreamingProps {
   contstrainRef: RefObject<Element>;
@@ -20,15 +20,25 @@ interface WebCamStreamingProps {
 export const WebCamStreaming: FC<WebCamStreamingProps> = ({
   contstrainRef,
 }) => {
-  const { video } = useContext(BaseContext);
+  const { video, audio } = useContext(BaseContext);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useWebcam((stream) => {
-    if (videoRef.current) {
+  useEffect(() => {
+    getUserMedia();
+  }, [video]);
+
+  const getUserMedia = useCallback(async () => {
+    const stream = await getMedia({ video, audio: true });
+    if (!video) {
+      stream.getTracks().forEach((e) => e.stop());
+    }
+    if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
       videoRef.current.play();
     }
-  }, [videoRef.current]);
+  }, [video, audio, videoRef.current]);
+
+  console.log(videoRef);
 
   return (
     <motion.div className="streaming-area" drag dragConstraints={contstrainRef}>
