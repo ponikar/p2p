@@ -28,9 +28,9 @@ export const WebCamStreaming: FC<WebCamStreamingProps> = ({
   }, [video]);
 
   const getUserMedia = useCallback(async () => {
-    const stream = await getMedia({ video, audio: true });
+    const stream = await getMedia({ video: true, audio: true });
     if (!video) {
-      stream.getTracks().forEach((e) => e.stop());
+      stream.getTracks().forEach((e) => (e.enabled = false));
     }
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;

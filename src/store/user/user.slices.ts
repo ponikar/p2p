@@ -1,13 +1,12 @@
-import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserType } from "../../types/user.type";
 
 
-const random_id = nanoid(20);
 
 const USER_INTIAL_STATE: UserType = {
-  email: random_id,
-  displayName: random_id,
-  uid: random_id,
+  email: "",
+  displayName: "",
+  uid: "",
 };
 
 const userSlices = createSlice({

@@ -9,11 +9,12 @@ import {
 } from "../constants/channels.constants";
 import { selectUser } from "../store/user/user.selectors";
 import { ConnectionType, Peer } from "../types/connection.types";
-import { createConnection } from "../utils/connection.util";
-
-
-
-
+import {
+  addTracks,
+  createConnection,
+  removeTracks,
+} from "../utils/connection.util";
+import { getMedia } from "../utils/media.utils";
 
 export const useConnections = (): [ConnectionType] => {
   const [con, setCon] = useState<ConnectionType>({});
@@ -21,6 +22,7 @@ export const useConnections = (): [ConnectionType] => {
   const { meetingId } = useParams<MeetingAreaParamsType>();
   const auth = useSelector(selectUser);
   const [channel, setChannel] = useState("");
+  const { video, audio } = useContext(BaseContext);
 
   useEffect(() => {
     meetingId && setChannel(SocketChannel.onRoom(meetingId));
@@ -57,6 +59,7 @@ export const useConnections = (): [ConnectionType] => {
     const { user } = data;
     const connection = await createConnection();
     const dataChannel = connection.createDataChannel(DataChannels.CHAT);
+    await sendTracksAtInitial(connection);
     const offer = await connection.createOffer();
     await connection.setLocalDescription(offer);
     onICECandidate(connection, user.uid);
@@ -70,10 +73,16 @@ export const useConnections = (): [ConnectionType] => {
     console.log("OFFER CREATED");
   };
 
+  const sendTracksAtInitial = async (connection: RTCPeerConnection) => {
+    const stream = await getMedia({ video: true, audio: true });
+    addTracks(connection, stream, false);
+  };
+
   const acceptNewOffer = async (data: any) => {
     const { from, offer } = data;
 
     const connection = await createConnection();
+    await sendTracksAtInitial(connection);
     const peer = { connection, user: from };
     addConnection(from.uid, peer);
     onDataChannel(peer);

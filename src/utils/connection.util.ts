@@ -1,4 +1,3 @@
-
 const servers: RTCConfiguration = {
   iceServers: [
     {
@@ -7,27 +6,23 @@ const servers: RTCConfiguration = {
   ],
 };
 
-
 export const createConnection = async () => {
   const con = new RTCPeerConnection(servers);
-  const stream = await sendMediaTrack(con);
   return con;
 };
 
-export const sendMediaTrack = (con: RTCPeerConnection) => {
-  return new Promise((res, rej) => {
-    navigator.getUserMedia(
-      { video: true, audio: false },
-      (stream) => {
-        stream.getTracks().forEach((s) => {
-          con.addTrack(s, stream);
-          console.log("SENDING THE TRACKS");
-        });
-        res(stream);
-      },
-      () => {
-        rej("SOMETHING WENT WRONG");
-      }
-    );
+export const addTracks = (
+  con: RTCPeerConnection,
+  stream: MediaStream,
+  video: boolean
+) => {
+  const newStream = new MediaStream();
+  stream.getTracks().forEach((s) => {
+    s.enabled = video;
+    con.addTrack(s, newStream);
   });
+};
+
+export const removeTracks = (con: RTCPeerConnection) => {
+  con.getSenders().forEach((sender) => con.removeTrack(sender));
 };
