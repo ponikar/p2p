@@ -8,9 +8,8 @@ export const getUserMedia = (
   }
 };
 
-
 export const getMedia = (constraints: MediaStreamConstraints) => {
-  if(!navigator) throw new Error("You are still living in 90's");
+  if (!navigator) throw new Error("You are still living in 90's");
 
   return navigator.mediaDevices.getUserMedia(constraints);
-}
+};

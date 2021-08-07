@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from "react";
-import { ToastContext, ToastContextType } from "./toast.context";
+import React, { FC, useContext, useEffect } from "react";
+import { ToastContext } from "./toast.context";
 
-export const Toast = () => {
-  const { type, setToastProps, show, text } = useContext(ToastContext);
+export const Toast: FC = () => {
+  const { setToastProps, show, text } = useContext(ToastContext);
   useEffect(() => {
     if (show) setTimeout(() => setToastProps({ show: false }), 3000);
   }, [show]);

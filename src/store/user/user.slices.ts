@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserType } from "../../types/user.type";
 
-
-
 const USER_INTIAL_STATE: UserType = {
   email: "",
   displayName: "",
@@ -16,7 +14,7 @@ const userSlices = createSlice({
     addUser: (state, { payload }: PayloadAction<UserType>) => {
       return payload;
     },
-    removeUser: _ => USER_INTIAL_STATE
+    removeUser: () => USER_INTIAL_STATE,
   },
 });
 

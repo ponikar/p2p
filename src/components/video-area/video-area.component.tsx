@@ -17,12 +17,14 @@ export const VideoArea: FC<
   ({ video, videoRef, src, participant_name, className = "", ...rest }) => {
     return (
       <div className={`${className} video-container`}>
-        {/* {video ? ( */}
+        {video ? (
           <video {...rest} className="video-area" ref={videoRef} />
-        {/* ) : (
+        ) : (
           <NoWebcamPreview {...{ src, participant_name }} />
-        )} */}
+        )}
       </div>
     );
   }
 );
+
+VideoArea.displayName = "VideoArea";

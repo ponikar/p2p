@@ -5,7 +5,6 @@ import React, {
   useContext,
   useEffect,
   useRef,
-  useState,
 } from "react";
 import "./webcam-streaming.style.css";
 import { VideoArea } from "../video-area/video-area.component";

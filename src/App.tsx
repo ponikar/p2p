@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import "./App.css";
 import { CreateMeeting } from "./pages/create-meeting.page";
 import { MeetingAreaPage } from "./pages/meeting-area.page";
@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { BaseArea } from "./components/base/base-area.component";
 import { store } from "./store/store";
 import { Provider } from "react-redux";
-function App() {
+const App: FC = () => {
   return (
     <Provider store={store}>
       <BaseArea>
@@ -19,6 +19,6 @@ function App() {
       </BaseArea>
     </Provider>
   );
-}
+};
 
 export default App;

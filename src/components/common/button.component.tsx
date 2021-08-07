@@ -7,5 +7,12 @@ export const PrimaryButton: FC<StandardButtonProps> = ({
   className,
   ...props
 }) => {
-  return <button className={`${className} center text-base py-2 px-3 text-white bg-primary rounded-sm`} {...props}>{children}</button>;
+  return (
+    <button
+      className={`${className} center text-base py-2 px-3 text-white bg-primary rounded-sm`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
 };

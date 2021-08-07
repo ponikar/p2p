@@ -15,12 +15,12 @@ export const ControlButtonArea: FC<ControlButtonAreaProps> = memo(
     return (
       <>
         <StreamControlButton
-          onClick={(_) => setControls({ audio: !audio })}
+          onClick={() => setControls({ audio: !audio })}
           IconComponent={!audio ? MicOff : Mic}
           {...commonProps}
         />
         <StreamControlButton
-          onClick={(_) => setControls({ video: !video })}
+          onClick={() => setControls({ video: !video })}
           IconComponent={!video ? VideoOff : Video}
           {...commonProps}
         />
@@ -36,3 +36,5 @@ export const ControlButtonArea: FC<ControlButtonAreaProps> = memo(
     );
   }
 );
+
+ControlButtonArea.displayName = "ControlButtonArea";

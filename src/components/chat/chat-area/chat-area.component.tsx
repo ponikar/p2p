@@ -10,7 +10,7 @@ interface ChatAreaProps {
   chatChannels: DataChannelType;
 }
 
-const ChatArea: FC<ChatAreaProps> = ({ chatChannels }) => {
+export const ChatArea: FC<ChatAreaProps> = memo(({ chatChannels }) => {
   const [messages, setMessage] = useState<MessageType[]>([]);
 
   const setMessageProps = useCallback(
@@ -23,7 +23,7 @@ const ChatArea: FC<ChatAreaProps> = ({ chatChannels }) => {
       Object.entries(chatChannels).forEach((peer) => {
         peer[1].onmessage = (e) => {
           console.log("I GOT MESSAGE for you!!");
-          setMessageProps(JSON.parse(e.data))
+          setMessageProps(JSON.parse(e.data));
         };
       });
     }
@@ -44,6 +44,6 @@ const ChatArea: FC<ChatAreaProps> = ({ chatChannels }) => {
       </section>
     </ChatContext.Provider>
   );
-};
+});
 
-export default ChatArea;
+ChatArea.displayName = "ChatArea";

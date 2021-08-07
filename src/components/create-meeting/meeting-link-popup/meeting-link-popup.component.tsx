@@ -21,7 +21,7 @@ export const MeetingLinkPopup: FC = memo(() => {
       <div className="flex items-center justify-between">
         <h2 className="text-lg"> Here is the meeting link! </h2>
         <X
-          onClick={(_) => setProps({ showMeetingID: false })}
+          onClick={() => setProps({ showMeetingID: false })}
           className="text-primary cursor-pointer"
         />
       </div>
@@ -43,9 +43,11 @@ export const MeetingLinkPopup: FC = memo(() => {
         />
       </div>
       <div className="mt-2 text-sm text-filter"> OR </div>
-      <PrimaryButton className="mt-2" onClick={(_) => push(`/${meetingID}`)}>
+      <PrimaryButton className="mt-2" onClick={() => push(`/${meetingID}`)}>
         Start Meeting
       </PrimaryButton>
     </section>
   );
 });
+
+MeetingLinkPopup.displayName = "MeetingLinkPopup";

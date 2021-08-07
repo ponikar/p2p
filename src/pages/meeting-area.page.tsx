@@ -7,7 +7,7 @@ import { useMeetingJoin } from "../hooks/use-meeting-join.hook";
 
 export const MeetingAreaPage: FC = memo(() => {
   const contstrainRef = useRef(null);
-  const [] = useMeetingInfo();
+  useMeetingInfo();
   useMeetingJoin();
   return (
     <>
@@ -18,3 +18,5 @@ export const MeetingAreaPage: FC = memo(() => {
     </>
   );
 });
+
+MeetingAreaPage.displayName = "MeetingAreaPage";

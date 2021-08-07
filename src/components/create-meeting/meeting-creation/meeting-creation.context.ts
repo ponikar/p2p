@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
-interface MeetingCreationPropsType {
-    meetingID: string,
-    showMeetingID: boolean,
-    setProps: (props: object) => void
+export interface MeetingCreationPropsType {
+  meetingID: string;
+  showMeetingID: boolean;
+  setProps: (props: Partial<MeetingCreationPropsType>) => void;
 }
 
 export const MEETING_CREATION_DEFAULT_STATE = {
@@ -11,4 +11,7 @@ export const MEETING_CREATION_DEFAULT_STATE = {
   showMeetingID: false,
 };
 
-export const MeetingCreationContext = createContext<MeetingCreationPropsType>({...MEETING_CREATION_DEFAULT_STATE, setProps: () => {}});
+export const MeetingCreationContext = createContext<MeetingCreationPropsType>({
+  ...MEETING_CREATION_DEFAULT_STATE,
+  setProps: () => null,
+});

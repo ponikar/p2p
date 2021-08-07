@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { MemberProps } from "../../../types/members.types";
 import { VideoArea } from "../../video-area/video-area.component";
 import "./meeting-member.style.css";
@@ -9,13 +9,13 @@ interface MeetingMemberType extends MemberProps {
 
 export const MeetingMember: FC<MeetingMemberType> = ({
   membersLength,
-  stream, user
+  stream /* user */,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [{ video, audio }, setControls] = useState({
-    video: true,
-    audio: false,
-  });
+  // const [{ video, audio }, setControls] = useState({
+  //   video: true,
+  //   audio: false,
+  // });
 
   useEffect(() => {
     const src = videoRef.current;

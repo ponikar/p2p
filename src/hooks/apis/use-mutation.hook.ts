@@ -5,7 +5,7 @@ interface useApiType {
   endpoint: string;
 }
 
-export const useMutationApi = ({ endpoint }: useApiType) => {
+export const useMutationApi = ({ endpoint }: useApiType): unknown => {
   return useMutation((data) => {
     return axios.post(endpoint, data, {
       headers: {

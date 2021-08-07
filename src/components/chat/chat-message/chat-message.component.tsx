@@ -11,7 +11,6 @@ export const ChatMessage: FC<ChatMessageType> = ({
   text,
   createdAt,
   isSameMessageBy,
-  id,
   byUser = false,
 }) => {
   return (
@@ -27,11 +26,13 @@ export const ChatMessage: FC<ChatMessageType> = ({
         />
       )}
 
-      <p className={`chat-message-area bg-primary text-white `}>
-        {text}
-      </p>
+      <p className={`chat-message-area bg-primary text-white `}>{text}</p>
       {!isSameMessageBy && createdAt && (
-        <span className={`text-xs absolute w-full flex ${byUser ? "justify-end" : "justify-start" } -bottom-6 text-highlight`}>
+        <span
+          className={`text-xs absolute w-full flex ${
+            byUser ? "justify-end" : "justify-start"
+          } -bottom-6 text-highlight`}
+        >
           {getMessageTime(createdAt)}
         </span>
       )}

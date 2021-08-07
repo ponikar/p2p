@@ -1,11 +1,9 @@
-import { useWebcam } from "../../../hooks/use-web-cam.hook";
 import { BaseContext } from "../../base/base.context";
 import { VideoArea } from "../../video-area/video-area.component";
 import { ControlButtonArea } from "../../webcam-streaming/control-button-area.component";
 import React, { FC, useContext } from "react";
 
-export const MeetingCreationWebcam:FC = () => {
-  //  const [videoRef] = useWebcam();
+export const MeetingCreationWebcam: FC = () => {
   const { video } = useContext(BaseContext);
   return (
     <>

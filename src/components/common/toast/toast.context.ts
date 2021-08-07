@@ -7,7 +7,11 @@ export interface ToastPropsType {
   show: boolean;
 }
 
-export type SetToastPropsType = { text?: string; type?: ToastType, show?: boolean };
+export type SetToastPropsType = {
+  text?: string;
+  type?: ToastType;
+  show?: boolean;
+};
 
 export interface ToastContextType extends ToastPropsType {
   setToastProps: (props: SetToastPropsType) => void;
@@ -21,5 +25,5 @@ export const TOAST_DEFAULT_STATE: ToastPropsType = {
 
 export const ToastContext = createContext<ToastContextType>({
   ...TOAST_DEFAULT_STATE,
-  setToastProps: () => {},
+  setToastProps: () => null,
 });

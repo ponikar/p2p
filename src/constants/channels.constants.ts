@@ -1,11 +1,11 @@
 export const WebRTCChannels = {
   CHAT_CHANNEL: "CHAT_CHANNEL",
-  getUserStreamingControl: (id: string) => `STREAMING_CONTROL_${id}`,
+  getUserStreamingControl: (id: string): string => `STREAMING_CONTROL_${id}`,
 };
 
 export const SocketChannel = {
   onUser: "user-joined",
-  onRoom: (id: string) => `room-${id}`,
+  onRoom: (id: string): string => `room-${id}`,
 };
 
 export const SocketEvents = {
@@ -16,5 +16,5 @@ export const SocketEvents = {
 };
 
 export const DataChannels = {
-  CHAT: "CHAT_CHANNEL"
-}
+  CHAT: "CHAT_CHANNEL",
+};

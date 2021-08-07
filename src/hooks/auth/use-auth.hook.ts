@@ -3,7 +3,7 @@ import { auth } from "../../firebase/firebase.config";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../../store/user/user.slices";
 
-export const useAuth = () => {
+export const useAuth = (): [] => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,10 +16,12 @@ export const useAuth = () => {
             uid: user.uid,
           })
         );
-       dispatch(removeUser());
+      dispatch(removeUser());
     });
     return () => {
       unsubscribe();
     };
   }, []);
+
+  return [];
 };

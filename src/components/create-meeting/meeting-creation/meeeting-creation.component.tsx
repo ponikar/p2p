@@ -4,6 +4,7 @@ import { MeetingCreationLeft } from "./meeting-creation-left.component";
 import { MeetingCreationRight } from "./meeting-creation-right.component";
 import {
   MeetingCreationContext,
+  MeetingCreationPropsType,
   MEETING_CREATION_DEFAULT_STATE,
 } from "./meeting-creation.context";
 import "./meeting-creation.style.css";
@@ -14,7 +15,7 @@ export const MeetingCreation: FC = memo(() => {
 
   const { meetingID, showMeetingID } = createMeeting;
 
-  const setProps = (props: object) =>
+  const setProps = (props: Partial<MeetingCreationPropsType>) =>
     setCreateMeeting({ ...createMeeting, ...props });
 
   return (
@@ -22,8 +23,10 @@ export const MeetingCreation: FC = memo(() => {
       <section className="p-5 w-10/12 mx-auto flex items-center border-black">
         <MeetingCreationLeft />
         <MeetingCreationRight />
-        { (meetingID && showMeetingID) &&  <MeetingLinkPopup /> }
+        {meetingID && showMeetingID && <MeetingLinkPopup />}
       </section>
     </MeetingCreationContext.Provider>
   );
 });
+
+MeetingCreation.displayName = "MeetingCreation";
