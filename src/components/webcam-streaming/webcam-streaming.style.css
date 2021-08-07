@@ -1,20 +1,17 @@
-
-
-
 .streaming-area {
-   @apply fixed bottom-5 left-5 border rounded-sm;
+	@apply fixed bottom-5 left-5 border rounded-sm;
 }
 
 .streaming-video {
-    width: 325px;
-    height: 200px;
+	width: 325px;
+	height: 200px;
 }
-    
+
 .streaming-area:hover .streaming-control {
-    opacity: 1;
-    transition-delay: 0ms;
+	opacity: 1;
+	transition-delay: 0ms;
 }
 
 .streaming-control {
-    @apply absolute flex justify-center w-full bottom-3 opacity-0 delay-300 transition-all duration-75
+	@apply absolute flex justify-center w-full bottom-3 opacity-0 delay-300 transition-all duration-75;
 }

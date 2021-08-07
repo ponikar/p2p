@@ -1,38 +1,41 @@
 {
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "serve": "vite preview",
-    "lint": "npx eslint ."
-  },
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.6.1",
-    "axios": "^0.21.1",
-    "firebase": "^8.7.1",
-    "framer-motion": "^4.1.17",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
-    "react-feather": "^2.0.9",
-    "react-query": "^3.19.1",
-    "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0",
-    "socket.io-client": "^4.1.3"
-  },
-  "devDependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/react-router-dom": "^5.1.8",
-    "@types/redux-persist": "^4.3.1",
-    "@typescript-eslint/eslint-plugin": "^4.29.0",
-    "@typescript-eslint/parser": "^4.29.0",
-    "@vitejs/plugin-react-refresh": "^1.3.1",
-    "autoprefixer": "^10.3.1",
-    "eslint": "^7.32.0",
-    "eslint-plugin-react": "^7.24.0",
-    "postcss": "^8.3.5",
-    "tailwindcss": "^2.2.4",
-    "typescript": "^4.3.2",
-    "vite": "^2.4.2"
-  }
+	"version": "0.0.0",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"serve": "vite preview",
+		"lint": "npx eslint .",
+		"format": "prettier --write --ignore-path .gitignore \"**/*.+(js|ts|tsx|json|css|html)\" ",
+		"validate": "npm run lint && npm run format"
+	},
+	"dependencies": {
+		"@reduxjs/toolkit": "^1.6.1",
+		"axios": "^0.21.1",
+		"firebase": "^8.7.1",
+		"framer-motion": "^4.1.17",
+		"react": "^17.0.0",
+		"react-dom": "^17.0.0",
+		"react-feather": "^2.0.9",
+		"react-query": "^3.19.1",
+		"react-redux": "^7.2.4",
+		"react-router-dom": "^5.2.0",
+		"socket.io-client": "^4.1.3"
+	},
+	"devDependencies": {
+		"@types/react": "^17.0.0",
+		"@types/react-dom": "^17.0.0",
+		"@types/react-router-dom": "^5.1.8",
+		"@types/redux-persist": "^4.3.1",
+		"@typescript-eslint/eslint-plugin": "^4.29.0",
+		"@typescript-eslint/parser": "^4.29.0",
+		"@vitejs/plugin-react-refresh": "^1.3.1",
+		"autoprefixer": "^10.3.1",
+		"eslint": "^7.32.0",
+		"eslint-plugin-react": "^7.24.0",
+		"postcss": "^8.3.5",
+		"prettier": "^2.3.2",
+		"tailwindcss": "^2.2.4",
+		"typescript": "^4.3.2",
+		"vite": "^2.4.2"
+	}
 }

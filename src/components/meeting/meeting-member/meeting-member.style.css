@@ -1,18 +1,14 @@
-
-
-
-
 .member-shrink-area {
-    width: 30%;
-    height: 15rem;
+	width: 30%;
+	height: 15rem;
 }
 
 .member-wide-area {
-    width: 75%;
-    height: 75vh;
+	width: 75%;
+	height: 75vh;
 }
 
 .member-med-area {
-    width: 45%;
-    height: 40%;
+	width: 45%;
+	height: 40%;
 }

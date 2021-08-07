@@ -2,8 +2,8 @@
 // import { BaseContext } from "../components/base/base.context";
 
 export const useMeetingInfo = (): [] => {
-  // const { video, audio } = useContext(BaseContext);
+	// const { video, audio } = useContext(BaseContext);
 
-  // Testing Temporary Approach
-  return [];
-};
+	// Testing Temporary Approach
+	return []
+}

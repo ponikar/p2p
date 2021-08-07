@@ -1,13 +1,10 @@
-
-
-
 .video-area {
-    @apply w-full h-full object-cover;
-    transform: scaleX(-1);
+	@apply w-full h-full object-cover;
+	transform: scaleX(-1);
 }
 
 .video-container {
-    object-fit: cover;
-    border-radius: 5px;
-    overflow: hidden;
+	object-fit: cover;
+	border-radius: 5px;
+	overflow: hidden;
 }

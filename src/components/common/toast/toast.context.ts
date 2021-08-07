@@ -1,29 +1,29 @@
-import { createContext } from "react";
+import { createContext } from "react"
 
-type ToastType = "success" | "danger" | "info";
+type ToastType = "success" | "danger" | "info"
 export interface ToastPropsType {
-  text: string;
-  type: ToastType;
-  show: boolean;
+	text: string
+	type: ToastType
+	show: boolean
 }
 
 export type SetToastPropsType = {
-  text?: string;
-  type?: ToastType;
-  show?: boolean;
-};
+	text?: string
+	type?: ToastType
+	show?: boolean
+}
 
 export interface ToastContextType extends ToastPropsType {
-  setToastProps: (props: SetToastPropsType) => void;
+	setToastProps: (props: SetToastPropsType) => void
 }
 
 export const TOAST_DEFAULT_STATE: ToastPropsType = {
-  show: false,
-  type: "info",
-  text: "",
-};
+	show: false,
+	type: "info",
+	text: "",
+}
 
 export const ToastContext = createContext<ToastContextType>({
-  ...TOAST_DEFAULT_STATE,
-  setToastProps: () => null,
-});
+	...TOAST_DEFAULT_STATE,
+	setToastProps: () => null,
+})

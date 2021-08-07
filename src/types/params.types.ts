@@ -1,3 +1,3 @@
 export interface MeetingAreaParamsType {
-  meetingId: string;
+	meetingId: string
 }
