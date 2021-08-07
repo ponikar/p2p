@@ -16,5 +16,6 @@ export const SocketEvents = {
 };
 
 export const DataChannels = {
-  CHAT: "CHAT_CHANNEL"
-}
+  CHAT: "CHAT_CHANNEL",
+  STREAMING_CONTROLS: "STREAMING_CONTROLS",
+};

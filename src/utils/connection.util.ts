@@ -1,3 +1,5 @@
+import { DataChannels } from "../constants/channels.constants";
+
 const servers: RTCConfiguration = {
   iceServers: [
     {

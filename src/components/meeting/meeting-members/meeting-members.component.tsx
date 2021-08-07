@@ -7,7 +7,6 @@ interface MeetingMembersProps {
   members: MemberType;
 }
 
-
 export const MeetingMembers: FC<MeetingMembersProps> = memo(({ members }) => {
   return (
     <section
@@ -16,7 +15,11 @@ export const MeetingMembers: FC<MeetingMembersProps> = memo(({ members }) => {
       } flex justify-center flex-wrap max-h-screen overflow-y-auto h-screen`}
     >
       {Object.entries(members).map((m) => (
-        <MeetingMember {...m[1]} membersLength={Object.keys(members).length} key={m[0]} />
+        <MeetingMember
+          {...m[1]}
+          membersLength={Object.keys(members).length}
+          key={m[0]}
+        />
       ))}
       <MeetingControl />
     </section>

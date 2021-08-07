@@ -21,11 +21,13 @@ export const BaseArea: FC = ({ children }) => {
   useEffect(() => {
     setSocket(io("ws://localhost:8085"));
   }, []);
-  const setToastProps = useCallback((props: SetToastPropsType) =>
-  setToast({ ...toast, ...props }), []);
+  const setToastProps = useCallback(
+    (props: SetToastPropsType) => setToast({ ...toast, ...props }),
+    []
+  );
 
   const client = new QueryClient();
-  
+
   return (
     <QueryClientProvider client={client}>
       <BaseContext.Provider

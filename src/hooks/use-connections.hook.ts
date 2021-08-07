@@ -9,11 +9,7 @@ import {
 } from "../constants/channels.constants";
 import { selectUser } from "../store/user/user.selectors";
 import { ConnectionType, Peer } from "../types/connection.types";
-import {
-  addTracks,
-  createConnection,
-  removeTracks,
-} from "../utils/connection.util";
+import { addTracks, createConnection } from "../utils/connection.util";
 import { getMedia } from "../utils/media.utils";
 
 export const useConnections = (): [ConnectionType] => {
@@ -22,7 +18,6 @@ export const useConnections = (): [ConnectionType] => {
   const { meetingId } = useParams<MeetingAreaParamsType>();
   const auth = useSelector(selectUser);
   const [channel, setChannel] = useState("");
-  const { video, audio } = useContext(BaseContext);
 
   useEffect(() => {
     meetingId && setChannel(SocketChannel.onRoom(meetingId));
@@ -59,6 +54,9 @@ export const useConnections = (): [ConnectionType] => {
     const { user } = data;
     const connection = await createConnection();
     const dataChannel = connection.createDataChannel(DataChannels.CHAT);
+    const controlChannel = connection.createDataChannel(
+      DataChannels.STREAMING_CONTROLS
+    );
     await sendTracksAtInitial(connection);
     const offer = await connection.createOffer();
     await connection.setLocalDescription(offer);
@@ -66,7 +64,10 @@ export const useConnections = (): [ConnectionType] => {
     addConnection(user.uid, {
       user,
       connection,
-      dataChannels: { [DataChannels.CHAT]: dataChannel },
+      dataChannels: {
+        [DataChannels.CHAT]: dataChannel,
+        [DataChannels.STREAMING_CONTROLS]: controlChannel,
+      },
     });
     // send offer
     broadcastSignal({ offer, type: SocketEvents.OFFER, to: user.uid });
@@ -75,7 +76,7 @@ export const useConnections = (): [ConnectionType] => {
 
   const sendTracksAtInitial = async (connection: RTCPeerConnection) => {
     const stream = await getMedia({ video: true, audio: true });
-    addTracks(connection, stream, false);
+    addTracks(connection, stream, true);
   };
 
   const acceptNewOffer = async (data: any) => {
@@ -97,11 +98,18 @@ export const useConnections = (): [ConnectionType] => {
   const onDataChannel = (peer: Peer) => {
     if (peer) {
       const { connection, user } = peer;
+      const uid = peer.user.uid;
       connection.ondatachannel = (e) => {
-        addConnection(user.uid, {
-          ...peer,
-          dataChannels: { ...peer.dataChannels, [e.channel.label]: e.channel },
-        });
+        setCon((peers) => ({
+          ...peers,
+          [uid]: {
+            ...peers[uid],
+            dataChannels: {
+              ...peers[uid].dataChannels,
+              [e.channel.label]: e.channel,
+            },
+          },
+        }));
       };
     }
   };
@@ -128,6 +136,10 @@ export const useConnections = (): [ConnectionType] => {
   const onICECandidate = (connection: RTCPeerConnection, to: string) => {
     connection.onicecandidate = ({ candidate }) => {
       broadcastSignal({ type: SocketEvents.ADD_ICE, candidate, to });
+    };
+
+    connection.onnegotiationneeded = () => {
+      console.log("NEED TO NEGOTIATIONS");
     };
   };
 

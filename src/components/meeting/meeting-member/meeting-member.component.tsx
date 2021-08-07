@@ -9,7 +9,9 @@ interface MeetingMemberType extends MemberProps {
 
 export const MeetingMember: FC<MeetingMemberType> = ({
   membersLength,
-  stream, user
+  stream,
+  user,
+  controlChannel,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [{ video, audio }, setControls] = useState({
@@ -18,12 +20,21 @@ export const MeetingMember: FC<MeetingMemberType> = ({
   });
 
   useEffect(() => {
+    if (controlChannel) {
+      controlChannel.onmessage = (e) => {
+        console.log("WORKING NOW", e.data);
+        setControls(JSON.parse(e.data));
+      };
+    }
+  }, [controlChannel, video, audio]);
+
+  useEffect(() => {
     const src = videoRef.current;
     if (src) {
       src.srcObject = stream;
       src.play();
     }
-  }, [videoRef]);
+  }, [videoRef, video]);
 
   return (
     <div
@@ -37,7 +48,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
     >
       <VideoArea
         videoRef={videoRef}
-        video={true}
+        video={video}
         src="src"
         muted={true}
         className="w-full h-full"

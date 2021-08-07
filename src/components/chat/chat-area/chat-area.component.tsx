@@ -21,10 +21,11 @@ const ChatArea: FC<ChatAreaProps> = ({ chatChannels }) => {
   useEffect(() => {
     if (chatChannels) {
       Object.entries(chatChannels).forEach((peer) => {
-        peer[1].onmessage = (e) => {
-          console.log("I GOT MESSAGE for you!!");
-          setMessageProps(JSON.parse(e.data))
-        };
+        if (peer[1])
+          peer[1].onmessage = (e) => {
+            console.log("I GOT MESSAGE for you!!");
+            setMessageProps(JSON.parse(e.data));
+          };
       });
     }
   }, [chatChannels, messages]);
