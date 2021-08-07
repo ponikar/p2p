@@ -22,7 +22,6 @@ export const MeetingMember: FC<MeetingMemberType> = ({
   useEffect(() => {
     if (controlChannel) {
       controlChannel.onmessage = (e) => {
-        console.log("WORKING NOW", e.data);
         setControls(JSON.parse(e.data));
       };
     }
@@ -34,7 +33,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
       src.srcObject = stream;
       src.play();
     }
-  }, [videoRef, video]);
+  }, [videoRef, video, stream]);
 
   return (
     <div
