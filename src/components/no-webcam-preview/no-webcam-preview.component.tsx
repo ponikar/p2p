@@ -1,15 +1,26 @@
 import React, { FC } from "react";
+import { MicOff } from "react-feather";
 import { UserType } from "../../types/user.type";
 import { getRandomColor } from "../../utils/member.util";
 
-export const NoWebcamPreview: FC<UserType> = React.memo(
-  ({ displayName = "Monkey Mind" }) => {
+interface NoWebcamPreview extends UserType {
+  muted: boolean | undefined;
+}
+
+export const NoWebcamPreview: FC<NoWebcamPreview> = React.memo(
+  ({ displayName = "Monkey Mind", muted }) => {
     const avatar = `https://robohash.org/${Math.floor(Math.random() * 99)}`;
+    const color = getRandomColor();
     return (
       <section
-        style={{ backgroundColor: getRandomColor() }}
-        className="flex items-center justify-center flex-col text-highlight w-full h-full"
+        style={{ backgroundColor: color }}
+        className="flex items-center relative justify-center flex-col text-highlight w-full h-full"
       >
+        {muted && (
+          <div className="absolute rounded-full top-2 p-2 bg-secondryBack left-2">
+            <MicOff stroke={color} strokeWidth={2} size={12} />
+          </div>
+        )}
         <img
           src={avatar}
           alt="No webcam preview"

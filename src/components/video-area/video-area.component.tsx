@@ -20,14 +20,15 @@ export const VideoArea: FC<
     uid,
     email,
     className = "",
+    muted,
     ...rest
   }) => {
     return (
       <div className={`${className} video-container`}>
         {video ? (
-          <video {...rest} className="video-area" ref={videoRef} />
+          <video muted {...rest} className="video-area" ref={videoRef} />
         ) : (
-          <NoWebcamPreview {...{ displayName, uid, email }} />
+          <NoWebcamPreview {...{ displayName, uid, email, muted }} />
         )}
       </div>
     );
