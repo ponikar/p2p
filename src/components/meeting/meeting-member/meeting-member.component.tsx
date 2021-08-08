@@ -51,7 +51,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
         src="src"
         muted={true}
         className="w-full h-full"
-        participant_name="Darshan"
+        {...user}
       />
     </div>
   );

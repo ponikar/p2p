@@ -1,11 +1,9 @@
 import React, { FC, memo, VideoHTMLAttributes } from "react";
-import {
-  NoWebcamPreview,
-  NoWebcamPreviewType,
-} from "../no-webcam-preview/no-webcam-preview.component";
+import { UserType } from "../../types/user.type";
+import { NoWebcamPreview } from "../no-webcam-preview/no-webcam-preview.component";
 import "./video-area.style.css";
 
-interface VideoAreaProps extends NoWebcamPreviewType {
+interface VideoAreaProps extends UserType {
   video: boolean;
   videoRef: React.Ref<HTMLVideoElement>;
   className?: string;
@@ -14,13 +12,22 @@ interface VideoAreaProps extends NoWebcamPreviewType {
 export const VideoArea: FC<
   VideoAreaProps & VideoHTMLAttributes<HTMLVideoElement>
 > = memo(
-  ({ video, videoRef, src, participant_name, className = "", ...rest }) => {
+  ({
+    video,
+    videoRef,
+    src,
+    displayName,
+    uid,
+    email,
+    className = "",
+    ...rest
+  }) => {
     return (
       <div className={`${className} video-container`}>
         {video ? (
           <video {...rest} className="video-area" ref={videoRef} />
         ) : (
-          <NoWebcamPreview {...{ src, participant_name }} />
+          <NoWebcamPreview {...{ displayName, uid, email }} />
         )}
       </div>
     );
