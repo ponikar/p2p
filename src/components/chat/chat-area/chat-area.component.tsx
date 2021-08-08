@@ -1,16 +1,12 @@
-import React, { FC, memo, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useContext, useEffect, useState } from "react";
 import { MessageType } from "../../../types/chat.types";
-import { DataChannelType } from "../../../types/connection.types";
+import { MeetingAreaContext } from "../../meeting/meeting-area/meeting-area.component";
 import { ChatContext } from "../chat-context/chat.context";
-import { ChatHeader } from "../chat-header/chat-header.component";
 import { ChatInput } from "../chat-input/chat-input.component";
 import { ChatMessageArea } from "../chat-message-area/chat-message-area.component";
 
-interface ChatAreaProps {
-  chatChannels: DataChannelType;
-}
-
-const ChatArea: FC<ChatAreaProps> = ({ chatChannels }) => {
+export const ChatArea: FC = () => {
+  const { chatChannels } = useContext(MeetingAreaContext);
   const [messages, setMessage] = useState<MessageType[]>([]);
 
   const setMessageProps = useCallback(
@@ -38,13 +34,10 @@ const ChatArea: FC<ChatAreaProps> = ({ chatChannels }) => {
         chatChannels,
       }}
     >
-      <section className="col-span-3 text-highlight flex flex-col justify-around items-center border-secondryBack border">
-        <ChatHeader />
+      <section className="flex flex-col border justify-around flex-1 items-center">
         <ChatMessageArea />
         <ChatInput />
       </section>
     </ChatContext.Provider>
   );
 };
-
-export default ChatArea;

@@ -1,17 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { DataChannels } from "../../../constants/channels.constants";
+import { makeContext } from "../../../hooks/context/use-make-context.hook";
 import { useConnections } from "../../../hooks/use-connections.hook";
 import { useMeetingControl } from "../../../hooks/use-meeting-control.hook";
 import { DataChannelType } from "../../../types/connection.types";
 import { MemberType } from "../../../types/members.types";
-import ChatArea from "../../chat/chat-area/chat-area.component";
 import { MeetingMembers } from "../meeting-members/meeting-members.component";
+import { MeetingTab } from "../meeting-tab/meeting-tab.component";
+
+export const MeetingAreaContext = makeContext<{
+  members: MemberType;
+  chatChannels: DataChannelType;
+}>({ members: {}, chatChannels: {} });
 
 export const MeetingArea = () => {
   const [connections] = useConnections();
   const [members, setMembers] = useState<MemberType>({});
   const [chatChannels, setChatChannels] = useState<DataChannelType>({});
   useMeetingControl(connections);
+
   useEffect(() => {
     Object.keys(connections).forEach((key) => {
       const { connection, user } = connections[key];
@@ -57,7 +64,9 @@ export const MeetingArea = () => {
   return (
     <main className="w-full relative grid grid-cols-12">
       <MeetingMembers members={members} />
-      <ChatArea chatChannels={chatChannels} />
+      <MeetingAreaContext.Provider value={{ members, chatChannels }}>
+        <MeetingTab />
+      </MeetingAreaContext.Provider>
     </main>
   );
 };

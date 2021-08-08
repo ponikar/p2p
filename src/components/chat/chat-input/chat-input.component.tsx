@@ -14,7 +14,7 @@ export const ChatInput: FC = () => {
 
   const onSendMessage = () => {
     if (newMessage) {
-      const message = makeNewMessage({ text: newMessage, user  });
+      const message = makeNewMessage({ text: newMessage, user });
       setMessageProps(message);
       broadcastMessage(message);
       setNewMessage("");
