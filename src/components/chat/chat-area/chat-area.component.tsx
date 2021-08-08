@@ -34,7 +34,7 @@ export const ChatArea: FC = () => {
         chatChannels,
       }}
     >
-      <section className="flex flex-col border justify-around flex-1 items-center">
+      <section className="flex flex-col justify-around flex-1 items-center">
         <ChatMessageArea />
         <ChatInput />
       </section>

@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 interface MeetingSelectTabProps {
   isTabActive: boolean;
-  onClick?: (tab: string) => null;
+  onClick?: () => void;
 }
 
 export const MeetingSelectTab: FC<MeetingSelectTabProps> = ({
@@ -12,6 +12,7 @@ export const MeetingSelectTab: FC<MeetingSelectTabProps> = ({
 }) => {
   return (
     <button
+      onClick={onClick}
       className={`flex-1 py-3 center ${
         isTabActive
           ? "text-primary border-b-2 border-primary"

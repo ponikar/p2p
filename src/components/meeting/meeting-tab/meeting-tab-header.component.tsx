@@ -5,7 +5,14 @@ import { MeetingSelectTab } from "./meeting-select-tab.component";
 
 const iconProps = { size: 14, className: "mr-1" };
 
-export const MeetingTabHeader: FC = () => {
+interface MeetingTabHeaderProps {
+  setIsChatTabActive: React.Dispatch<React.SetStateAction<boolean>>;
+  isChatTabActive: boolean;
+}
+export const MeetingTabHeader: FC<MeetingTabHeaderProps> = ({
+  setIsChatTabActive,
+  isChatTabActive,
+}) => {
   const [currentTime, setCurrentTime] = useState(getCurrentTime());
 
   useEffect(() => {
@@ -18,10 +25,16 @@ export const MeetingTabHeader: FC = () => {
     <header className="w-full flex-col">
       <div> {currentTime} </div>
       <div className="flex">
-        <MeetingSelectTab isTabActive={true}>
+        <MeetingSelectTab
+          onClick={() => setIsChatTabActive(false)}
+          isTabActive={!isChatTabActive}
+        >
           <Users {...iconProps} /> Members
         </MeetingSelectTab>
-        <MeetingSelectTab isTabActive={false}>
+        <MeetingSelectTab
+          onClick={() => setIsChatTabActive(true)}
+          isTabActive={isChatTabActive}
+        >
           <MessageSquare {...iconProps} /> Messages
         </MeetingSelectTab>
       </div>
