@@ -12,7 +12,7 @@ export const MeetingCreationLeft: FC = () => {
   const { uid } = useSelector(selectUser);
   const { mutate, isLoading, error, data } = useMutationApi<
     any,
-    any,
+    Error,
     { uid: string }
   >({
     endpoint: "http://localhost:8085/create-meeting",
@@ -42,7 +42,7 @@ export const MeetingCreationLeft: FC = () => {
   useEffect(() => {
     if (error) {
       setToastProps({
-        text: error!.message,
+        text: error.message,
         show: true,
         type: "danger",
       });
