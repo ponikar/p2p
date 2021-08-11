@@ -5,9 +5,10 @@ import { ToastContext } from "../../common/toast/toast.context";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/user/user.selectors";
 import { auth } from "../../../firebase/firebase.config";
+import { Loading } from "../../loading/loading.component";
 export const Signin: FC = memo(() => {
   const { setToastProps } = useContext(ToastContext);
-  const { uid, displayName } = useSelector(selectUser);
+  const { uid, displayName, isLoading } = useSelector(selectUser);
   const singin = useCallback(async () => {
     try {
       await signinWithPopup();
@@ -19,6 +20,8 @@ export const Signin: FC = memo(() => {
       });
     }
   }, []);
+
+  if (isLoading) return <Loading />;
 
   return (
     <section>
