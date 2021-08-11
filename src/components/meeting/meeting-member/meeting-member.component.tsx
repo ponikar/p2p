@@ -46,6 +46,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
       } m-2`}
     >
       <VideoArea
+        audio={audio}
         videoRef={videoRef}
         video={video}
         src="src"

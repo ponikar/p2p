@@ -13,6 +13,8 @@ import { ControlButtonArea } from "./control-button-area.component";
 import { motion } from "framer-motion";
 import { BaseContext } from "../base/base.context";
 import { getMedia } from "../../utils/media.utils";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/user/user.selectors";
 
 interface WebCamStreamingProps {
   contstrainRef: RefObject<Element>;
@@ -22,6 +24,7 @@ export const WebCamStreaming: FC<WebCamStreamingProps> = ({
 }) => {
   const { video, audio } = useContext(BaseContext);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     getUserMedia();
@@ -38,16 +41,16 @@ export const WebCamStreaming: FC<WebCamStreamingProps> = ({
     }
   }, [video, audio, videoRef.current]);
 
-  console.log(videoRef);
-
   return (
     <motion.div className="streaming-area" drag dragConstraints={contstrainRef}>
       <VideoArea
-        {...{ video, videoRef }}
+        audio={audio}
+        video={video}
+        videoRef={videoRef}
         src="src"
         muted
         className="streaming-video"
-        participant_name="Darshan Ponikar"
+        {...user}
       />
       <div className="streaming-control">
         <ControlButtonArea />

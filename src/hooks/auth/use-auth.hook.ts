@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { auth } from "../../firebase/firebase.config";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../../store/user/user.slices";
+import { getAvatar } from "../../utils/member.util";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -14,9 +15,10 @@ export const useAuth = () => {
             email: user.email,
             displayName: user.displayName,
             uid: user.uid,
+            avatar: getAvatar(),
           })
         );
-       dispatch(removeUser());
+      dispatch(removeUser());
     });
     return () => {
       unsubscribe();

@@ -16,7 +16,7 @@ interface MeetingCreationWebcamProps {
 export const MeetingCreationWebcam: FC<MeetingCreationWebcamProps> = ({
   setIsJoined,
 }) => {
-  const { video } = useContext(BaseContext);
+  const { video, audio } = useContext(BaseContext);
   const user = useSelector(selectUser);
   const [isReady, askToJoin] = useMeetingJoin();
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -42,7 +42,7 @@ export const MeetingCreationWebcam: FC<MeetingCreationWebcamProps> = ({
           className="w-4/12"
           {...user}
           muted
-          {...{ video, videoRef }}
+          {...{ video, audio, videoRef }}
         />
         <div className="mt-5 center">
           <ControlButtonArea
