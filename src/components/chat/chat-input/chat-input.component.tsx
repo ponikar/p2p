@@ -1,15 +1,17 @@
-import React, { FC, KeyboardEvent, useContext, useState } from "react";
+import React, { FC, KeyboardEvent, memo, useContext, useState } from "react";
 import { Smile } from "react-feather";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/user/user.selectors";
 import { MessageType } from "../../../types/chat.types";
+import { MeetingAreaContext } from "../../meeting/meeting-area/meeting-area.component";
 import { ChatContext } from "../chat-context/chat.context";
 import { makeNewMessage } from "../chat.helpers";
 import { SendButton } from "./send-button.component";
 
 export const ChatInput: FC = () => {
   const [newMessage, setNewMessage] = useState<string>("");
-  const { setMessageProps, chatChannels } = useContext(ChatContext);
+  const { setMessageProps } = useContext(ChatContext);
+  const { chatChannels } = useContext(MeetingAreaContext);
   const user = useSelector(selectUser);
 
   const onSendMessage = () => {
