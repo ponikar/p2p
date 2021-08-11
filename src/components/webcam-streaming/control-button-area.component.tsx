@@ -2,6 +2,7 @@ import React, { FC, memo, useContext } from "react";
 import { Mic, MicOff, PhoneCall, Video, VideoOff } from "react-feather";
 import { BaseContext } from "../base/base.context";
 import { StreamControlButton } from "./control-button.component";
+import { HangupButton } from "./hangup-button.component";
 
 interface ControlButtonAreaProps {
   buttonSize?: number;
@@ -25,12 +26,7 @@ export const ControlButtonArea: FC<ControlButtonAreaProps> = memo(
           {...commonProps}
         />
         {!hideHangupButton && (
-          <StreamControlButton
-            iconClassName="text-white"
-            IconComponent={PhoneCall}
-            {...commonProps}
-            buttonClassName={`bg-red-900 ${buttonClassName}`}
-          />
+          <HangupButton {...{ commonProps, buttonClassName }} />
         )}
       </>
     );
