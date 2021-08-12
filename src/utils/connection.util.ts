@@ -8,9 +8,8 @@ const servers: RTCConfiguration = {
   ],
 };
 
-export const createConnection = async () => {
-  const con = new RTCPeerConnection(servers);
-  return con;
+export const createConnection = () => {
+  return new RTCPeerConnection(servers);
 };
 
 export const addTracks = (
@@ -27,4 +26,12 @@ export const addTracks = (
 
 export const removeTracks = (con: RTCPeerConnection) => {
   con.getSenders().forEach((sender) => con.removeTrack(sender));
+};
+
+export const removeConnection = (con: RTCPeerConnection) => {
+  con.onicecandidate = null;
+  con.ontrack = null;
+  con.onnegotiationneeded = null;
+  con.ondatachannel = null;
+  con.close();
 };

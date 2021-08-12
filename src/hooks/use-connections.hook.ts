@@ -9,7 +9,11 @@ import {
 } from "../constants/channels.constants";
 import { selectUser } from "../store/user/user.selectors";
 import { ConnectionType, Peer } from "../types/connection.types";
-import { addTracks, createConnection } from "../utils/connection.util";
+import {
+  addTracks,
+  createConnection,
+  removeConnection,
+} from "../utils/connection.util";
 import { getMedia } from "../utils/media.utils";
 
 export const useConnections = (): [ConnectionType] => {
@@ -21,28 +25,44 @@ export const useConnections = (): [ConnectionType] => {
 
   useEffect(() => {
     meetingId && setChannel(SocketChannel.onRoom(meetingId));
+
+    () => {
+      // cleanup
+      setCon({});
+      setChannel("");
+    };
   }, [meetingId]);
 
   useEffect(() => {
     if (socketConnection && channel && auth.uid) {
-      socketConnection.on(channel, async (e) => {
-        const data = JSON.parse(e);
-        console.log(data.type);
-        if (!data.to || (data.to && data.to === auth.uid)) {
-          switch (data.type) {
-            case SocketEvents.NEW:
-              return createNewOffer(data);
-            case SocketEvents.OFFER:
-              return acceptNewOffer(data);
-            case SocketEvents.ANSWER:
-              return acceptAnswer(data);
-            case SocketEvents.ADD_ICE:
-              return addICECandidate(data);
-          }
-        }
-      });
+      socketConnection.on(channel, onSocketEvents);
     }
+
+    return () => {
+      if (socketConnection && channel && auth.uid) {
+        socketConnection.off(channel, onSocketEvents);
+      }
+    };
   }, [socketConnection, channel, con, auth.uid]);
+
+  const onSocketEvents = (e: string) => {
+    const data = JSON.parse(e);
+    console.log(data.type);
+    if (!data.to || (data.to && data.to === auth.uid)) {
+      switch (data.type) {
+        case SocketEvents.NEW:
+          return createNewOffer(data);
+        case SocketEvents.OFFER:
+          return acceptNewOffer(data);
+        case SocketEvents.ANSWER:
+          return acceptAnswer(data);
+        case SocketEvents.ADD_ICE:
+          return addICECandidate(data);
+        case SocketEvents.USER_LEFT:
+          return hangupCall(data);
+      }
+    }
+  };
 
   const addConnection = useCallback(
     (id: string, connection: Peer) =>
@@ -156,6 +176,12 @@ export const useConnections = (): [ConnectionType] => {
       );
   };
 
+  const hangupCall = (data: any) => {
+    const { user } = data;
+    removeConnection(con[user.uid].connection);
+    delete con[user.uid];
+    setCon({ ...con });
+  };
   console.log(con);
   return [con];
 };

@@ -20,9 +20,9 @@ export const MeetingArea = () => {
   useMeetingControl(connections);
 
   useEffect(() => {
+    console.log("I AM CALLING FROM MEETING AREA");
     Object.keys(connections).forEach((key) => {
       const { connection, user } = connections[key];
-      console.log("SETTING UP TRACK LISTENERS", connection);
       connection.ontrack = (e) => {
         console.log("I AM GETTING SOME TRACKS");
         setMembers((members) => ({
