@@ -21,14 +21,23 @@ export const MeetingArea = () => {
   useMeetingControl(connections);
 
   useEffect(() => {
-    console.log("I AM CALLING FROM MEETING AREA");
+    if (Object.keys(connections).length === 0) return resetEverything();
     getPeers((con) => {
       const { connection, user } = con[1];
+
+      // adding peer to screen
+      setMembers((members) => ({
+        ...members,
+        [user.uid]: { stream: null, user },
+      }));
+      console.log("UPDATING MEMBERS");
       connection.ontrack = (e) => {
         console.log("I AM GETTING SOME TRACKS");
+
+        // when stream, updating stream
         setMembers((members) => ({
           ...members,
-          [user.uid]: { stream: e.streams[0], user },
+          [user.uid]: { ...members[user.uid], stream: e.streams[0] },
         }));
       };
     });
@@ -57,6 +66,11 @@ export const MeetingArea = () => {
       }
     });
   }, [connections]);
+
+  const resetEverything = () => {
+    setMembers({});
+    setChatChannels({});
+  };
 
   const getPeers = useCallback(
     (callback: (peer: [string, Peer]) => void) => {

@@ -1,7 +1,7 @@
 import { UserType } from "./user.type";
 
 export interface MemberProps {
-  stream: MediaStream;
+  stream: MediaStream | null;
   user: UserType;
   controlChannel?: RTCDataChannel | null;
 }

@@ -33,7 +33,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
 
   useEffect(() => {
     const src = videoRef.current;
-    if (src) {
+    if (src && stream) {
       src.srcObject = stream;
       src.play();
     }
@@ -52,7 +52,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
       <VideoArea
         audio={audio}
         videoRef={videoRef}
-        video={video}
+        video={video && stream ? true : false}
         src="src"
         muted={true}
         className="w-full h-full"
