@@ -1,5 +1,7 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from "react";
 import { MessageType } from "../../../types/chat.types";
+import { iterateObjects } from "../../../utils/common.util";
+import { removeDataChannelListener } from "../../../utils/connection.util";
 import { ChatArea } from "../../chat/chat-area/chat-area.component";
 import { MeetingAreaContext } from "../meeting-area/meeting-area.component";
 import { MeetingMembersList } from "../meeting-members-list/meeting-members-list.componet";
@@ -18,14 +20,19 @@ export const MeetingTab: FC = () => {
 
   useEffect(() => {
     if (chatChannels) {
-      Object.entries(chatChannels).forEach((peer) => {
+      iterateObjects<RTCDataChannel>(chatChannels, (peer) => {
         if (peer[1])
           peer[1].onmessage = (e) => {
-            console.log("I GOT MESSAGE for you!!");
             setMessageProps(JSON.parse(e.data));
           };
       });
     }
+
+    return () => {
+      iterateObjects<RTCDataChannel>(chatChannels, ([index, channel]) => {
+        removeDataChannelListener(channel);
+      });
+    };
   }, [chatChannels, messages]);
 
   return (

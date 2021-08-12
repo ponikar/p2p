@@ -3,8 +3,9 @@ import { DataChannels } from "../../../constants/channels.constants";
 import { makeContext } from "../../../hooks/context/use-make-context.hook";
 import { useConnections } from "../../../hooks/use-connections.hook";
 import { useMeetingControl } from "../../../hooks/use-meeting-control.hook";
-import { DataChannelType } from "../../../types/connection.types";
+import { DataChannelType, Peer } from "../../../types/connection.types";
 import { MemberType } from "../../../types/members.types";
+import { iterateObjects } from "../../../utils/common.util";
 import { MeetingMembers } from "../meeting-members/meeting-members.component";
 import { MeetingTab } from "../meeting-tab/meeting-tab.component";
 
@@ -21,8 +22,8 @@ export const MeetingArea = () => {
 
   useEffect(() => {
     console.log("I AM CALLING FROM MEETING AREA");
-    Object.keys(connections).forEach((key) => {
-      const { connection, user } = connections[key];
+    getPeers((con) => {
+      const { connection, user } = con[1];
       connection.ontrack = (e) => {
         console.log("I AM GETTING SOME TRACKS");
         setMembers((members) => ({
@@ -34,7 +35,7 @@ export const MeetingArea = () => {
   }, [connections]);
 
   useEffect(() => {
-    getPeers().forEach((peer) => {
+    getPeers((peer) => {
       const { dataChannels, user } = peer[1];
       if (dataChannels) {
         setChatChannels((c) => ({
@@ -57,9 +58,12 @@ export const MeetingArea = () => {
     });
   }, [connections]);
 
-  const getPeers = useCallback(() => {
-    return Object.entries(connections);
-  }, [connections]);
+  const getPeers = useCallback(
+    (callback: (peer: [string, Peer]) => void) => {
+      iterateObjects<Peer>(connections, callback);
+    },
+    [connections]
+  );
 
   return (
     <main className="w-full relative grid grid-cols-12">

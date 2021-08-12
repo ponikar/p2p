@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useContext } from "react";
 import { Icon, PhoneCall } from "react-feather";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {
   SocketChannel,
   SocketEvents,
@@ -22,6 +22,7 @@ export const HangupButton: FC<HangupButtonProps> = ({
   const { socketConnection } = useContext(BaseContext);
   const user = useSelector(selectUser);
   const { meetingId } = useParams<MeetingAreaParamsType>();
+  const { replace } = useHistory();
   const hangupCall = useCallback(() => {
     if (socketConnection) {
       console.log("I AM HANNGING UP PHONE!");
@@ -30,6 +31,7 @@ export const HangupButton: FC<HangupButtonProps> = ({
         JSON.stringify({ user, meetingId, type: SocketEvents.USER_LEFT })
       );
     }
+    replace(`/${meetingId}/bye`);
   }, [socketConnection]);
 
   return (

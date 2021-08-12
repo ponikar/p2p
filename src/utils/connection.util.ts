@@ -35,3 +35,9 @@ export const removeConnection = (con: RTCPeerConnection) => {
   con.ondatachannel = null;
   con.close();
 };
+
+export const removeDataChannelListener = (channel: RTCDataChannel) => {
+  channel.onmessage = null;
+  channel.onclose = null;
+  channel.onopen = null;
+};

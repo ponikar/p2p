@@ -16,9 +16,13 @@ export const MeetingTabHeader: FC<MeetingTabHeaderProps> = ({
   const [currentTime, setCurrentTime] = useState(getCurrentTime());
 
   useEffect(() => {
-    setInterval(() => {
+    const timer = setInterval(() => {
       setCurrentTime(getCurrentTime());
     }, 60000);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   return (
