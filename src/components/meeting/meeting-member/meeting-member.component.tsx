@@ -52,7 +52,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
       <VideoArea
         audio={audio}
         videoRef={videoRef}
-        video={video && stream ? true : false}
+        video={video}
         src="src"
         muted={true}
         className="w-full h-full"

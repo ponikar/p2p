@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { BaseContext } from "../components/base/base.context";
+import { ToastContext } from "../components/common/toast/toast.context";
 import {
   DataChannels,
   SocketChannel,
@@ -12,7 +13,9 @@ import { ConnectionType, Peer } from "../types/connection.types";
 import {
   addTracks,
   createConnection,
+  onConnectionsICEStates,
   removeConnection,
+  removeConnectionsICEStates,
 } from "../utils/connection.util";
 import { getMedia } from "../utils/media.utils";
 
@@ -22,15 +25,10 @@ export const useConnections = (): [ConnectionType] => {
   const { meetingId } = useParams<MeetingAreaParamsType>();
   const auth = useSelector(selectUser);
   const [channel, setChannel] = useState("");
+  const { setToastProps } = useContext(ToastContext);
 
   useEffect(() => {
     meetingId && setChannel(SocketChannel.onRoom(meetingId));
-
-    () => {
-      // cleanup
-      setCon({});
-      setChannel("");
-    };
   }, [meetingId]);
 
   useEffect(() => {
@@ -44,6 +42,17 @@ export const useConnections = (): [ConnectionType] => {
       }
     };
   }, [socketConnection, channel, con, auth.uid]);
+
+  useEffect(() => {
+    // when meeting members get disconnected
+    onConnectionsICEStates(con, (user) => {
+      hangupCall({ user });
+    });
+
+    return () => {
+      removeConnectionsICEStates(con);
+    };
+  }, [con]);
 
   const onSocketEvents = (e: string) => {
     const data = JSON.parse(e);
@@ -178,9 +187,14 @@ export const useConnections = (): [ConnectionType] => {
 
   const hangupCall = (data: any) => {
     const { user } = data;
+    console.log("HANGGING UP THE CALL", con);
     removeConnection(con[user.uid].connection);
     delete con[user.uid];
     setCon({ ...con });
+    setToastProps({
+      show: true,
+      text: `${user.displayName} has left the meeting`,
+    });
   };
   console.log(con);
   return [con];

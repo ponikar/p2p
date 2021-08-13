@@ -37,28 +37,30 @@ export const MeetingArea = () => {
         // when stream, updating stream
         setMembers((members) => ({
           ...members,
-          [user.uid]: { ...members[user.uid], stream: e.streams[0] },
+          [user.uid]: { ...members[user.uid], user, stream: e.streams[0] },
         }));
       };
     });
   }, [connections]);
 
   useEffect(() => {
-    getPeers((peer) => {
-      const { dataChannels, user } = peer[1];
+    getPeers(([uid, peer]) => {
+      const { dataChannels, user } = peer;
       if (dataChannels) {
         setChatChannels((c) => ({
           ...c,
-          [user.uid]: dataChannels[DataChannels.CHAT],
+          [uid]: dataChannels[DataChannels.CHAT],
         }));
-        const controlChannel = dataChannels[DataChannels.STREAMING_CONTROLS];
 
+        const controlChannel = dataChannels[DataChannels.STREAMING_CONTROLS];
         if (controlChannel) {
-          const member = members[peer[0]];
+          const member = members[uid];
+          console.log("MEMEBER", member);
           setMembers((m) => ({
             ...m,
-            [peer[0]]: {
+            [uid]: {
               ...member,
+              user,
               controlChannel,
             },
           }));
