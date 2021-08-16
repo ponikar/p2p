@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CreateMeetingHeader } from "../components/create-meeting/create-meeting-header/create-meeting-header.component";
 import bye from "../assets/imgs/bye.svg";
 import { PrimaryButton } from "../components/common/button.component";
 import { useHistory } from "react-router-dom";
 export const MeetingLeft = () => {
   const { replace } = useHistory();
+  useEffect(() => {
+    document.title = "Hello | 👋 Have a great day!";
+  }, []);
   return (
     <>
       <CreateMeetingHeader />
