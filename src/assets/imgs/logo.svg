@@ -59,11 +59,11 @@
 </linearGradient>
 <linearGradient id="paint1_linear" x1="83" y1="56" x2="83" y2="144" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FEFFFD"/>
-<stop offset="1" stop-color="#8DEDA1"/>
+<stop offset="1" stop-color="#57837B"/>
 </linearGradient>
 <linearGradient id="paint2_linear" x1="150.5" y1="61" x2="150.5" y2="137" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FEFFFD"/>
-<stop offset="1" stop-color="#8DEDA1"/>
+<stop offset="1" stop-color="#57837B"/>
 </linearGradient>
 </defs>
 </svg>
