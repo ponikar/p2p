@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { CreateMeeting } from "./pages/create-meeting.page";
 import { MeetingAreaPage } from "./pages/meeting-area.page";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";

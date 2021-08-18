@@ -19,10 +19,10 @@ export const MeetingCreation: FC = memo(() => {
 
   return (
     <MeetingCreationContext.Provider value={{ ...createMeeting, setProps }}>
-      <section className="p-5 w-10/12 mx-auto flex items-center border-black">
+      <section className="w-11/12 grid grid-cols-12">
         <MeetingCreationLeft />
         <MeetingCreationRight />
-        { (meetingID && showMeetingID) &&  <MeetingLinkPopup /> }
+        {meetingID && showMeetingID && <MeetingLinkPopup />}
       </section>
     </MeetingCreationContext.Provider>
   );
