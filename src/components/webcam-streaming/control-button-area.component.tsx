@@ -1,6 +1,6 @@
-import React, { FC, memo, useContext } from "react";
-import { Mic, MicOff, PhoneCall, Video, VideoOff } from "react-feather";
-import { BaseContext } from "../base/base.context";
+import React, { FC, memo } from "react";
+import { Mic, MicOff, Video, VideoOff } from "react-feather";
+import { useMeetingAreaContext } from "../meeting/meeting-area/meeting-area.context";
 import { StreamControlButton } from "./control-button.component";
 import { HangupButton } from "./hangup-button.component";
 
@@ -11,7 +11,7 @@ interface ControlButtonAreaProps {
 }
 export const ControlButtonArea: FC<ControlButtonAreaProps> = memo(
   ({ buttonSize = 15, buttonClassName = "", hideHangupButton = false }) => {
-    const { video, audio, setControls } = useContext(BaseContext);
+    const { video, audio, setControls } = useMeetingAreaContext();
     const commonProps = { size: buttonSize, buttonClassName };
     return (
       <>

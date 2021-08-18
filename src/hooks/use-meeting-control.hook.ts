@@ -1,11 +1,11 @@
 import { useContext, useEffect } from "react";
-import { BaseContext } from "../components/base/base.context";
+import { useMeetingAreaContext } from "../components/meeting/meeting-area/meeting-area.context";
 import { DataChannels } from "../constants/channels.constants";
 import { ConnectionType, Peer } from "../types/connection.types";
 import { iterateObjects } from "../utils/common.util";
 
 export const useMeetingControl = (connections: ConnectionType) => {
-  const { video, audio } = useContext(BaseContext);
+  const { video, audio } = useMeetingAreaContext();
 
   useEffect(() => {
     iterateObjects<Peer>(connections, ([, { dataChannels }]) => {

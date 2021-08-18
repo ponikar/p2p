@@ -1,8 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { BaseContext } from "../components/base/base.context";
 import { ToastContext } from "../components/common/toast/toast.context";
+import { useMeetingAreaContext } from "../components/meeting/meeting-area/meeting-area.context";
 import {
   DataChannels,
   SocketChannel,
@@ -21,7 +21,7 @@ import { getMedia } from "../utils/media.utils";
 
 export const useConnections = (): [ConnectionType] => {
   const [con, setCon] = useState<ConnectionType>({});
-  const { socketConnection } = useContext(BaseContext);
+  const { socketConnection } = useMeetingAreaContext();
   const { meetingId } = useParams<MeetingAreaParamsType>();
   const auth = useSelector(selectUser);
   const [channel, setChannel] = useState("");

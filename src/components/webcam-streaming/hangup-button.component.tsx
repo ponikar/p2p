@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext, useEffect } from "react";
+import React, { FC, useCallback, useEffect } from "react";
 import { Icon, PhoneCall } from "react-feather";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import {
 } from "../../constants/channels.constants";
 import { selectUser } from "../../store/user/user.selectors";
 import { onBeforeUnload, removeOnBeforeUnload } from "../../utils/media.utils";
-import { BaseContext } from "../base/base.context";
+import { useMeetingAreaContext } from "../meeting/meeting-area/meeting-area.context";
 import { StreamControlButton } from "./control-button.component";
 
 interface HangupButtonProps {
@@ -27,7 +27,7 @@ export const HangupButton: FC<HangupButtonProps> = ({
       removeOnBeforeUnload();
     };
   }, []);
-  const { socketConnection } = useContext(BaseContext);
+  const { socketConnection } = useMeetingAreaContext();
   const user = useSelector(selectUser);
   const { meetingId } = useParams<MeetingAreaParamsType>();
   const { replace } = useHistory();

@@ -1,13 +1,11 @@
 import React, { FC, useCallback, useContext, useEffect } from "react";
 import { Plus } from "react-feather";
 import { useMutationApi } from "../../../hooks/apis/use-mutation.hook";
-import { BaseContext } from "../../base/base.context";
 import { PrimaryButton } from "../../common/button.component";
 import { MeetingCreationContext } from "./meeting-creation.context";
 
 export const MeetingCreationLeft: FC = () => {
   const { setProps } = useContext(MeetingCreationContext);
-  const { setControls } = useContext(BaseContext);
   const { mutate, isLoading, error, data } = useMutationApi({
     endpoint: "http://localhost:8085/create-meeting",
   });

@@ -1,13 +1,13 @@
-import { BaseContext } from "../../base/base.context";
 import { VideoArea } from "../../video-area/video-area.component";
 import { ControlButtonArea } from "../../webcam-streaming/control-button-area.component";
-import React, { FC, useCallback, useContext, useEffect, useRef } from "react";
+import React, { FC, useCallback, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/user/user.selectors";
 import { PrimaryButton } from "../../common/button.component";
 import { useMeetingJoin } from "../../../hooks/use-meeting-join.hook";
 import { getMedia } from "../../../utils/media.utils";
 import { CreateMeetingHeader } from "../create-meeting-header/create-meeting-header.component";
+import { useMeetingAreaContext } from "../../meeting/meeting-area/meeting-area.context";
 
 interface MeetingCreationWebcamProps {
   setIsJoined: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +16,7 @@ interface MeetingCreationWebcamProps {
 export const MeetingCreationWebcam: FC<MeetingCreationWebcamProps> = ({
   setIsJoined,
 }) => {
-  const { video, audio } = useContext(BaseContext);
+  const { video, audio } = useMeetingAreaContext();
   const user = useSelector(selectUser);
   const [isReady, askToJoin] = useMeetingJoin();
   const videoRef = useRef<HTMLVideoElement>(null);
