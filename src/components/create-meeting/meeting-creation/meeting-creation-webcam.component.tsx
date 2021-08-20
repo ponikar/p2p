@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/user/user.selectors";
 import { PrimaryButton } from "../../common/button.component";
 import { useMeetingJoin } from "../../../hooks/use-meeting-join.hook";
-import { getMedia } from "../../../utils/media.utils";
 import { CreateMeetingHeader } from "../create-meeting-header/create-meeting-header.component";
 import { useMeetingAreaContext } from "../../meeting/meeting-area/meeting-area.context";
 
@@ -16,20 +15,26 @@ interface MeetingCreationWebcamProps {
 export const MeetingCreationWebcam: FC<MeetingCreationWebcamProps> = ({
   setIsJoined,
 }) => {
-  const { video, audio } = useMeetingAreaContext();
+  const { video, audio, stream } = useMeetingAreaContext();
   const user = useSelector(selectUser);
   const [isReady, askToJoin] = useMeetingJoin();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    (async () => {
-      if (videoRef.current) {
-        const stream = await getMedia({ video: true, audio: true });
+    (() => {
+      if (videoRef.current && stream) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
       }
     })();
-  }, [videoRef.current]);
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.srcObject = null;
+      }
+    };
+  }, [videoRef.current, stream]);
   const joinMeeting = useCallback(() => {
     askToJoin();
     setIsJoined(true);

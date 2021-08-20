@@ -8,11 +8,13 @@ import React, {
   useState,
 } from "react";
 import { io, Socket } from "socket.io-client";
+import { getMedia } from "../../../utils/media.utils";
 import { StreamingControlTypes } from "../../webcam-streaming/webcam-streaming.types";
 
 export interface MeetingAreaContextType extends StreamingControlTypes {
   setControls: (props: Partial<StreamingControlTypes>) => void;
   socketConnection: Socket | null;
+  stream: MediaStream;
 }
 
 const BASE_INITIAL_STATE: MeetingAreaContextType = {
@@ -20,6 +22,7 @@ const BASE_INITIAL_STATE: MeetingAreaContextType = {
   audio: true,
   setControls: () => {},
   socketConnection: null,
+  stream: new MediaStream(),
 };
 
 const Context = createContext<MeetingAreaContextType>(BASE_INITIAL_STATE);
@@ -28,7 +31,14 @@ export const MeetingAreaContextProvider: FC = ({ children }) => {
     { video: true, audio: true }
   );
 
+  const [stream, setStream] = useState<MediaStream>(new MediaStream());
   let socket = useRef<Socket>(io("ws://localhost:8085"));
+
+  useEffect(() => {
+    (async () => {
+      setStream(await getMedia({ video: true, audio: true }));
+    })();
+  }, []);
 
   const setControls = useCallback(
     (props: Partial<StreamingControlTypes>) => {
@@ -42,6 +52,7 @@ export const MeetingAreaContextProvider: FC = ({ children }) => {
       value={{
         ...meetingControls,
         setControls,
+        stream,
         socketConnection: socket.current,
       }}
     >

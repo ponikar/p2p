@@ -15,20 +15,15 @@ export const createConnection = () => {
   return new RTCPeerConnection(servers);
 };
 
-export const addTracks = (
-  con: RTCPeerConnection,
-  stream: MediaStream,
-  video: boolean
-) => {
+export const addTracks = (con: RTCPeerConnection, stream: MediaStream) => {
   const newStream = new MediaStream();
   stream.getTracks().forEach((s) => {
-    s.enabled = video;
     con.addTrack(s, newStream);
   });
 };
 
-export const removeTracks = (con: RTCPeerConnection) => {
-  con.getSenders().forEach((sender) => con.removeTrack(sender));
+export const removeTracks = (stream: MediaStream) => {
+  stream.getTracks().forEach((s) => s.stop());
 };
 
 export const removeConnection = (con: RTCPeerConnection) => {

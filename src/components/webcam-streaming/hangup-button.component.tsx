@@ -7,6 +7,7 @@ import {
   SocketEvents,
 } from "../../constants/channels.constants";
 import { selectUser } from "../../store/user/user.selectors";
+import { removeTracks } from "../../utils/connection.util";
 import { onBeforeUnload, removeOnBeforeUnload } from "../../utils/media.utils";
 import { useMeetingAreaContext } from "../meeting/meeting-area/meeting-area.context";
 import { StreamControlButton } from "./control-button.component";
@@ -27,7 +28,7 @@ export const HangupButton: FC<HangupButtonProps> = ({
       removeOnBeforeUnload();
     };
   }, []);
-  const { socketConnection } = useMeetingAreaContext();
+  const { socketConnection, stream } = useMeetingAreaContext();
   const user = useSelector(selectUser);
   const { meetingId } = useParams<MeetingAreaParamsType>();
   const { replace } = useHistory();
@@ -39,6 +40,7 @@ export const HangupButton: FC<HangupButtonProps> = ({
         JSON.stringify({ user, meetingId, type: SocketEvents.USER_LEFT })
       );
     }
+    removeTracks(stream);
     replace(`/${meetingId}/bye`);
   }, [socketConnection]);
 

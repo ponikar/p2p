@@ -3,7 +3,6 @@ import "./webcam-streaming.style.css";
 import { VideoArea } from "../video-area/video-area.component";
 import { ControlButtonArea } from "./control-button-area.component";
 import { motion } from "framer-motion";
-import { getMedia } from "../../utils/media.utils";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/user/user.selectors";
 import { useMeetingAreaContext } from "../meeting/meeting-area/meeting-area.context";
@@ -14,24 +13,20 @@ interface WebCamStreamingProps {
 export const WebCamStreaming: FC<WebCamStreamingProps> = ({
   contstrainRef,
 }) => {
-  const { video, audio } = useMeetingAreaContext();
+  const { video, audio, stream } = useMeetingAreaContext();
   const videoRef = useRef<HTMLVideoElement>(null);
   const user = useSelector(selectUser);
 
   useEffect(() => {
     getUserMedia();
-  }, [video]);
+  }, [videoRef.current]);
 
-  const getUserMedia = useCallback(async () => {
-    const stream = await getMedia({ video: true, audio: true });
-    if (!video) {
-      stream.getTracks().forEach((e) => (e.enabled = false));
-    }
+  const getUserMedia = useCallback(() => {
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
       videoRef.current.play();
     }
-  }, [video, audio, videoRef.current]);
+  }, [videoRef.current]);
 
   return (
     <motion.div className="streaming-area" drag dragConstraints={contstrainRef}>
