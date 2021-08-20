@@ -2,6 +2,7 @@ import React, { FC, useCallback, useContext, useEffect } from "react";
 import { Plus } from "react-feather";
 import { useMutationApi } from "../../../hooks/apis/use-mutation.hook";
 import { PrimaryButton } from "../../common/button.component";
+import { SectionTitle } from "../../common/typography/typography.component";
 import { MeetingCreationContext } from "./meeting-creation.context";
 
 export const MeetingCreationLeft: FC = () => {
@@ -24,9 +25,9 @@ export const MeetingCreationLeft: FC = () => {
   }, [data]);
 
   return (
-    <div className="col-span-4 self-center">
-      <header className="text-3xl">
-        <h2>Get a meeting link and start convertation!</h2>
+    <div className="col-span-4 lg:order-first order-last self-center">
+      <header className="lg:w-full md:w-10/12 w-full">
+        <SectionTitle title="Get a meeting link and start convertation!" />
       </header>
 
       <div className="flex">

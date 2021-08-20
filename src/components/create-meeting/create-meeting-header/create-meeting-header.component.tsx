@@ -10,7 +10,7 @@ export const CreateMeetingHeader: FC = () => {
         <img src={logo} className="w-10 h-10" />
       </section>
       <section className="text-sm my-2 items-center flex">
-        <p className="mx-5">
+        <p className="sm:mx-5 mx-0">
           {getCurrentTime()} &bull; {getDateTime()}
         </p>
         {/* <HelpCircle className="text-sm cursor-pointer mx-3 text-primary" />

@@ -17,7 +17,7 @@ export const MeetingLinkPopup: FC = memo(() => {
   }, [meetingID]);
 
   return (
-    <section className="xl:w-3/12 w-4/12 shadow-lg text-highlight bg-secondryBack rounded-md p-5 fixed-center">
+    <section className="xl:w-3/12 lg:w-4/12 w-11/12 shadow-lg text-highlight bg-secondryBack rounded-md p-5 fixed-center">
       <div className="flex items-center justify-between">
         <h2 className="text-lg"> Here is the meeting link! </h2>
         <X
@@ -25,16 +25,15 @@ export const MeetingLinkPopup: FC = memo(() => {
           className="text-primary cursor-pointer"
         />
       </div>
-      <p className="text-sm mt-4">
+      <p className="lg:text-sm text-xs mt-4">
         {" "}
         Copy the meeting link and share with people you want to meet it. Be sure
         to save it for later.{" "}
       </p>
 
       <div className="p-3 text-filter flex justify-between items-center rounded-md mt-4 bg-back">
-        <p>
-          {" "}
-          {window.location.host}/{meetingID}{" "}
+        <p className="lg:text-sm text-xs">
+          {window.location.host}/{meetingID}
         </p>
 
         <Copy

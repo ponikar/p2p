@@ -21,7 +21,7 @@ export const Signin: FC = memo(() => {
 
   console.log(user);
   return (
-    <section>
+    <section className="sm:block hidden">
       {/* <img
         src="https://robohash.org/logo"
         className="w-12 h-12 ml-2 rounded-full"
