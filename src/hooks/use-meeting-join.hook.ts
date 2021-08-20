@@ -16,8 +16,6 @@ export const useMeetingJoin = (): [boolean, Function] => {
     }
   }, [socketConnection, meetingId, user.uid]);
 
-  console.log(socketConnection);
-
   const askToJoin = useCallback(() => {
     if (isReady) {
       console.log("I AM IN");
