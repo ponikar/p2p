@@ -37,7 +37,10 @@ export const MeetingTab: FC = () => {
 
   return (
     <section className="col-span-3 flex flex-col text-highlight border-secondryBack border">
-      <MeetingTabHeader {...{ isChatTabActive, setIsChatTabActive }} />
+      <MeetingTabHeader
+        totalUsers={Object.keys(chatChannels).length}
+        {...{ isChatTabActive, setIsChatTabActive }}
+      />
       {isChatTabActive ? (
         <ChatArea {...{ messages, setMessageProps }} />
       ) : (

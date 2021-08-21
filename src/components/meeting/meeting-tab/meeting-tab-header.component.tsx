@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
-import { MessageSquare, Users } from "react-feather";
-import { getCurrentTime } from "../../../utils/time.utills";
+import React, { FC } from "react";
+import { Airplay, Clock, MessageSquare, Users } from "react-feather";
+import { useTime } from "../../../hooks/use-time.hook";
 import { MeetingSelectTab } from "./meeting-select-tab.component";
 
 const iconProps = { size: 14, className: "mr-1" };
@@ -8,26 +8,27 @@ const iconProps = { size: 14, className: "mr-1" };
 interface MeetingTabHeaderProps {
   setIsChatTabActive: React.Dispatch<React.SetStateAction<boolean>>;
   isChatTabActive: boolean;
+  totalUsers: number;
 }
 export const MeetingTabHeader: FC<MeetingTabHeaderProps> = ({
   setIsChatTabActive,
   isChatTabActive,
+  totalUsers = 0,
 }) => {
-  const [currentTime, setCurrentTime] = useState(getCurrentTime());
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(getCurrentTime());
-    }, 60000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  const currentTime = useTime();
 
   return (
     <header className="w-full flex-col">
-      <div> {currentTime} </div>
+      <section className="w-11/12 mx-auto pt-3 pb-2 flex items-center justify-around">
+        <div className="flex items-center">
+          <Airplay size={20} className="text-primary" />
+          <div className="mx-2"> {totalUsers} </div>
+        </div>
+        <div className="flex items-center">
+          <Clock size={20} className="text-primary" />
+          <div className="mx-2"> {currentTime} </div>
+        </div>
+      </section>
       <div className="flex">
         <MeetingSelectTab
           onClick={() => setIsChatTabActive(false)}
