@@ -19,7 +19,7 @@ export const MeetingTabHeader: FC<MeetingTabHeaderProps> = ({
 
   return (
     <header className="w-full flex-col">
-      <section className="w-11/12 mx-auto pt-3 pb-2 flex items-center justify-around">
+      <section className="w-11/12 relative py-3 mx-auto flex items-center justify-around">
         <div className="flex items-center">
           <Airplay size={20} className="text-primary" />
           <div className="mx-2"> {totalUsers} </div>
