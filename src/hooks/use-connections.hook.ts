@@ -21,7 +21,7 @@ import { getMedia } from "../utils/media.utils";
 
 export const useConnections = (): [ConnectionType] => {
   const [con, setCon] = useState<ConnectionType>({});
-  const { socketConnection } = useMeetingAreaContext();
+  const { socketConnection, stream } = useMeetingAreaContext();
   const { meetingId } = useParams<MeetingAreaParamsType>();
   const auth = useSelector(selectUser);
   const [channel, setChannel] = useState("");
@@ -81,7 +81,7 @@ export const useConnections = (): [ConnectionType] => {
 
   const createNewOffer = async (data: any) => {
     const { user } = data;
-    const connection = await createConnection();
+    const connection = createConnection();
     const dataChannel = connection.createDataChannel(DataChannels.CHAT);
     const controlChannel = connection.createDataChannel(
       DataChannels.STREAMING_CONTROLS
@@ -105,13 +105,13 @@ export const useConnections = (): [ConnectionType] => {
 
   const sendTracksAtInitial = async (connection: RTCPeerConnection) => {
     const stream = await getMedia({ video: true, audio: true });
-    addTracks(connection, stream, true);
+    addTracks(connection, stream);
   };
 
   const acceptNewOffer = async (data: any) => {
     const { from, offer } = data;
 
-    const connection = await createConnection();
+    const connection = createConnection();
     await sendTracksAtInitial(connection);
     const peer = { connection, user: from };
     addConnection(from.uid, peer);
