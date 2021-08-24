@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { BaseArea } from "./components/base/base-area.component";
 import { store } from "./store/store";
 import { Provider } from "react-redux";
+import { ProtectedRoutes } from "./components/routes/protected-route.component";
 
 const CreateMeeting = React.lazy(() => import("./pages/create-meeting.page"));
 const MeetingAreaPage = React.lazy(() => import("./pages/meeting-area.page"));
@@ -15,9 +16,13 @@ function App() {
         <Router>
           <Suspense fallback={<p> Loading.... </p>}>
             <Switch>
-              <Route path="/:meetingId" exact component={MeetingAreaPage} />
+             <ProtectedRoutes
+              path="/:meetingId"
+              exact
+              component={MeetingAreaPage}
+            />
               <Route path="/" exact component={CreateMeeting} />
-              <Route path="/:meetingId/bye" exact component={MeetingLeft} />
+              <ProtectedRoutes path="/:meetingId/bye" exact component={MeetingLeft} />
             </Switch>
           </Suspense>
         </Router>

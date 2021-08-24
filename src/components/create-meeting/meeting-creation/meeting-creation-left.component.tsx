@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useMutationApi } from "../../../hooks/apis/use-mutation.hook";
 import { selectUser } from "../../../store/user/user.selectors";
 import { PrimaryButton } from "../../common/button.component";
+import { ToastContext } from "../../common/toast/toast.context";
 import { SectionTitle } from "../../common/typography/typography.component";
 import { MeetingCreationContext } from "./meeting-creation.context";
 
@@ -17,10 +18,18 @@ export const MeetingCreationLeft: FC = () => {
   >({
     endpoint: "http://localhost:8085/create-meeting",
   });
+  const { setToastProps } = useContext(ToastContext);
 
   const createMeeting = useCallback(async () => {
+    if (!uid)
+      return setToastProps({
+        show: true,
+        text: "Please login with your Google account!",
+        type: "danger",
+      });
+
     mutate({ uid });
-  }, []);
+  }, [uid]);
 
   useEffect(() => {
     if (data?.data) {
@@ -30,6 +39,16 @@ export const MeetingCreationLeft: FC = () => {
       setProps({ meetingID: meetingid, showMeetingID: true });
     }
   }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      setToastProps({
+        text: error.message,
+        show: true,
+        type: "danger",
+      });
+    }
+  }, [error]);
 
   return (
     <div className="col-span-4 lg:order-first order-last self-center">

@@ -1,11 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserType } from "../../types/user.type";
 
-const USER_INTIAL_STATE: UserType = {
+
+interface UserSliceProps extends UserType {
+  isLoading: boolean;
+}
+
+const USER_INTIAL_STATE: UserSliceProps = {
   email: "",
   displayName: "",
   uid: "",
-  avatar: "",
+  isLoading: true,
 };
 
 const userSlices = createSlice({
@@ -13,9 +18,9 @@ const userSlices = createSlice({
   initialState: USER_INTIAL_STATE,
   reducers: {
     addUser: (state, { payload }: PayloadAction<UserType>) => {
-      return payload;
+      return { ...payload, isLoading: false };
     },
-    removeUser: (_) => USER_INTIAL_STATE,
+    removeUser: (_) => ({ ...USER_INTIAL_STATE, isLoading: false }),
   },
 });
 
