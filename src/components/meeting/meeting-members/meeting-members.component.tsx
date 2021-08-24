@@ -7,6 +7,7 @@ import { MeetingMember } from "../meeting-member/meeting-member.component";
 import lobby from "../../../assets/imgs/lobby.svg";
 import { ToastContext } from "../../common/toast/toast.context";
 import { ImgInfo } from "../../common/img-info/img-info.component";
+import { MeetingAreaParamsType } from "../../../types/params.types";
 interface MeetingMembersProps {
   members: MemberType;
 }

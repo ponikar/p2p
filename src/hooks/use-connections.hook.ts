@@ -10,6 +10,7 @@ import {
 } from "../constants/channels.constants";
 import { selectUser } from "../store/user/user.selectors";
 import { ConnectionType, Peer } from "../types/connection.types";
+import { MeetingAreaParamsType } from "../types/params.types";
 import {
   addTracks,
   createConnection,
@@ -172,8 +173,8 @@ export const useConnections = (): [ConnectionType] => {
     };
   };
 
-  const broadcastSignal = (data: object) => {
-    console.log("BRODCASTING", socketConnection);
+  const broadcastSignal = (data: any) => {
+    console.log("BRODCASTING", data.type);
     socketConnection &&
       socketConnection.emit(
         SocketChannel.onUser,

@@ -3,7 +3,7 @@ import { HeaderTitle } from "../components/common/typography/typography.componen
 import { CreateMeetingHeader } from "../components/create-meeting/create-meeting-header/create-meeting-header.component";
 import { MeetingCreation } from "../components/create-meeting/meeting-creation/meeeting-creation.component";
 
-export const CreateMeeting: FC = memo(() => {
+const CreateMeeting: FC = memo(() => {
   useEffect(() => {
     document.title = "Hello | 🥳️ Hangout with your friends.";
   }, []);
@@ -19,3 +19,5 @@ export const CreateMeeting: FC = memo(() => {
     </React.Fragment>
   );
 });
+
+export default CreateMeeting;

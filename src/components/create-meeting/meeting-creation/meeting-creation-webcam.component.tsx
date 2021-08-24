@@ -29,7 +29,7 @@ export const MeetingCreationWebcam: FC<MeetingCreationWebcamProps> = ({
     })();
 
     return () => {
-      if (videoRef.current) {
+      if (videoRef.current && videoRef.current.srcObject) {
         videoRef.current.pause();
         videoRef.current.srcObject = null;
       }

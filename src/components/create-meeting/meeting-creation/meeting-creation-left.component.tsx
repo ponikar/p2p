@@ -1,18 +1,25 @@
 import React, { FC, useCallback, useContext, useEffect } from "react";
 import { Plus } from "react-feather";
+import { useSelector } from "react-redux";
 import { useMutationApi } from "../../../hooks/apis/use-mutation.hook";
+import { selectUser } from "../../../store/user/user.selectors";
 import { PrimaryButton } from "../../common/button.component";
 import { SectionTitle } from "../../common/typography/typography.component";
 import { MeetingCreationContext } from "./meeting-creation.context";
 
 export const MeetingCreationLeft: FC = () => {
   const { setProps } = useContext(MeetingCreationContext);
-  const { mutate, isLoading, error, data } = useMutationApi({
+  const { uid } = useSelector(selectUser);
+  const { mutate, isLoading, error, data } = useMutationApi<
+    any,
+    Error,
+    { uid: string }
+  >({
     endpoint: "http://localhost:8085/create-meeting",
   });
 
   const createMeeting = useCallback(async () => {
-    mutate({ uid: "hxhxhxhx" });
+    mutate({ uid });
   }, []);
 
   useEffect(() => {

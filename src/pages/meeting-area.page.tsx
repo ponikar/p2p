@@ -5,7 +5,7 @@ import { MeetingArea } from "../components/meeting/meeting-area/meeting-area.com
 import { MeetingAreaContextProvider } from "../components/meeting/meeting-area/meeting-area.context";
 import { WebCamStreaming } from "../components/webcam-streaming/webcam-streaming.component";
 
-export const MeetingAreaPage: FC = memo(() => {
+const MeetingAreaPage: FC = memo(() => {
   const contstrainRef = useRef(null);
   const [isJoined, setisJoined] = useState(false);
   useEffect(() => {
@@ -26,3 +26,5 @@ export const MeetingAreaPage: FC = memo(() => {
     </MeetingAreaContextProvider>
   );
 });
+
+export default MeetingAreaPage;

@@ -7,6 +7,7 @@ import {
   SocketEvents,
 } from "../../constants/channels.constants";
 import { selectUser } from "../../store/user/user.selectors";
+import { MeetingAreaParamsType } from "../../types/params.types";
 import { removeTracks } from "../../utils/connection.util";
 import { onBeforeUnload, removeOnBeforeUnload } from "../../utils/media.utils";
 import { useMeetingAreaContext } from "../meeting/meeting-area/meeting-area.context";
