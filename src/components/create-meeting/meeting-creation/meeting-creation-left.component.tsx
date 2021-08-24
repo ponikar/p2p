@@ -5,6 +5,7 @@ import { useMutationApi } from "../../../hooks/apis/use-mutation.hook";
 import { selectUser } from "../../../store/user/user.selectors";
 import { PrimaryButton } from "../../common/button.component";
 import { ToastContext } from "../../common/toast/toast.context";
+import { SectionTitle } from "../../common/typography/typography.component";
 import { MeetingCreationContext } from "./meeting-creation.context";
 
 export const MeetingCreationLeft: FC = () => {
@@ -50,10 +51,9 @@ export const MeetingCreationLeft: FC = () => {
   }, [error]);
 
   return (
-    <div className="flex-1">
-      <header className="xl:text-4xl text-3xl">
-        <h2> Hangout with your Friends,</h2>
-        <h2> Feel like Home! </h2>
+    <div className="col-span-4 lg:order-first order-last self-center">
+      <header className="lg:w-full md:w-10/12 w-full">
+        <SectionTitle title="Get a meeting link and start convertation!" />
       </header>
 
       <div className="flex">

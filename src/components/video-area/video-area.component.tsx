@@ -5,6 +5,7 @@ import "./video-area.style.css";
 
 interface VideoAreaProps extends UserType {
   video: boolean;
+  audio: boolean;
   videoRef: React.Ref<HTMLVideoElement>;
   className?: string;
 }
@@ -14,10 +15,12 @@ export const VideoArea: FC<
 > = memo(
   ({
     video,
+    audio,
     videoRef,
     src,
     displayName,
     uid,
+    avatar,
     email,
     className = "",
     muted,
@@ -28,7 +31,10 @@ export const VideoArea: FC<
         {video ? (
           <video muted {...rest} className="video-area" ref={videoRef} />
         ) : (
-          <NoWebcamPreview {...{ displayName, uid, email, muted }} />
+          <NoWebcamPreview
+            muted={!audio}
+            {...{ displayName, uid, email, avatar }}
+          />
         )}
       </div>
     );

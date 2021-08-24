@@ -1,7 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { BaseContext } from "../components/base/base.context";
+import { ToastContext } from "../components/common/toast/toast.context";
+import { useMeetingAreaContext } from "../components/meeting/meeting-area/meeting-area.context";
 import {
   DataChannels,
   SocketChannel,
@@ -9,15 +10,23 @@ import {
 } from "../constants/channels.constants";
 import { selectUser } from "../store/user/user.selectors";
 import { ConnectionType, Peer } from "../types/connection.types";
-import { addTracks, createConnection } from "../utils/connection.util";
+import { MeetingAreaParamsType } from "../types/params.types";
+import {
+  addTracks,
+  createConnection,
+  onConnectionsICEStates,
+  removeConnection,
+  removeConnectionsICEStates,
+} from "../utils/connection.util";
 import { getMedia } from "../utils/media.utils";
 
 export const useConnections = (): [ConnectionType] => {
   const [con, setCon] = useState<ConnectionType>({});
-  const { socketConnection } = useContext(BaseContext);
+  const { socketConnection, stream } = useMeetingAreaContext();
   const { meetingId } = useParams<MeetingAreaParamsType>();
   const auth = useSelector(selectUser);
   const [channel, setChannel] = useState("");
+  const { setToastProps } = useContext(ToastContext);
 
   useEffect(() => {
     meetingId && setChannel(SocketChannel.onRoom(meetingId));
@@ -25,24 +34,45 @@ export const useConnections = (): [ConnectionType] => {
 
   useEffect(() => {
     if (socketConnection && channel && auth.uid) {
-      socketConnection.on(channel, async (e) => {
-        const data = JSON.parse(e);
-        console.log(data.type);
-        if (!data.to || (data.to && data.to === auth.uid)) {
-          switch (data.type) {
-            case SocketEvents.NEW:
-              return createNewOffer(data);
-            case SocketEvents.OFFER:
-              return acceptNewOffer(data);
-            case SocketEvents.ANSWER:
-              return acceptAnswer(data);
-            case SocketEvents.ADD_ICE:
-              return addICECandidate(data);
-          }
-        }
-      });
+      socketConnection.on(channel, onSocketEvents);
     }
+
+    return () => {
+      if (socketConnection && channel && auth.uid) {
+        socketConnection.off(channel, onSocketEvents);
+      }
+    };
   }, [socketConnection, channel, con, auth.uid]);
+
+  useEffect(() => {
+    // when meeting members get disconnected
+    onConnectionsICEStates(con, (user) => {
+      hangupCall({ user });
+    });
+
+    return () => {
+      removeConnectionsICEStates(con);
+    };
+  }, [con]);
+
+  const onSocketEvents = (e: string) => {
+    const data = JSON.parse(e);
+    console.log(data.type);
+    if (!data.to || (data.to && data.to === auth.uid)) {
+      switch (data.type) {
+        case SocketEvents.NEW:
+          return createNewOffer(data);
+        case SocketEvents.OFFER:
+          return acceptNewOffer(data);
+        case SocketEvents.ANSWER:
+          return acceptAnswer(data);
+        case SocketEvents.ADD_ICE:
+          return addICECandidate(data);
+        case SocketEvents.USER_LEFT:
+          return hangupCall(data);
+      }
+    }
+  };
 
   const addConnection = useCallback(
     (id: string, connection: Peer) =>
@@ -52,7 +82,7 @@ export const useConnections = (): [ConnectionType] => {
 
   const createNewOffer = async (data: any) => {
     const { user } = data;
-    const connection = await createConnection();
+    const connection = createConnection();
     const dataChannel = connection.createDataChannel(DataChannels.CHAT);
     const controlChannel = connection.createDataChannel(
       DataChannels.STREAMING_CONTROLS
@@ -76,13 +106,13 @@ export const useConnections = (): [ConnectionType] => {
 
   const sendTracksAtInitial = async (connection: RTCPeerConnection) => {
     const stream = await getMedia({ video: true, audio: true });
-    addTracks(connection, stream, true);
+    addTracks(connection, stream);
   };
 
   const acceptNewOffer = async (data: any) => {
     const { from, offer } = data;
 
-    const connection = await createConnection();
+    const connection = createConnection();
     await sendTracksAtInitial(connection);
     const peer = { connection, user: from };
     addConnection(from.uid, peer);
@@ -143,8 +173,8 @@ export const useConnections = (): [ConnectionType] => {
     };
   };
 
-  const broadcastSignal = (data: object) => {
-    console.log("BRODCASTING", socketConnection);
+  const broadcastSignal = (data: any) => {
+    console.log("BRODCASTING", data.type);
     socketConnection &&
       socketConnection.emit(
         SocketChannel.onUser,
@@ -156,6 +186,17 @@ export const useConnections = (): [ConnectionType] => {
       );
   };
 
+  const hangupCall = (data: any) => {
+    const { user } = data;
+    console.log("HANGGING UP THE CALL", con);
+    removeConnection(con[user.uid].connection);
+    delete con[user.uid];
+    setCon({ ...con });
+    setToastProps({
+      show: true,
+      text: `${user.displayName} has left the meeting`,
+    });
+  };
   console.log(con);
   return [con];
 };

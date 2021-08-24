@@ -5,7 +5,7 @@ export const getMessageTime = (time: string) => {
 
 export const getCurrentTime = () => {
   const date = new Date().toLocaleTimeString();
-  return date.split(" ")[0].substr(0, 5);
+  return date.split(" ")[0].substr(0, 4);
 };
 
 export const getDateTime = () => {
@@ -15,6 +15,6 @@ export const getDateTime = () => {
     day: "2-digit",
     weekday: "short",
   }).format(date);
- 
+
   return format;
 };

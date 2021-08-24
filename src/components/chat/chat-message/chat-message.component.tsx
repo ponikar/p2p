@@ -27,11 +27,15 @@ export const ChatMessage: FC<ChatMessageType> = ({
         />
       )}
 
-      <p className={`chat-message-area bg-primary text-white `}>
+      <p className={`chat-message-area text-sm bg-primary text-white `}>
         {text}
       </p>
       {!isSameMessageBy && createdAt && (
-        <span className={`text-xs absolute w-full flex ${byUser ? "justify-end" : "justify-start" } -bottom-6 text-highlight`}>
+        <span
+          className={`text-xs absolute w-full flex ${
+            byUser ? "justify-end" : "justify-start"
+          } -bottom-6 text-highlight`}
+        >
           {getMessageTime(createdAt)}
         </span>
       )}

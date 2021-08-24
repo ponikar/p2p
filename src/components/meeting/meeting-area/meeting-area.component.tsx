@@ -3,8 +3,9 @@ import { DataChannels } from "../../../constants/channels.constants";
 import { makeContext } from "../../../hooks/context/use-make-context.hook";
 import { useConnections } from "../../../hooks/use-connections.hook";
 import { useMeetingControl } from "../../../hooks/use-meeting-control.hook";
-import { DataChannelType } from "../../../types/connection.types";
+import { DataChannelType, Peer } from "../../../types/connection.types";
 import { MemberType } from "../../../types/members.types";
+import { iterateObjects } from "../../../utils/common.util";
 import { MeetingMembers } from "../meeting-members/meeting-members.component";
 import { MeetingTab } from "../meeting-tab/meeting-tab.component";
 
@@ -20,35 +21,46 @@ export const MeetingArea = () => {
   useMeetingControl(connections);
 
   useEffect(() => {
-    Object.keys(connections).forEach((key) => {
-      const { connection, user } = connections[key];
-      console.log("SETTING UP TRACK LISTENERS", connection);
+    if (Object.keys(connections).length === 0) return resetEverything();
+    getPeers((con) => {
+      const { connection, user } = con[1];
+
+      // adding peer to screen
+      setMembers((members) => ({
+        ...members,
+        [user.uid]: { stream: null, user },
+      }));
+      console.log("UPDATING MEMBERS");
       connection.ontrack = (e) => {
         console.log("I AM GETTING SOME TRACKS");
+
+        // when stream, updating stream
         setMembers((members) => ({
           ...members,
-          [user.uid]: { stream: e.streams[0], user },
+          [user.uid]: { ...members[user.uid], user, stream: e.streams[0] },
         }));
       };
     });
   }, [connections]);
 
   useEffect(() => {
-    getPeers().forEach((peer) => {
-      const { dataChannels, user } = peer[1];
+    getPeers(([uid, peer]) => {
+      const { dataChannels, user } = peer;
       if (dataChannels) {
         setChatChannels((c) => ({
           ...c,
-          [user.uid]: dataChannels[DataChannels.CHAT],
+          [uid]: dataChannels[DataChannels.CHAT],
         }));
-        const controlChannel = dataChannels[DataChannels.STREAMING_CONTROLS];
 
+        const controlChannel = dataChannels[DataChannels.STREAMING_CONTROLS];
         if (controlChannel) {
-          const member = members[peer[0]];
+          const member = members[uid];
+          console.log("MEMEBER", member);
           setMembers((m) => ({
             ...m,
-            [peer[0]]: {
+            [uid]: {
               ...member,
+              user,
               controlChannel,
             },
           }));
@@ -57,9 +69,17 @@ export const MeetingArea = () => {
     });
   }, [connections]);
 
-  const getPeers = useCallback(() => {
-    return Object.entries(connections);
-  }, [connections]);
+  const resetEverything = () => {
+    setMembers({});
+    setChatChannels({});
+  };
+
+  const getPeers = useCallback(
+    (callback: (peer: [string, Peer]) => void) => {
+      iterateObjects<Peer>(connections, callback);
+    },
+    [connections]
+  );
 
   return (
     <main className="w-full relative grid grid-cols-12">

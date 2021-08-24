@@ -8,9 +8,9 @@ interface NoWebcamPreview extends UserType {
 }
 
 export const NoWebcamPreview: FC<NoWebcamPreview> = React.memo(
-  ({ displayName = "Monkey Mind", muted }) => {
-    const avatar = `https://robohash.org/${Math.floor(Math.random() * 99)}`;
+  ({ displayName, muted, avatar }) => {
     const color = getRandomColor();
+
     return (
       <section
         style={{ backgroundColor: color }}

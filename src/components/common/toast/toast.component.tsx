@@ -8,7 +8,7 @@ export const Toast = () => {
   }, [show]);
   if (!show) return <div />;
   return (
-    <div className="w-2/12 fixed bottom-5 left-5 text-highlight p-4 bg-secondryBack shadow-lg rounded-md">
+    <div className="lg:w-4/12 w-11/12 fixed bottom-5 left-5 text-highlight p-4 bg-secondryBack shadow-lg rounded-md">
       {text}
     </div>
   );

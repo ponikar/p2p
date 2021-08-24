@@ -1,10 +1,7 @@
-import React, { FC, memo, useContext } from "react";
-import { MeetingCreationRightHero } from "./meeting-creation-right-hero.component";
-
+import React, { FC, memo } from "react";
+import heroUrl from "../../../assets/imgs/hero.svg";
 export const MeetingCreationRight: FC = memo(() => {
   return (
-    <div className="center flex-col flex-1">
-      <MeetingCreationRightHero />
-    </div>
+    <img className="col-span-8" src={heroUrl} alt="Video Meeting App Hero" />
   );
 });

@@ -16,3 +16,6 @@ export const getRandomColor = () => {
   const key = Math.floor(Math.random() * 10);
   return Colors[key];
 };
+
+export const getAvatar = () =>
+  `https://robohash.org/${Math.floor(Math.random() * 99)}`;

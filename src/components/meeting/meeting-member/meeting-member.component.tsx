@@ -1,5 +1,6 @@
 import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import { MemberProps } from "../../../types/members.types";
+import { removeDataChannelListener } from "../../../utils/connection.util";
 import { VideoArea } from "../../video-area/video-area.component";
 import "./meeting-member.style.css";
 
@@ -25,11 +26,14 @@ export const MeetingMember: FC<MeetingMemberType> = ({
         setControls(JSON.parse(e.data));
       };
     }
+    return () => {
+      if (controlChannel) removeDataChannelListener(controlChannel);
+    };
   }, [controlChannel, video, audio]);
 
   useEffect(() => {
     const src = videoRef.current;
-    if (src) {
+    if (src && stream) {
       src.srcObject = stream;
       src.play();
     }
@@ -46,6 +50,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
       } m-2`}
     >
       <VideoArea
+        audio={audio}
         videoRef={videoRef}
         video={video}
         src="src"

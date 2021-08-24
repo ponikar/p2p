@@ -13,6 +13,7 @@ export const SocketEvents = {
   OFFER: "OFFER",
   ANSWER: "ANSWER",
   ADD_ICE: "ADD_ICE",
+  USER_LEFT: "USER_LEFT",
 };
 
 export const DataChannels = {

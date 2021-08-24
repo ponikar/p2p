@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserType } from "../../types/user.type";
 
+
 interface UserSliceProps extends UserType {
   isLoading: boolean;
 }

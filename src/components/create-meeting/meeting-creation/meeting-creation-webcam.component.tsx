@@ -1,13 +1,12 @@
-import { BaseContext } from "../../base/base.context";
 import { VideoArea } from "../../video-area/video-area.component";
 import { ControlButtonArea } from "../../webcam-streaming/control-button-area.component";
-import React, { FC, useCallback, useContext, useEffect, useRef } from "react";
+import React, { FC, useCallback, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/user/user.selectors";
 import { PrimaryButton } from "../../common/button.component";
 import { useMeetingJoin } from "../../../hooks/use-meeting-join.hook";
-import { getMedia } from "../../../utils/media.utils";
 import { CreateMeetingHeader } from "../create-meeting-header/create-meeting-header.component";
+import { useMeetingAreaContext } from "../../meeting/meeting-area/meeting-area.context";
 
 interface MeetingCreationWebcamProps {
   setIsJoined: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,20 +15,26 @@ interface MeetingCreationWebcamProps {
 export const MeetingCreationWebcam: FC<MeetingCreationWebcamProps> = ({
   setIsJoined,
 }) => {
-  const { video } = useContext(BaseContext);
+  const { video, audio, stream } = useMeetingAreaContext();
   const user = useSelector(selectUser);
   const [isReady, askToJoin] = useMeetingJoin();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    (async () => {
-      if (videoRef.current) {
-        const stream = await getMedia({ video: true, audio: true });
+    (() => {
+      if (videoRef.current && stream) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
       }
     })();
-  }, [videoRef.current]);
+
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.pause();
+        videoRef.current.srcObject = null;
+      }
+    };
+  }, [videoRef.current, stream]);
   const joinMeeting = useCallback(() => {
     askToJoin();
     setIsJoined(true);
@@ -42,7 +47,7 @@ export const MeetingCreationWebcam: FC<MeetingCreationWebcamProps> = ({
           className="w-4/12"
           {...user}
           muted
-          {...{ video, videoRef }}
+          {...{ video, audio, videoRef }}
         />
         <div className="mt-5 center">
           <ControlButtonArea
