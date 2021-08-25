@@ -21,7 +21,7 @@ import {
 
 export const useConnections = (): [ConnectionType] => {
   const [con, setCon] = useState<ConnectionType>({});
-  const { socketConnection, stream } = useMeetingAreaContext();
+  const { socketConnection, stream, video, audio } = useMeetingAreaContext();
   const { meetingId } = useParams<MeetingAreaParamsType>();
   const auth = useSelector(selectUser);
   const [channel, setChannel] = useState("");
@@ -80,7 +80,7 @@ export const useConnections = (): [ConnectionType] => {
   );
 
   const createNewOffer = async (data: any) => {
-    const { user } = data;
+    const { user, streamingControls } = data;
     const connection = createConnection();
     sendTracksAtInitial(connection);
     const dataChannel = connection.createDataChannel(DataChannels.CHAT);
@@ -93,6 +93,7 @@ export const useConnections = (): [ConnectionType] => {
     addConnection(user.uid, {
       user,
       connection,
+      streamingControls,
       dataChannels: {
         [DataChannels.CHAT]: dataChannel,
         [DataChannels.STREAMING_CONTROLS]: controlChannel,
@@ -100,7 +101,12 @@ export const useConnections = (): [ConnectionType] => {
     });
     // send offer
     setTimeout(() => {
-      broadcastSignal({ offer, type: SocketEvents.OFFER, to: user.uid });
+      broadcastSignal({
+        offer,
+        type: SocketEvents.OFFER,
+        to: user.uid,
+        streamingControls: { video, audio },
+      });
     }, 1000);
     console.log("OFFER CREATED");
   };
@@ -110,11 +116,11 @@ export const useConnections = (): [ConnectionType] => {
   };
 
   const acceptNewOffer = async (data: any) => {
-    const { from, offer } = data;
+    const { from, offer, streamingControls } = data;
 
     const connection = createConnection();
     sendTracksAtInitial(connection);
-    const peer = { connection, user: from };
+    const peer = { connection, user: from, streamingControls };
     addConnection(from.uid, peer);
     onDataChannel(peer);
     await connection.setRemoteDescription(new RTCSessionDescription(offer));

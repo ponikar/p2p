@@ -1,3 +1,4 @@
+import { StreamingControlTypes } from "../components/webcam-streaming/webcam-streaming.types";
 import { UserType } from "./user.type";
 
 export interface DataChannelType {
@@ -8,6 +9,7 @@ export interface Peer {
   connection: RTCPeerConnection;
   user: UserType;
   dataChannels?: DataChannelType;
+  streamingControls: StreamingControlTypes;
 }
 
 export interface ConnectionType {

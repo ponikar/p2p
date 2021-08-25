@@ -13,12 +13,10 @@ export const MeetingMember: FC<MeetingMemberType> = ({
   stream,
   user,
   controlChannel,
+  initialControlState,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [{ video, audio }, setControls] = useState({
-    video: true,
-    audio: false,
-  });
+  const [{ video, audio }, setControls] = useState(initialControlState);
 
   useEffect(() => {
     if (controlChannel) {
@@ -26,9 +24,6 @@ export const MeetingMember: FC<MeetingMemberType> = ({
         setControls(JSON.parse(e.data));
       };
     }
-    return () => {
-      if (controlChannel) removeDataChannelListener(controlChannel);
-    };
   }, [controlChannel, video, audio]);
 
   useEffect(() => {
@@ -37,7 +32,7 @@ export const MeetingMember: FC<MeetingMemberType> = ({
       src.srcObject = stream;
       src.play();
     }
-  }, [videoRef, video, stream]);
+  }, [videoRef.current, stream]);
 
   return (
     <div

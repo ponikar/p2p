@@ -8,7 +8,7 @@ import { MeetingAreaParamsType } from "../types/params.types";
 
 export const useMeetingJoin = (): [boolean, Function] => {
   const { meetingId } = useParams<MeetingAreaParamsType>();
-  const { socketConnection } = useMeetingAreaContext();
+  const { socketConnection, video, audio } = useMeetingAreaContext();
   const user = useSelector(selectUser);
   const [isReady, setIsReady] = useState(false);
   useEffect(() => {
@@ -21,7 +21,12 @@ export const useMeetingJoin = (): [boolean, Function] => {
     if (isReady) {
       socketConnection?.emit(
         SocketChannel.onUser,
-        JSON.stringify({ meetingId, user, type: SocketEvents.NEW })
+        JSON.stringify({
+          meetingId,
+          user,
+          type: SocketEvents.NEW,
+          streamingControls: { video, audio },
+        })
       );
     }
   }, [isReady, socketConnection]);
