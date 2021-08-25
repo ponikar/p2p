@@ -18,7 +18,6 @@ import {
   removeConnection,
   removeConnectionsICEStates,
 } from "../utils/connection.util";
-import { getMedia } from "../utils/media.utils";
 
 export const useConnections = (): [ConnectionType] => {
   const [con, setCon] = useState<ConnectionType>({});
@@ -83,11 +82,11 @@ export const useConnections = (): [ConnectionType] => {
   const createNewOffer = async (data: any) => {
     const { user } = data;
     const connection = createConnection();
+    sendTracksAtInitial(connection);
     const dataChannel = connection.createDataChannel(DataChannels.CHAT);
     const controlChannel = connection.createDataChannel(
       DataChannels.STREAMING_CONTROLS
     );
-    await sendTracksAtInitial(connection);
     const offer = await connection.createOffer();
     await connection.setLocalDescription(offer);
     onICECandidate(connection, user.uid);
@@ -100,12 +99,13 @@ export const useConnections = (): [ConnectionType] => {
       },
     });
     // send offer
-    broadcastSignal({ offer, type: SocketEvents.OFFER, to: user.uid });
+    setTimeout(() => {
+      broadcastSignal({ offer, type: SocketEvents.OFFER, to: user.uid });
+    }, 1000);
     console.log("OFFER CREATED");
   };
 
-  const sendTracksAtInitial = async (connection: RTCPeerConnection) => {
-    const stream = await getMedia({ video: true, audio: true });
+  const sendTracksAtInitial = (connection: RTCPeerConnection) => {
     addTracks(connection, stream);
   };
 
@@ -113,7 +113,7 @@ export const useConnections = (): [ConnectionType] => {
     const { from, offer } = data;
 
     const connection = createConnection();
-    await sendTracksAtInitial(connection);
+    sendTracksAtInitial(connection);
     const peer = { connection, user: from };
     addConnection(from.uid, peer);
     onDataChannel(peer);

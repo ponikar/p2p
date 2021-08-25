@@ -16,13 +16,13 @@ function App() {
         <Router>
           <Suspense fallback={<p> Loading.... </p>}>
             <Switch>
-             <ProtectedRoutes
-              path="/:meetingId"
-              exact
-              component={MeetingAreaPage}
-            />
+              <ProtectedRoutes
+                path="/:meetingId"
+                exact
+                component={MeetingAreaPage}
+              />
               <Route path="/" exact component={CreateMeeting} />
-              <ProtectedRoutes path="/:meetingId/bye" exact component={MeetingLeft} />
+              <Route path="/:meetingId/bye" exact component={MeetingLeft} />
             </Switch>
           </Suspense>
         </Router>

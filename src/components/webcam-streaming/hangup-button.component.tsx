@@ -35,7 +35,6 @@ export const HangupButton: FC<HangupButtonProps> = ({
   const { replace } = useHistory();
   const hangupCall = useCallback(() => {
     if (socketConnection) {
-      console.log("I AM HANNGING UP PHONE!");
       socketConnection.emit(
         SocketChannel.onUser,
         JSON.stringify({ user, meetingId, type: SocketEvents.USER_LEFT })
