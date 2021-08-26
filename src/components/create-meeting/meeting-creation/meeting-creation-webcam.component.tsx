@@ -27,13 +27,6 @@ export const MeetingCreationWebcam: FC<MeetingCreationWebcamProps> = ({
         videoRef.current.play();
       }
     })();
-
-    return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.pause();
-        videoRef.current.srcObject = null;
-      }
-    };
   }, [videoRef.current, stream]);
   const joinMeeting = useCallback(() => {
     askToJoin();

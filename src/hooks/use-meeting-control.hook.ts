@@ -12,7 +12,6 @@ export const useMeetingControl = (connections: ConnectionType) => {
       if (dataChannels) {
         const channel = dataChannels[DataChannels.STREAMING_CONTROLS];
         if (channel && channel.readyState === "open") {
-          console.log("SENDING CONTROLS");
           channel.send(JSON.stringify({ video, audio }));
         }
       }

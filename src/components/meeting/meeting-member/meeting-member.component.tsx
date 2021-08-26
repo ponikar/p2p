@@ -28,11 +28,11 @@ export const MeetingMember: FC<MeetingMemberType> = ({
 
   useEffect(() => {
     const src = videoRef.current;
-    if (src && stream) {
+    if (src && !src.srcObject && stream) {
       src.srcObject = stream;
       src.play();
     }
-  }, [videoRef.current, stream]);
+  }, [videoRef.current, stream, video]);
 
   return (
     <div

@@ -30,13 +30,17 @@ export const MeetingAreaContextProvider: FC = ({ children }) => {
   const [meetingControls, setMeetingControls] = useState<StreamingControlTypes>(
     { video: true, audio: true }
   );
-
+  const [error, setError] = useState("");
   const [stream, setStream] = useState<MediaStream>(new MediaStream());
   let socket = useRef<Socket>(io("ws://localhost:8085"));
 
   useEffect(() => {
     (async () => {
-      setStream(await getMedia({ video: true, audio: true }));
+      try {
+        setStream(await getMedia({ video: true, audio: true }));
+      } catch (e) {
+        setError(e.message);
+      }
     })();
   }, []);
 
@@ -46,6 +50,8 @@ export const MeetingAreaContextProvider: FC = ({ children }) => {
     },
     [meetingControls.audio, meetingControls.video]
   );
+
+  if (error) throw new Error(error);
 
   return (
     <Context.Provider
