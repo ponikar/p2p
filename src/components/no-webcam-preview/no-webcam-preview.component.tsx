@@ -1,14 +1,33 @@
 import React, { FC } from "react";
+import { MicOff } from "react-feather";
+import { UserType } from "../../types/user.type";
+import { getRandomColor } from "../../utils/member.util";
 
-
-export interface NoWebcamPreviewType {
-    src: string;
-    participant_name: string;
+interface NoWebcamPreview extends UserType {
+  muted: boolean | undefined;
 }
 
-export const NoWebcamPreview: FC<NoWebcamPreviewType> = React.memo(({ src, participant_name }) => {
-  return <section className="bg-black flex items-center justify-center flex-col text-white w-full h-full">
-      <img src="https://robohash.org/logo" alt="No webcam preview" className="rounded-full w-20 h-20" />
-      <h2 className="text-base mt-3 font-semibold"> Darshan Ponikar </h2>
-  </section>;
-});
+export const NoWebcamPreview: FC<NoWebcamPreview> = React.memo(
+  ({ displayName, muted, avatar }) => {
+    const color = getRandomColor();
+
+    return (
+      <section
+        style={{ backgroundColor: color }}
+        className="flex items-center relative justify-center flex-col text-highlight w-full h-full"
+      >
+        {muted && (
+          <div className="absolute rounded-full top-2 p-2 bg-secondryBack left-2">
+            <MicOff stroke={color} strokeWidth={2} size={12} />
+          </div>
+        )}
+        <img
+          src={avatar}
+          alt="No webcam preview"
+          className="rounded-full bg-secondryBack w-20 h-20"
+        />
+        <h2 className="text-base mt-3 font-semibold"> {displayName} </h2>
+      </section>
+    );
+  }
+);

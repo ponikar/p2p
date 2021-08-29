@@ -1,28 +1,29 @@
-import React, { useState } from "react";
+import React, { FC, memo, useContext } from "react";
 import { MessageType } from "../../../types/chat.types";
+import { MeetingAreaContext } from "../../meeting/meeting-area/meeting-area.component";
 import { ChatContext } from "../chat-context/chat.context";
-import { ChatHeader } from "../chat-header/chat-header.component";
 import { ChatInput } from "../chat-input/chat-input.component";
 import { ChatMessageArea } from "../chat-message-area/chat-message-area.component";
 
-const ChatArea = () => {
-  const [messages, setMessage] = useState<MessageType[]>([]);
+interface ChatAreaInterfaceProps {
+  messages: MessageType[];
+  setMessageProps: (msg: MessageType) => void;
+}
 
-  return (
-    <ChatContext.Provider
-      value={{
-        messages,
-        setMessageProps: (message: MessageType) =>
-          setMessage([...messages, message]),
-      }}
-    >
-      <section className="col-span-3 flex flex-col justify-around items-center border">
-        <ChatHeader />
-        <ChatMessageArea />
-        <ChatInput />
-      </section>
-    </ChatContext.Provider>
-  );
-};
-
-export default ChatArea;
+export const ChatArea: FC<ChatAreaInterfaceProps> = memo(
+  ({ messages, setMessageProps }) => {
+    return (
+      <ChatContext.Provider
+        value={{
+          messages,
+          setMessageProps,
+        }}
+      >
+        <section className="flex flex-col justify-around flex-1 items-center">
+          <ChatMessageArea />
+          <ChatInput />
+        </section>
+      </ChatContext.Provider>
+    );
+  }
+);

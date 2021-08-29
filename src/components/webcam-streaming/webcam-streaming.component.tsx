@@ -1,11 +1,11 @@
-import React, { FC, RefObject, useCallback, useContext, useEffect, useRef, useState } from "react";
-import { getUserMedia } from "../../utils/media.utils";
+import React, { FC, RefObject, useCallback, useEffect, useRef } from "react";
 import "./webcam-streaming.style.css";
-import { StreamingControlTypes } from "./webcam-streaming.types";
 import { VideoArea } from "../video-area/video-area.component";
 import { ControlButtonArea } from "./control-button-area.component";
 import { motion } from "framer-motion";
-import { BaseContext } from "../base/base.context";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/user/user.selectors";
+import { useMeetingAreaContext } from "../meeting/meeting-area/meeting-area.context";
 
 interface WebCamStreamingProps {
   contstrainRef: RefObject<Element>;
@@ -13,37 +13,31 @@ interface WebCamStreamingProps {
 export const WebCamStreaming: FC<WebCamStreamingProps> = ({
   contstrainRef,
 }) => {
+  const { video, audio, stream } = useMeetingAreaContext();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [stream, setSteam] = useState<MediaStream | null>(null);
-  const { video, audio } = useContext(BaseContext)
+  const user = useSelector(selectUser);
 
   useEffect(() => {
-    getWebcamAccess();
-  }, [video, audio]);
+    getUserMedia();
+  }, [videoRef.current]);
 
-  const getWebcamAccess = () => {
-    if (video || audio) {
-      getUserMedia({ video, audio }, streamingWebcam, (err) =>
-        console.log("MEDIA ERROR", err)
-      );
+  const getUserMedia = useCallback(() => {
+    if (stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+      videoRef.current.play();
     }
-  };
-
-  const streamingWebcam = useCallback((stream: MediaStream) => {
-    setSteam(stream);
-    const video = videoRef.current;
-    video!.srcObject = stream;
-    video!.play();
-  }, []);
+  }, [videoRef.current]);
 
   return (
     <motion.div className="streaming-area" drag dragConstraints={contstrainRef}>
       <VideoArea
-        {...{ video, videoRef }}
+        audio={audio}
+        video={video}
+        videoRef={videoRef}
         src="src"
         muted
         className="streaming-video"
-        participant_name="Darshan Ponikar"
+        {...user}
       />
       <div className="streaming-control">
         <ControlButtonArea />

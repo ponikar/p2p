@@ -1,0 +1,4 @@
+.list-container {
+  @apply py-2 px-4 overflow-y-auto;
+  max-height: 90vh;
+}

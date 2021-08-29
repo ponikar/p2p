@@ -1,10 +1,6 @@
-
-
-
-
-
 .chat-message-area {
-   @apply p-3 px-4 rounded-3xl text-sm mx-2 bg-gray-100;
-   max-width: 300px;
-   width: auto;  
+  @apply p-2 px-3 rounded-3xl text-xs mx-2;
+  width: auto;
+  max-width: 75%;
+  word-break: break-all;
 }
